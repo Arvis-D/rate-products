@@ -1,0 +1,85 @@
+<div id="main-bg"></div>
+
+<div id="form-center">
+    <div id="options">
+        <div class="option-wrapper" id="signup-opt">
+            <div class="option">
+                <h2>Don't have an account?</h2>
+                <div class="blue-bit"></div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <button class="btn" onclick="move(0)">Sign up</button>
+            </div>
+        </div>
+        <div class="option-wrapper" id="login-opt">
+            <div class="option">
+                <h2>Have an account?</h2>
+                <div class="blue-bit"></div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                <button class="btn" onclick="move(1)">Login</button>
+            </div>
+        </div>
+    </div>
+    <div id="moving-forms">
+        <form class="form" method="post" action="login" id="login">
+            <h2>Login</h2>
+            <div class="blue-bit"></div>
+            <a href="/magebit"><div class="logo"></div></a>
+            <?php
+
+            if(isset($_SESSION["login_error"]))echo "<strong class=\"error\">". $_SESSION["login_error"]. "</strong>";
+
+            ?>
+            <div class="input-field">
+                <label>Email</label>
+                <i class="material-icons">mail_outline</i>
+                <span class="red">*</span>
+                <input class="input" type="text" name="email">
+            </div>
+            <div class="input-field">
+                <label>Password</label>
+                <i class="material-icons">lock_outline</i>
+                <span class="red">*</span>
+                <input class="input" type="password" name="password">
+            </div>
+            <button class="btn-orng">Login</button>
+            <button class="btn-empty">Forgot?</button>
+        </form>
+        <form class="form" method="post" action="signup" onsubmit="return validate()" id="signup" name="signup-form">
+            <h2>Sign up</h2>
+            <div class="blue-bit"></div>
+            <a href="/magebit"><div class="logo"></div></a>
+            <div class="input-field">
+                <label>Name</label>
+                <i class="material-icons">perm_identity</i>
+                <span class="red">*</span>
+                <input class="input" type="text" name="username">
+            </div>
+            <?php
+
+            if(isset($_SESSION["email_exists"]))echo "<strong class=\"error\">". $_SESSION["email_exists"]. "</strong>";
+
+            ?>
+            <div class="input-field">
+                <label>Email</label>
+                <i class="material-icons">mail_outline</i>
+                <span class="red">*</span>
+                <input class="input" type="text" name="email">
+            </div>
+            <div class="input-field">
+                <label>Password</label>
+                <i class="material-icons">lock_outline</i>
+                <span class="red">*</span>
+                <input class="input" type="password" name="password">
+            </div>
+            <button class="btn-orng">Sign up</button>
+        </form>
+    </div>
+    <div id="face"></div>
+</div>
+<script src="frontend/index.js"></script>
+<script src="frontend/validation.js"></script>
+<?php
+
+if(isset($_SESSION["email_exists"])) echo "<script>document.getElementsByClassName(\"btn\")[0].click()</script>";
+
+?>

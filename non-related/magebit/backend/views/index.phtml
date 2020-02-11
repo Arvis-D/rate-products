@@ -1,0 +1,103 @@
+<div id="main-bg"></div>
+
+<div id="form-center">
+    <div id="options">
+        <div class="option-wrapper" id="signup-opt">
+            <div class="option">
+                <h2>Vai neesat reģistrējies</h2>
+                <div class="blue-bit"></div>
+                <p>Reģistrējaties lai spētu veikt grāmatas rezervācijas pietiekumus.</p>
+                <button class="btn" onclick="move(0)">Reģistrēties</button>
+            </div>
+        </div>
+        <div class="option-wrapper" id="login-opt">
+            <div class="option">
+                <h2>Have an account?</h2>
+                <div class="blue-bit"></div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                <button class="btn" onclick="move(1)">Login</button>
+            </div>
+        </div>
+    </div>
+    <div id="moving-forms">
+        <form class="form" method="post" action="login" id="login">
+            <h2>Ielogoties</h2>
+            <div class="blue-bit"></div>
+            <a href="/magebit"><div class="logo"></div></a>
+            <?php
+
+            if(isset($_SESSION["login_error"]))echo "<strong class=\"error\">". $_SESSION["login_error"]. "</strong>";
+
+            ?>
+            <div class="input-field">
+                <label>Lietotājvārds</label>
+                <i class="material-icons">perm_identity</i>
+                <span class="red">*</span>
+                <input class="input" type="text" name="email">
+            </div>
+            <div class="input-field">
+                <label>Parole</label>
+                <i class="material-icons">lock_outline</i>
+                <span class="red">*</span>
+                <input class="input" type="password" name="password">
+            </div>
+            <button class="btn-orng">Ielogoties</button>
+            <button class="btn-empty">Aizmirsāt paroli?</button>
+        </form>
+        <form class="form" method="post" action="signup" onsubmit="return validate()" id="signup" name="signup-form">
+            <h2>Izveidot lietotāju</h2>
+            <div class="blue-bit"></div>
+            <a href="/magebit"><div class="logo"></div></a>
+            <div class="input-field">
+                <label>Vārds</label>
+                <i class="material-icons">perm_identity</i>
+                <span class="red">*</span>
+                <input class="input" type="text" name="username">
+            </div>
+            <div class="input-field">
+                <label>Uzvārds</label>
+                <i class="material-icons">perm_identity</i>
+                <span class="red">*</span>
+                <input class="input" type="text" name="username">
+            </div>
+            <div class="input-field">
+                <label>Lietotājvārds</label>
+                <i class="material-icons">perm_identity</i>
+                <span class="red">*</span>
+                <input class="input" type="text" name="username">
+            </div>
+            <?php
+
+            if(isset($_SESSION["email_exists"]))echo "<strong class=\"error\">". $_SESSION["email_exists"]. "</strong>";
+
+            ?>
+            <div class="input-field">
+                <label>E-pasts</label>
+                <i class="material-icons">mail_outline</i>
+                <span class="red">*</span>
+                <input class="input" type="text" name="email">
+            </div>
+            <div class="input-field">
+                <label>Lietotāja veids</label>
+                <i class="material-icons">lock_outline</i>
+                <span class="red">*</span>
+                <input class="input" type="text" name="email">
+            </div>
+            <div class="input-field">
+                <label>Parole</label>
+                <i class="material-icons">lock_outline</i>
+                <span class="red">*</span>
+                <input class="input" type="password" name="password">
+            </div>
+            <button class="btn-orng">Izveidot</button>
+        </form>
+    </div>
+    <div id="face"></div>
+</div>
+<script src="frontend/index.js"></script>
+<script src="frontend/validation.js"></script>
+<?php
+
+if(isset($_SESSION["email_exists"])) echo "<script>document.getElementsByClassName(\"btn\")[0].click()</script>";
+
+?>

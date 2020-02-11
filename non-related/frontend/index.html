@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css.css">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <h1>Grāmatu katalogs</h1>
+        <hr>
+        <nav>
+            <button class="btn">+Pievienot</button>
+            <button class="btn">Rezervēt izvēlētos</button>
+            <button class="btn-orng">dzēst izvēlētos</button>
+        </nav>
+    </header>
+    <form action="" method="GET" class="form">
+        <h3>Pievienot grāmatu</h3>
+        <div class="input-field">
+            <label for="">Nosaukums</label>
+            <input type="text" name="sku">
+        </div>
+        <div class="input-field">
+            <label for="">Autors</label>
+            <input type="text" name="name">
+        </div>
+        <div class="input-field">
+            <label for="">Žanrs</label>
+            <select onchange="change()" name="type">
+                <option value="furniture">Furniture</option>
+                <option value="book">Book</option>
+                <option value="disk">CD</option>
+            </select>
+        </div>
+        <div class="input-field furniture">
+            <label for="" id="type-label">Lappuses</label>
+            <input type="text" name="width">
+        </div>
+        <div class="input-field furniture">
+            <label for="" id="type-label">valoda</label>
+            <input type="text" name="length">
+        </div>
+        <p class="info furniture"></p>
+        <div class="input-field disk">
+            <label for="" id="type-label">Size</label>
+            <input type="text" name="size">
+        </div>
+        <p class="info disk"></p>
+        <div class="input-field book">
+            <label for="" id="type-label">Weight</label>
+            <input type="text" name="weight">
+        </div>
+        <p class="info book"></p>
+        <button type="submit" class="btn">Pievienot</button>
+    </form>
+    <div id="products">
+        <div class="product-wrapper">
+            <div class="product">
+                <form action="">
+                    <input type="checkbox">
+                </form>
+                <div class="product-image"></div>
+                <h3>Brāļi Karamazovi</h3>
+                <h5 class="sku">#3</h5>
+                <h5><span>*</span> autors: <span>Fjodors Dostojevskis</span></h5>
+                <h5><span>*</span> gads: <span>1869.</span></h5>
+                <h5><span>*</span> valoda: <span>Krievu</span></h5>
+                <h5><span>*</span> lappuses: <span>500</span></h5>
+                <button class="btn price">Labot</button>
+            </div>
+        </div>
+        <div class="product-wrapper">
+                <div class="product">
+                    <form action="">
+                        <input type="checkbox">
+                    </form>
+                    <div class="product-image"></div>
+                    <h3>Ābece</h3>
+                    <h5 class="sku">#2</h5>
+                    <h5><span>*</span> autors: <span>nezināms</span></h5>
+                    <h5><span>*</span> gads: <span>1869.</span></h5>
+                    <h5><span>*</span> valoda: <span>Latviešu</span></h5>
+                    <h5><span>*</span> lappuses: <span>24</span></h5>
+                    <button class="btn price">Labot</button>
+                </div>
+            </div>
+            <div class="product-wrapper">
+                    <div class="product">
+                        <form action="">
+                            <input type="checkbox">
+                        </form>
+                        <div class="product-image"></div>
+                        <h3>Noziegums un sods</h3>
+                        <h5 class="sku">#1</h5>
+                        <h5><span>*</span> autors: <span>Fjodors Dostojevskis</span></h5>
+                        <h5><span>*</span> gads: <span>1869.</span></h5>
+                        <h5><span>*</span> valoda: <span>Krievu(tulkots)</span></h5>
+                        <h5><span>*</span> lappuses: <span>500</span></h5>
+                        <button class="btn price">Labot</button>
+                    </div>
+                </div>
+                <div class="product-wrapper">
+                        <div class="product">
+                            <form action="">
+                                <input type="checkbox">
+                            </form>
+                            <div class="product-image"></div>
+                            <h3>Karš un Miers</h3>
+                            <h5 class="sku">#5</h5>
+                            <h5><span>*</span> autors: <span>Ļevs Tolstojs</span></h5>
+                            <h5><span>*</span> gads: <span>1869.</span></h5>
+                            <h5><span>*</span> valoda: <span>Krievu</span></h5>
+                            <h5><span>*</span> lappuses: <span>500</span></h5>
+                            <button class="btn price">Labot</button>
+                        </div>
+                    </div>
+    </div>
+</body>
+</html>

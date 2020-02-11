@@ -1,0 +1,18 @@
+.form{
+    position: relative;
+    display: inline-block;
+    @include center-x;
+}
+
+.form-row{
+    label{
+        position: relative;
+        top: 0.75em;
+    }
+    > *{
+        float: right;
+    }
+    &:after{
+        @include after-float;
+    }
+}

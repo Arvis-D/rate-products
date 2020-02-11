@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <header>
+        <h1>Add a product</h1>
+        <hr>
+        <nav>
+            <button class="btn">View products</button>
+        </nav>
+    </header>
+    <form action="" method="GET" class="form">
+        <div class="input-field">
+            <label for="">SKU</label>
+            <span>*</span>
+            <input type="text" name="sku">
+        </div>
+        <div class="input-field">
+            <label for="">Name</label>
+            <span>*</span>
+            <input type="text" name="name">
+        </div>
+        <div class="input-field">
+            <label for="">Price</label>
+            <span>*</span>
+            <input type="text" name="price">
+        </div>
+        <div class="input-field">
+            <label for="">Type</label>
+            <select onchange="change()" name="type">
+                <option value="furniture">Furniture</option>
+                <option value="book">Book</option>
+                <option value="disk">CD</option>
+            </select>
+        </div>
+        <div class="input-field furniture">
+            <label for="" id="type-label">Width</label>
+            <span>*</span>
+            <input type="text" name="width">
+        </div>
+        <div class="input-field furniture">
+            <label for="" id="type-label">Height</label>
+            <span>*</span>
+            <input type="text" name="height">
+        </div>
+        <div class="input-field furniture">
+            <label for="" id="type-label">Length</label>
+            <span>*</span>
+            <input type="text" name="length">
+        </div>
+        <p class="info furniture">Please provide the dimensions of furniture in WxHxD format</p>
+        <div class="input-field disk">
+            <label for="" id="type-label">Size</label>
+            <span>*</span>
+            <input type="text" name="size">
+        </div>
+        <p class="info disk">Please provide the size of the disk</p>
+        <div class="input-field book">
+            <label for="" id="type-label">Weight</label>
+            <span>*</span>
+            <input type="text" name="weight">
+        </div>
+        <p class="info book">Please provide the weight of the book</p>
+        <button type="submit" class="btn-orng">+Add</button>
+    </form>
+    <script src="typeChange.js"></script>
+</body>
+
+</html>

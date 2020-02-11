@@ -1,0 +1,18 @@
+<div class="attribute">
+    <h4>
+
+    <?php echo $data["attribute_name"] ?>
+
+    </h4>
+    <p>
+
+    <?php echo $data["attribute_content"] ?>
+
+    </p>
+    <button class="btn-empty" onclick="showEdit(<?php echo $data["id"] ?>)">Edit</button>
+
+    <form action="profile/delete/attribute" method="post" class="delete">
+        <input type="hidden" name="attribute_id" value="<?php echo $data["id"] ?>"/>
+        <button class="btn-empty delete" type=submit >Delete</button>
+    </form>
+</div>

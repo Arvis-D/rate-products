@@ -1,0 +1,10 @@
+@mixin center-x{
+    left: 50%;
+    transform: translate(-50%);
+}
+
+@mixin after-float{
+    content: '';
+    display: block;
+    clear: both;
+}

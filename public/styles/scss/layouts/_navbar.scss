@@ -1,0 +1,27 @@
+nav{
+    margin: 2rem 0;
+    position: relative;
+    .nav-items{
+        border-bottom: 1px dashed $light2;
+        font-size: 1rem;
+        padding: 0 2em;
+        display: inline-block;
+        position: relative;
+        @include center-x;
+        .nav-item{
+            display: inline-block;
+            margin: 0 1em;
+            color: $dark1;
+            &:hover, &.active{
+                color: $primary;
+                text-decoration: underline;
+            }
+        }
+        button{
+            margin-left: 4em;
+        }
+        a{
+            text-decoration: none;
+        }
+    }
+}
