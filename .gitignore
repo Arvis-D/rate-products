@@ -1,2 +1,2 @@
-/vendor/
-/non-related/
+/vendor/*
+/non-related/*
