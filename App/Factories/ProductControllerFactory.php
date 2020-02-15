@@ -12,7 +12,7 @@ class ProductControllerFactory extends Factory implements FactoryInterface
     {
         return self::make($name, function () {
             return new ProductController(
-                ProductFactory::get(),
+                ProductModelFactory::get(),
                 ProductServiceFactory::get()
             );
         });

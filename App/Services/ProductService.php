@@ -21,47 +21,34 @@ class ProductService extends ValidationService
             'sku' => ['required', 'unique'],
             'type' => ['required']
         ]);
-        
-        $attributes = $this->getAttributes($productData);
-        $attrErrors = $this->validateTypeSpecific($attributes, $productData['type']);
-        $errors = array_merge($errors, $attrErrors);
-        return $errors;
-    }
 
-    private function validateTypeSpecific($data, $type)
-    {
-        $attributeErrors = [];
-        switch($type){
-            case 'Furniture':
-                $attributeErrors = $this->validate($data, [
+        $attributes = (array)json_decode($productData['attributes']);
+        $attributesToValidate = [];
+        
+        switch ($productData['type']) {
+            case 'book':
+                $attributesToValidate = [
+                    'weight' => ['required', 'numeric']
+                ];
+                break;
+            case 'cd':
+                $attributesToValidate = [
+                    'size' => ['required', 'numeric']
+                ];
+                break;
+            case 'furniture':
+                $attributesToValidate = [
                     'height' => ['required', 'numeric'],
-                    'length' => ['required', 'numeric'],
                     'width' => ['required', 'numeric'],
-                ]);
-            break;
-            case 'CD':
-                $attributeErrors = $this->validate($data, [
-                    'size' => ['required', 'numeric'],
-                ]);
-            break;
-            case 'Book':
-                $attributeErrors = $this->validate($data, [
-                    'weight' => ['required', 'numeric'],
-                ]);
-            break;
+                    'length' => ['required', 'numeric']
+                ];
+                break;
+            default;
+                die('no such type exits');
         }
 
-        return $attributeErrors;
-    }
+        $attributeErrors = $this->validate($attributes, $attributesToValidate);
 
-    public function makePriceRight($price)
-    {
-        return number_format($price, 2);
+        return array_merge($errors, $attributeErrors);
     }
-
-    public function getAttributes($productData)
-    {
-        return array_slice($productData, 5);
-    }
-
 }

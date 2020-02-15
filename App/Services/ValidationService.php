@@ -35,7 +35,7 @@ class ValidationService
                         break;
                     case 'unique':
                         if (!$this->unique($input[$key])) {
-                            $errors[$key] = ucfirst($key) . ' already exists in the database!';
+                            $errors[$key] = ucfirst($key) . ' has to be unique!';
                         }
                         break;
                     default:

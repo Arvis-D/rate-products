@@ -21,12 +21,14 @@ class ProductModel
         $queryStr =
         "INSERT 
         INTO products 
-        VALUES(null, :name, :price, :attributes :sku)
+        VALUES(null, :type, :price, :attributes, :name, :sku);
         ";
         
         $params = [
-            'name' => $proudctData['name'],
+            'type' => $proudctData['type'],
+            'price' => $proudctData['price'],
             'attributes' => $proudctData['attributes'],
+            'name' => $proudctData['name'],
             'sku' => $proudctData['sku'],
         ];
 

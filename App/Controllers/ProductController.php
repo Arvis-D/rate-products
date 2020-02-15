@@ -11,14 +11,14 @@ class ProductController
     use \App\Traits\RedirectTrait;
     use \App\Traits\SessionMessageTrait;
 
-    private $product;
+    private $productModel;
     private $productService;
 
     public function __construct(
         ProductModel $product,
         ProductService $productService
         ) {
-        $this->product = $product;
+        $this->productModel = $product;
         $this->productService = $productService;
     }
 
@@ -42,14 +42,13 @@ class ProductController
     public function store()
     {
         $errors = $this->productService->validateProduct($_POST);
-        $this->setMessage('productErrors', $errors);
         if (empty($errors)) {
-        
+            $this->productModel->create($_POST);
+            $this->redirect('/');
         } else {
-            print_r($errors);
-            die();
+            $attr = (array)json_decode($_POST['attributes']);
             $this->setMessage('inputErrors', $errors);
-            $this->setMessage('inputOld', $_POST);
+            $this->setMessage('inputOld', array_merge($attr, $_POST));
             $this->redirect('/product/add');
         }
     }

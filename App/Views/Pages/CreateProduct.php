@@ -6,6 +6,8 @@ use App\Views\View;
 
 class CreateProduct extends View
 {
+    use \App\Traits\SessionMessageTrait;
+
     private $csrf;
     private $formRowText;
 
@@ -35,12 +37,15 @@ class CreateProduct extends View
             $this->formRowText->set('name', 'Product name', true)->show(); 
             $this->formRowText->set('price', 'Product price', true)->show();  
             ?>
+            <input id="attributes" type="hidden" name="attributes">
         <div class="form-row">
-            <select id="type" name="type" form="create-product" class="type-select">
-            <option value="Furniture">Furniture</option>
-            <option value="CD">CD</option>
-            <option value="Book">Book</option>
-            </select>
+            <div class="input">
+                <select id="type" name="type" form="create-product" class="type-select">
+                <option value="furniture">Furniture</option>
+                <option value="cd">CD</option>
+                <option value="book">Book</option>
+                </select>
+            </div>
             <label for="type">Product type:</label>
         </div>
 
@@ -57,11 +62,13 @@ class CreateProduct extends View
         </div>
 
         <div class="dynamic-part" id="dynamic-book">
-            <?php $this->formRowText->set('book', 'Weight', true)->show(); ?>
+            <?php $this->formRowText->set('weight', 'Weight', true)->show(); ?>
         </div>
 
         </form>
-
+        <script>document.querySelector('.type-select').value = 
+            '<?= $this->getMessage('oldInput')['type'] ?? 'furniture' ?>'
+        </script>
         <script src="/public/js/dynamicForm.js"></script>
         <?php
     }
