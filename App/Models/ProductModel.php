@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class Product
+class ProductModel
 {
     private $db;
 

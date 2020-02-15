@@ -6,10 +6,19 @@ use App\Views\View;
 
 class Products extends View
 {
+    private $products = [];
+    public $title = 'Products';
+
     public function __construct()
     {
         $this->parent = 'Layouts\Master';
         $this->extendAs = 'content';
+    }
+
+    public function set($products)
+    {
+        $this->products = $products;
+        return $this;
     }
 
     protected function render()

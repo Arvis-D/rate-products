@@ -6,7 +6,6 @@ use App\Factories\Factory;
 
 abstract class View extends Factory
 {
-    protected $data = [];
     protected $parent = '';
     public $child = false;
     public $extendAs = '';
@@ -39,12 +38,6 @@ abstract class View extends Factory
             $this->child = false;
             $this->render();
         }
-    }
-
-    public function data($data)
-    {
-        $this->data = $data;
-        return $this;
     }
 }
 

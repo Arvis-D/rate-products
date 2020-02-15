@@ -16,7 +16,7 @@ class DatabaseFactory extends Factory implements FactoryInterface
                 DatabaseConfig::HOST,
                 DatabaseConfig::NAME,
                 DatabaseConfig::USERNAME,
-                DatabaseConfig::PASSWORD,
+                DatabaseConfig::PASSWORD
             );
         });
     }
