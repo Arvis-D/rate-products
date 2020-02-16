@@ -42,6 +42,15 @@
           transform: translate(-50%);
 }
 
+.form .type-description {
+  float: right;
+  width: 15em;
+  font-size: 0.8rem;
+  margin-top: 0.5em;
+  color: #3a3a3a;
+  line-height: 1.3rem;
+}
+
 .form-row label {
   position: relative;
   top: 0.75em;
