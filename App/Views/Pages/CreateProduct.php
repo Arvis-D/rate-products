@@ -9,6 +9,7 @@ class CreateProduct extends View
 {
     private $csrf;
     private $formRowText;
+    public $title = 'Create a product';
 
     public function __construct()
     {

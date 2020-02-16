@@ -20,7 +20,7 @@ class ProductModel
 
     public function create($proudctData)
     {
-        $queryStr =
+        $stmtStr =
         "INSERT 
         INTO products 
         VALUES(null, :type, :price, :attributes, :name, :sku);
@@ -34,12 +34,22 @@ class ProductModel
             'sku' => $proudctData['sku'],
         ];
 
-        $this->db->stmt($queryStr, $params);
+        $this->db->stmt($stmtStr, $params);
     }
 
     public function deleteMany($idArr)
     {
+        $idArr = (array) json_decode($idArr);
+        $params = [];
+        $stmtStr = "DELETE FROM products WHERE id IN(";
+        foreach ($idArr as $key => $id) {
+            if ($key == 0) $stmtStr .= ":id{$id} ";
+            else $stmtStr .= ",:id{$id} ";
+            $params["id{$id}"] = $id;
+        }
+        $stmtStr .= ');';
         
+        $this->db->stmt($stmtStr, $params);
     }
 
     public static function getInst($name = 'basic')

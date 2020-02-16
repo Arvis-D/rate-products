@@ -15,23 +15,24 @@ class ProductController
     private $productService;
 
     public function __construct(
-        ProductModel $product,
+        ProductModel $productModel,
         ProductService $productService
         ) {
-        $this->productModel = $product;
+        $this->productModel = $productModel;
         $this->productService = $productService;
     }
 
     public function index()
     {
-        View::get('Pages\Products')->set([
-            'products' => '$this->product->getAll()'
-        ])->show();
+        View::get('Pages\Products')->set(
+            $this->productModel->getAll()
+        )->show();
     }
 
     public function delete()
     {
-
+        $this->productModel->deleteMany($_POST['idArr']);
+        Redirect::to('/');
     }
 
     public function create()

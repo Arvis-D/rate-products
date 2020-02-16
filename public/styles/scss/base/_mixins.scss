@@ -3,6 +3,12 @@
     transform: translate(-50%);
 }
 
+@mixin center-xy{
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
 @mixin after-float{
     content: '';
     display: block;
