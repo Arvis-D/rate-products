@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Database;
+use App\Factory;
 
 class ProductService extends ValidationService
 {
@@ -50,5 +51,12 @@ class ProductService extends ValidationService
         $attributeErrors = $this->validate($attributes, $attributesToValidate);
 
         return array_merge($errors, $attributeErrors);
+    }
+
+    public static function getInst($name = 'basic')
+    {
+        return Factory::make($name, self::class, function () {
+            return new ProductService(Database::getInst());
+        });
     }
 }

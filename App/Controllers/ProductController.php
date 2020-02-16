@@ -4,13 +4,13 @@ namespace App\Controllers;
 
 use App\Models\ProductModel;
 use App\Services\ProductService;
+use App\Utilities\Redirect;
+use App\Utilities\SessionMessage;
 use App\Views\View;
+use App\Factory;
 
 class ProductController
 {
-    use \App\Traits\RedirectTrait;
-    use \App\Traits\SessionMessageTrait;
-
     private $productModel;
     private $productService;
 
@@ -44,12 +44,23 @@ class ProductController
         $errors = $this->productService->validateProduct($_POST);
         if (empty($errors)) {
             $this->productModel->create($_POST);
-            $this->redirect('/');
+            Redirect::to('/');
         } else {
             $attr = (array)json_decode($_POST['attributes']);
-            $this->setMessage('inputErrors', $errors);
-            $this->setMessage('inputOld', array_merge($attr, $_POST));
-            $this->redirect('/product/add');
+            SessionMessage::set('inputErrors', $errors);
+            SessionMessage::set('inputOld', array_merge($attr, $_POST));
+            Redirect::to('/product/add');
         }
     }
+
+    public static function getInst($name = 'basic')
+    {
+        return Factory::make($name, self::class, function () {
+            return new ProductController(
+                ProductModel::getInst(),
+                ProductService::getInst()
+            );
+        });
+    }
+
 }

@@ -3,11 +3,10 @@
 namespace App\Views\Pages;
 
 use App\Views\View;
+use App\Utilities\SessionMessage;
 
 class CreateProduct extends View
 {
-    use \App\Traits\SessionMessageTrait;
-
     private $csrf;
     private $formRowText;
 
@@ -70,7 +69,7 @@ class CreateProduct extends View
 
         </form>
         <script>document.querySelector('.type-select').value = 
-            '<?= $this->getMessage('inputOld')['type'] ?? 'furniture' ?>'
+            '<?= SessionMessage::get('inputOld')['type'] ?? 'furniture' ?>'
         </script>
         <script src="/public/js/dynamicForm.js"></script>
         <?php

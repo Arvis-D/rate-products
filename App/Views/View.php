@@ -2,7 +2,7 @@
 
 namespace App\Views;
 
-use App\Factories\Factory;
+use App\Factory;
 
 abstract class View extends Factory
 {
@@ -14,7 +14,7 @@ abstract class View extends Factory
 
     public static function get($viewname)
     {
-        return self::make($viewname, function () use ($viewname) {
+        return Factory::make($viewname, self::class, function () use ($viewname) {
             $viewname = "\App\Views\\{$viewname}";
             return new $viewname();
         });

@@ -2,18 +2,19 @@
 
 namespace App;
 
+use App\Utilities\Csrf;
+use App\Utilities\SessionMessage;
+
 class Router
 {
-    use Traits\CsrfTrait;
-
     private $found = false;
-    private $wildcards = [];
     private $uri;
 
     public function __construct($uri)
     {
         $this->uri = $this->removeGetParams($uri);
-        $_SESSION['csrf'] = (empty($_SESSION['csrf']) ? $this->randomStr() : $_SESSION['csrf']);
+        SessionMessage::reset();
+        Csrf::set();
     }
     
     public function get($uri, $method, $controller = null)
@@ -40,7 +41,7 @@ class Router
     {
         if (!$this->found) {
             if ($this->urisMatch($this->uri, $uri)) {
-                if ($this->csrfMatch()) {
+                if (Csrf::match()) {
                     $this->match($uri, $method, $controller);
                 } else {
                     die('csrf not valid!');
@@ -65,8 +66,8 @@ class Router
     {
         $this->found = true;
         if ($controller) {
-            $controller = "App\Factories\\{$controller}Factory";
-            $controller = $controller::get();
+            $controller = "App\Controllers\\{$controller}";
+            $controller = $controller::getInst();
             $wildcards = $this->getWildcards($this->uri, $uri);
             if (!empty($wildcards)) {
                 call_user_func_array(array($controller, $method), $wildcards);

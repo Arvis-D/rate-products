@@ -3,11 +3,10 @@
 namespace App\Views\Components;
 
 use App\Views\View;
+use App\Utilities\SessionMessage;
 
 class FormRowText extends View
 {
-    use \App\Traits\SessionMessageTrait;
-
     private $name = '';
     private $required = false;
     private $label = '';
@@ -16,8 +15,8 @@ class FormRowText extends View
 
     public function __construct()
     {
-        $this->errors = $this->getMessage('inputErrors') ?? null;
-        $this->old = $this->getMessage('inputOld') ?? null;
+        $this->errors = SessionMessage::get('inputErrors') ?? null;
+        $this->old = SessionMessage::get('inputOld') ?? null;
     }
 
     public function set($name, $label, $required = false)

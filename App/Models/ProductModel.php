@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Factory;
+
 class ProductModel
 {
     private $db;
@@ -38,5 +40,14 @@ class ProductModel
     public function deleteMany($idArr)
     {
         
+    }
+
+    public static function getInst($name = 'basic')
+    {
+        return Factory::make($name, self::class, function () {
+            return new ProductModel(
+                Database::getInst()
+            );
+        });
     }
 }

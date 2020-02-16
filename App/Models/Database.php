@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use \PDO;
+use App\Factory;
+use App\Config\DatabaseConfig;
 
 class Database
 {
@@ -66,5 +68,17 @@ class Database
         $stmt = $this->connect()->prepare($queryStr);
         $stmt->execute($queryParams);
         $this->disconnect($stmt);
+    }
+
+    public static function getInst($name = 'basic')
+    {
+        return Factory::make($name, self::class, function () {
+            return new Database(
+                DatabaseConfig::HOST,
+                DatabaseConfig::NAME,
+                DatabaseConfig::USERNAME,
+                DatabaseConfig::PASSWORD
+            );
+        });
     }
 }
