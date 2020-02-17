@@ -4,6 +4,10 @@ namespace App\Views;
 
 use App\Factory;
 
+/**
+ * Each view will inherit this class
+ */
+
 abstract class View extends Factory
 {
     protected $parent = '';
@@ -11,6 +15,14 @@ abstract class View extends Factory
     public $extendAs = '';
     public $children = [];
     public static $instances = [];
+
+    /**
+     * gets an instance of the view
+     *
+     * @param string $viewname
+     * 
+     * @return object $view
+     */
 
     public static function get($viewname)
     {
@@ -20,12 +32,26 @@ abstract class View extends Factory
         });
     }
 
+    /**
+     * Used to get an extended child view from parent's perspective
+     *
+     * @param string $childName
+     * 
+     * @return object $child
+     */
+
     public function child($childName)
     {
         $child = $this->children[$childName];
         $child->child = true;
         return $child;
     }
+
+    /**
+     * Will render a view with its parent and its parent's parent's .... parent, if it has a parent.
+     * 
+     * @method render is defined within child class, it renders html
+     */
 
     public function show()
     {   

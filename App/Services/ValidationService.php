@@ -15,6 +15,21 @@ class ValidationService
         $this->db = $db;
     }
 
+    /**
+     * Will go through user input and its valdation requirements and check if they are met.
+     * If a value fails to meet requirements, other validation requirements for this value
+     * will not be checked further and error message will be produced.
+     * 
+     * it's a good idea to put 'required' requirement before anything else.
+     *
+     * @param array $input contains user input.
+     * @param array $toValidate contains key name of the values to be validated
+     *              and its validation requirements.
+     * 
+     * @return array $errors contains names of the values that failed validation and 
+     *                their respective error messages.
+     */
+
     public function validate($input, $toValidate)
     {
         $errors = [];

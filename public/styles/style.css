@@ -206,4 +206,19 @@ nav .nav-items button {
 nav .nav-items a {
   text-decoration: none;
 }
+
+@media screen and (max-width: 550px) {
+  nav .nav-items .nav-item, nav .nav-items button {
+    display: block;
+    position: relative;
+    left: 50%;
+    -webkit-transform: translate(-50%);
+            transform: translate(-50%);
+    margin: 1em;
+  }
+  nav .nav-items button {
+    margin-top: 2em;
+    margin-left: 0;
+  }
+}
 /*# sourceMappingURL=style.css.map */

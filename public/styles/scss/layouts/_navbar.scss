@@ -23,5 +23,17 @@ nav{
         a{
             text-decoration: none;
         }
+        @media screen and (max-width: 550px){
+            .nav-item, button{
+                display: block;
+                position: relative;
+                @include center-x;
+                margin: 1em;
+            }
+            button{
+                margin-top: 2em;
+                margin-left: 0;
+            }
+        }
     }
 }

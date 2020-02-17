@@ -43,7 +43,7 @@ class ProductModel
         $params = [];
         $stmtStr = "DELETE FROM products WHERE id IN(";
         foreach ($idArr as $key => $id) {
-            if ($key == 0) $stmtStr .= ":id{$id} ";
+            if ($key === 0) $stmtStr .= ":id{$id} ";
             else $stmtStr .= ",:id{$id} ";
             $params["id{$id}"] = $id;
         }

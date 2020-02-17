@@ -16,5 +16,4 @@ checkboxes.forEach(el => {
 
 form.addEventListener('submit', () => {
   idField.value = JSON.stringify(idArr);
-  alert(idField.value);
 });

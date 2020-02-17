@@ -17,7 +17,7 @@ class Product extends View
     {
         $this->name = $data['name'];
         $this->sku = "#{$data['sku']}";
-        $this->price = number_format($data['price'], 2) . '€';
+        $this->price = number_format($data['price'], 2 , ',', ' ') . '€';
         $this->type = $data['type'];
         $this->attributes = (array) json_decode($data['attributes']);
         $this->id = $data['id'];
