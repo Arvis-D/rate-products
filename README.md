@@ -5,7 +5,7 @@ Database dump is in project's main directory.
 
 For apache, .htaccess file is included in the project.
 For nginx, I used this configuration:
-
+```
 server {
     listen 80;
     root /var/www/arvis-php-framework;
@@ -31,3 +31,4 @@ server {
         include fastcgi_params;
     }
 }
+```
