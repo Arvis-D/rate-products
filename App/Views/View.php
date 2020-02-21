@@ -8,7 +8,7 @@ use App\Factory;
  * Each view will inherit this class
  */
 
-abstract class View extends Factory
+abstract class View
 {
     protected $parent = '';
     public $child = false;

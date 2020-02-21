@@ -123,8 +123,11 @@ class Router
         if (count($uri) === count($routeUri)) {
             foreach ($routeUri as $key => $item) {
                 if ($item) {
-                    // segments with a wildcard are not compared
                     if ($item[0] !== ':' && $item !== $uri[$key]) {
+                        return false;
+                    }
+                } else {
+                    if ($item !== $uri[$key]) {
                         return false;
                     }
                 }

@@ -19,6 +19,7 @@ class Factory
      * @var $instances holds all the created instances by factory
      *
      * @param string $name
+     * @param string $class
      * @param callback $createInst specifies how an instance should be created
      * 
      * @return object $instance
@@ -26,7 +27,6 @@ class Factory
 
     public static function make($name, $class, $createInst)
     {
-        $name = (!isset($name) ? $class : $name);
         if (self::exists($name, $class)) {
 
             return self::$instances[$class][$name];
