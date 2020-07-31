@@ -1,13 +1,16 @@
 <?php
 
-namespace App;
+namespace App\Factory;
 
 class Factory
 {
     public static $instances = [];
 
-    private static function exists($key, $class)
+    public static function exists($key, $class)
     {
+        if (!self::$instances) {
+            return false;
+        }
         return array_key_exists($key, self::$instances[$class]);
     }
 
@@ -25,14 +28,14 @@ class Factory
      * @return object $instance
      */
 
-    public static function make($name, $class, $createInst)
+    public static function make($class, $createInst, $instName)
     {
-        if (self::exists($name, $class)) {
+        if (self::exists($instName, $class)) {
 
-            return self::$instances[$class][$name];
+            return self::$instances[$class][$instName];
         } else {
-            $inst = $createInst();
-            self::$instances[$class][$name] = $inst;
+            $inst = $createInst($class);
+            self::$instances[$class][$instName] = $inst;
             
             return $inst;
         }

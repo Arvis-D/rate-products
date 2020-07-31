@@ -8,11 +8,11 @@ use App\Config\DatabaseConfig;
 
 class Database
 {
-    private $host;
-    private $name ;
-    private $username;
-    private $password;
-    private $conn;
+    private string $host;
+    private string $name ;
+    private string $username;
+    private string $password;
+    private PDO $pdo;
 
     public function __construct($host, $name, $username, $password)
     {
@@ -20,9 +20,10 @@ class Database
         $this->name = $name;
         $this->username = $username;
         $this->password = $password;
+        $this->pdo = $this->createPDO();
     }
 
-    private function connect()
+    private function createPDO(): ?PDO
     {
         try {
             $this->conn = new PDO(
@@ -40,12 +41,6 @@ class Database
         return $this->conn;
     }
 
-    private function disconnect(&$statement = null)
-    {
-        $statement = null;
-        $this->conn = null;
-    }
-
     /**
      * Used if the query returns a result
      *
@@ -54,31 +49,17 @@ class Database
      * @return array $result
      */
 
-    public function stmtQuery($queryStr, $queryParams = [])
+    public function stmtQuery($queryStr, $queryParams = []): array
     {
-        $stmt = $this->connect()->prepare($queryStr);
+        $stmt = $this->pdo->prepare($queryStr);
         $stmt->execute($queryParams);
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $this->disconnect($stmt);
         return $result;
     }
 
-    public function stmt($queryStr, $queryParams = [])
+    public function stmt($queryStr, $queryParams = []): void
     {
-        $stmt = $this->connect()->prepare($queryStr);
+        $stmt = $this->pdo->prepare($queryStr);
         $stmt->execute($queryParams);
-        $this->disconnect($stmt);
-    }
-
-    public static function getInst($name = 'basic')
-    {
-        return Factory::make($name, self::class, function () {
-            return new Database(
-                DatabaseConfig::HOST,
-                DatabaseConfig::NAME,
-                DatabaseConfig::USERNAME,
-                DatabaseConfig::PASSWORD
-            );
-        });
     }
 }

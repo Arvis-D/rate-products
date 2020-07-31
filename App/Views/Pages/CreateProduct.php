@@ -72,7 +72,7 @@ class CreateProduct extends View
         <script>document.querySelector('.type-select').value = 
             '<?= SessionMessage::get('inputOld')['type'] ?? 'furniture' ?>'
         </script>
-        <script src="/public/js/dynamicForm.js"></script>
+        <script src="/js/dynamicForm.js"></script>
         <?php
     }
 }

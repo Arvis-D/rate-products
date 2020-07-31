@@ -1,9 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Router;
 
 use App\Utilities\Csrf;
 use App\Utilities\SessionMessage;
+use App\Factory\Provider;
 
 class Router
 {
@@ -14,16 +15,18 @@ class Router
     {
         $this->uri = $this->removeGetParams($uri);
         SessionMessage::reset();
-        Csrf::set();
+        Csrf::setIfEmpty();
     }
     
-    public function get($uri, $method, $controller = null)
+    public function get($uri, $method)
     {
         if (!$this->found) {
             if ($this->urisMatch($this->uri, $uri)) {
-                $this->match($uri, $method, $controller);
+                $this->match($uri, $method);
             }
         }
+
+        return $this;
     }
 
     /**
@@ -31,23 +34,24 @@ class Router
      * All post forms must have a csrf token.
      *
      * @param string $uri
-     * @param callback $method
-     * @param string $controller
+     * @param callback|string $method
      * 
      * @return void
      */
 
-    public function post($uri, $method, $controller = null)
+    public function post(string $uri, $method): Router
     {
         if (!$this->found) {
             if ($this->urisMatch($this->uri, $uri)) {
                 if (Csrf::match()) {
-                    $this->match($uri, $method, $controller);
+                    $this->match($uri, $method);
                 } else {
                     die('csrf not valid!');
                 }
             }
         }
+
+        return $this;
     }
 
     /**
@@ -57,25 +61,28 @@ class Router
      * 
      * @param string $uri
      * @param string $method
-     * @param string $cotroller
      * 
      * @return array $wildcards
      */
 
-    private function match($uri, $method, $controller)
+    private function match(string $uri, $method)
     {
-        $this->found = true;
+        if (strpos($method, '::')) {
+            [$controller, $method] = explode('::', $method);
+        } else {
+            $controller = null;
+        }
+
+        $wildcards = $this->getWildcards($this->uri, $uri);
         if ($controller) {
-            $controller = "App\Controllers\\{$controller}";
-            $controller = $controller::getInst();
-            $wildcards = $this->getWildcards($this->uri, $uri);
+            $controller = Provider::get("App\Controller{$controller}");
             if (!empty($wildcards)) {
                 call_user_func_array(array($controller, $method), $wildcards);
             } else {
                 $controller->$method();
             }
-        } else {
-            $method();
+        } else if(is_callable($method)) {
+            call_user_func_array($method, $wildcards);
         }
     }
 
@@ -126,12 +133,12 @@ class Router
                     if ($item[0] !== ':' && $item !== $uri[$key]) {
                         return false;
                     }
-                } else {
-                    if ($item !== $uri[$key]) {
-                        return false;
-                    }
+                } else if($item !== $uri[$key]) {
+                    return false;
                 }
             }
+            $this->found = true;
+
             return true;
         }
 

@@ -17,7 +17,7 @@ class Master extends View
             <meta http-equiv="X-UA-Compatible" content="ie=edge">
             <title><?= $this->child('content')->title ?></title>
             <link href="https://fonts.googleapis.com/css?family=Roboto:300&display=swap" rel="stylesheet">
-            <link href="/public/styles/style.css" rel="stylesheet">
+            <link href="/styles/style.css" rel="stylesheet">
         </head>
         <body>
             <?php $this->child('content')->show() ?>

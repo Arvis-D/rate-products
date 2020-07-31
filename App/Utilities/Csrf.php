@@ -21,12 +21,12 @@ class Csrf
     {
         if (isset($_POST['csrf'])) {
             return ($_POST['csrf'] === $_SESSION['csrf'] ? true : false);
-        } else {
-            return false;
         }
+
+        return false;
     }
 
-    public static function set()
+    public static function setIfEmpty()
     {
         $_SESSION['csrf'] = (empty($_SESSION['csrf']) ? self::randomStr() : $_SESSION['csrf']);
     }

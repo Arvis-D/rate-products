@@ -22,7 +22,7 @@ class SessionMessage
 
     public static function reset()
     {
-        if ($_SESSION['deleteMessages']) {
+        if (array_key_exists('deleteMessages', $_SESSION)) {
             $_SESSION['messages'] = null;
         }
     }
