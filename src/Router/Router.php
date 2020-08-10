@@ -2,7 +2,6 @@
 
 namespace App\Router;
 
-use App\Utilities\SessionMessage;
 use Pimple\Container;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,12 +19,12 @@ class Router
         $this->method = $method;
     }
 
-    public function setContainer($container)
+    public function setContainer(Container $container): void
     {
         $this->container = $container;
     }
 
-    public function get(string $uri, callable $cb)
+    public function get(string $uri, callable $cb): Router
     {
         return $this->route('GET', $uri, $cb);
     }
@@ -60,17 +59,6 @@ class Router
         $this->groupPrefix = '';
     }
 
-    /**
-     * Calls the specified controller method or callback if controller is not provided.
-     * Controller has to have a factory.
-     * Wildcards ae passed as parameters for controller method
-     * 
-     * @param string $uri
-     * @param string $method
-     * 
-     * @return array $wildcards
-     */
-
     private function match(string $uri, $cb)
     {
         $params = $this->getWildcards($this->path, $uri);
@@ -82,7 +70,6 @@ class Router
     }
 
     /**
-     * Although not necessary for this task, the router can take wildcards.
      * Wildcards are identified with ':' before a uri segment.
      * Route with a wildcard will look like this:
      * "/articles/:wildcard" or "/articles/:id/edit".

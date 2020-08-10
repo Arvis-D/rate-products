@@ -3,12 +3,32 @@
 namespace App;
 
 use App\Factory\Provider;
+use App\Router\Router;
+use Pimple\Container;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class App
 {
-    public function start()
+    private $container;
+
+    public function __construct(Container $container)
     {
-        Provider::$recipes = include __DIR__ . '/Config/recipes.php';
-        include __DIR__ . '/Router/routes.php';
+        $this->container = $container;
+    }
+
+    public function handle(): Response
+    {
+        $request = $this->container['request'];
+        $router = new Router($request->getPathInfo(), $request->getRealMethod());
+        $router->setContainer($this->container);
+        require __DIR__ . '/Router/routes.php';
+        
+        $response = $router->getResponse();
+        if ($response === null) {
+            $response = new Response('Resource not found', 404);
+        };
+
+        return $response;
     }
 }
