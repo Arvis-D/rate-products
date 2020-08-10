@@ -1,20 +1,20 @@
 <?php
 session_start();
 
-// $timeStart = microtime(true);
-// $memStart = memory_get_usage();
+$timeStart = microtime(true);
+$memStart = memory_get_usage();
 
 require __DIR__ . '/../vendor/autoload.php';
 
 $app = new App\App();
 $app->start();
 
-// $memEnd = memory_get_usage();
-// $timeEnd = microtime(true);
-// $time = $timeEnd - $timeStart;
-// $mem = $memEnd - $memStart;
+$memEnd = memory_get_usage();
+$timeEnd = microtime(true);
+$time = $timeEnd - $timeStart;
+$mem = $memEnd - $memStart;
 
-// echo $time;
+echo $time;
 
 // foreach (\App\Factory::$instances as $key1 => $class) {
 //     echo $key1 . '<br>';

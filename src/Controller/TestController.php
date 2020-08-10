@@ -3,18 +3,20 @@
 namespace App\Controller;
 
 use App\Service\TestService;
+use App\Factory\Provider;
 
 class TestController
 {
     private $testService;
 
-    public function __construct(TestService $testService)
+    public function __construct(TestService $testService, int $i)
     {
+        echo $i;
         $this->testService = $testService;
     }
 
-    public function test()
+    public function test($id)
     {
-        return $this->testService->test();
+        echo $id;
     }
 }

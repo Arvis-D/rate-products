@@ -3,7 +3,6 @@ Install it with "composer install" command.
 
 Database dump is in project's main directory.
 
-For apache, .htaccess file is included in the project.
 For nginx, I used this configuration:
 ```
 server {

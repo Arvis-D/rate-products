@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Utilities;
+namespace App\Utility;
 
 /**
  * Sets and gets messages and makes sure that they are deleted after being shown
