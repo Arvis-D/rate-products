@@ -13,7 +13,7 @@ class Router
     private $method = '';
     private $container = null;
 
-    public function __construct($path, $method)
+    public function __construct(string $path, string $method)
     {
         $this->path = $path;
         $this->method = $method;
@@ -52,14 +52,14 @@ class Router
         return $this->response;
     }
 
-    public function group($prefix, $cb)
+    public function group(string $prefix, callable $cb)
     {
         $this->groupPrefix = $prefix;
         $cb($this);
         $this->groupPrefix = '';
     }
 
-    private function match(string $uri, $cb)
+    private function match(string $uri, callable $cb)
     {
         $params = $this->getWildcards($this->path, $uri);
         if ($this->container !== null) {
@@ -81,7 +81,7 @@ class Router
      * @return array $wildcards
      */
 
-    private function getWildcards($uri, $wildcardUri)
+    private function getWildcards(string $uri, string $wildcardUri)
     {
         $params = explode('/', $uri);
         $wildcardUri = explode('/', $wildcardUri);
@@ -97,15 +97,15 @@ class Router
     }
 
     /**
-     * Checks if the provided route matches with request uri.
+     * Checks if the provided route matches with request path.
      *
-     * @param string $uri
+     * @param string $path
      * @param string $routeUri
      * 
      * @return bool
      */
 
-    private function urisMatch($path, $routeUri)
+    private function urisMatch(string $path, string $routeUri)
     {
         $path = explode('/', $path);
         $routeUri = explode('/', $routeUri);
@@ -124,4 +124,5 @@ class Router
 
         return false;
     }
+    
 }

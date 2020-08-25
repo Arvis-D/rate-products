@@ -7,6 +7,13 @@ use App\App;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+//require __DIR__ . '/../'
+
+//phpinfo();
+
+$dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
 $app = new App(require __DIR__ . '/../src/Config/container.php');
 $response = $app->handle();
 $response->send();

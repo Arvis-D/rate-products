@@ -6,7 +6,7 @@ use \PDO;
 use App\Factory;
 use App\Config\DatabaseConfig;
 
-class Database
+class MySQLDatabase
 {
     private string $host;
     private string $name ;

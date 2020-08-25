@@ -1,2 +1,3 @@
-/vendor/*
-/non-related/*
+vendor
+node_modules
+.env

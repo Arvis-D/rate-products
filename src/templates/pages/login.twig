@@ -1,0 +1,11 @@
+{% extends "master.twig" %}
+
+{% block content %}
+    {% include "elements/navbar.twig" with {currentPath: '/auth/login'} %}
+
+    <form action="/auth/login" method="post">
+        {% include "elements/formTextElement.twig" with {name: 'username'} %}
+        {% include "elements/formTextElement.twig" with {name: 'password', type: 'password'} %}
+        <button>login</button>
+    </form>
+{% endblock %}

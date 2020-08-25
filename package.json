@@ -1,0 +1,31 @@
+{
+  "name": "rate-products-custom",
+  "version": "1.0.0",
+  "description": "The project requires psr-4 autoloader in order to work. Install it with \"composer install\" command.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack --mode=development --watch",
+    "build": "webpack --mode=production",
+    "sass": "node-sass -w assets/scss/ -o public/css/",
+    "serve": "webpack-dev-server --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Arvis-D/custom-mvc.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Arvis-D/custom-mvc/issues"
+  },
+  "homepage": "https://github.com/Arvis-D/custom-mvc#readme",
+  "dependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/preset-env": "^7.11.0",
+    "bootstrap": "^4.5.2",
+    "node-sass": "^4.14.1",
+    "webpack": "^4.44.1"
+  }
+}
