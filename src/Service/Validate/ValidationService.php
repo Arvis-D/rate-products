@@ -10,8 +10,8 @@ class ValidationService
     private $resource;
     private $errors = [];
     private $firstError = false;
-    private $values;
-    private $underValidation;
+    private $values = [];
+    private $keyUnderValidation;
 
     public function __construct(array $values = [])
     {
@@ -21,6 +21,7 @@ class ValidationService
     public function setValues(array $values)
     {
         $this->values = $values;
+        return $this;
     }
 
     public function setResource(ValidationResourceInterface $resource)
@@ -31,13 +32,21 @@ class ValidationService
 
     private function setError($msg)
     {
-        $this->errors[$this->underValidation] = $msg;
+        $this->errors[$this->keyUnderValidation] = $msg;
         $this->firstError = true;
     }
 
     public function key(string $key)
     {
-        $this->underValidation = $key;
+        $this->keyUnderValidation = $key;
+        $this->firstError = false;
+        return $this;
+    }
+
+    public function value(string $key, string $value)
+    {
+        $this->values = array_merge($this->values, [$key => $value]);
+        $this->keyUnderValidation = $key;
         $this->firstError = false;
         return $this;
     }
@@ -51,8 +60,8 @@ class ValidationService
     {
         if ($this->firstError) return $this;
 
-        $len = strlen((string) $this->underValidation);
-        if ($len > $minLen || $len < $maxLen) {
+        $len = strlen((string) $this->values[$this->keyUnderValidation]);
+        if ($len < $minLen || $len > $maxLen) {
             $this->setError('length');
         }
 
@@ -67,7 +76,7 @@ class ValidationService
             throw new \Exception('Validator resource is null');
         }
 
-        if (!$this->resource->checkUnique($uniqueWhere, $this->values[$this->underValidation])) {
+        if (!$this->resource->checkUnique($uniqueWhere, $this->values[$this->keyUnderValidation])) {
             $this->setError('unique');
         }
 
@@ -78,7 +87,7 @@ class ValidationService
     {
         if ($this->firstError) return $this;
 
-        if (empty($this->values[$this->underValidation])) {
+        if (empty($this->values[$this->keyUnderValidation])) {
             $this->setError('required');
         }
 
@@ -89,7 +98,7 @@ class ValidationService
     {
         if ($this->firstError) return $this;
 
-        if (!is_numeric($this->values[$this->underValidation])) {
+        if (!is_numeric($this->values[$this->keyUnderValidation])) {
             $this->setError('numeric');
         }
 
@@ -99,12 +108,29 @@ class ValidationService
     public function email()
     {
         if ($this->firstError) return $this;
-        $value = $this->values[$this->underValidation];
+        $value = $this->values[$this->keyUnderValidation];
         $pos = strpos($value, '@');
 
         if ($pos < 1 || $pos > strlen($value) - 2) {
             $this->setError('email');
         }
+
+        return $this;
+    }
+
+    /**
+     * @param $translation example:
+     *  ['password.length' => 'password has to be between 8 and 24 characters long']
+     */
+
+    public function translateErrors(array $translation)
+    {
+        foreach ($translation as $key => $value) {
+            [$name, $validationRequirement] = explode('.', $key);
+            if (array_key_exists($name, $this->errors) && $this->errors[$name] === $validationRequirement) {
+                $this->errors[$name] = $value;
+            }
+        };
 
         return $this;
     }

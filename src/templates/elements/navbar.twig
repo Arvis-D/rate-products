@@ -1,6 +1,34 @@
-<nav>
-    {% include "elements/navElement.twig" with {name: 'Home', path: '/'} %}
-    {% include "elements/navElement.twig" with {name: 'Signup', path: '/signup'} %}
-    {% include "elements/navElement.twig" with {name: 'Login', path: '/login'} %}
+{# <nav>
+  {% include "elements/navElement.twig" with {name: 'Home', path: '/'} %}
+  {% include "elements/navElement.twig" with {name: 'Signup', path: '/signup'} %}
+  {% include "elements/navElement.twig" with {name: 'Login', path: '/login'} %}
+  <button class="btn btn-danger float-right" form="logout-form">Logout</button>
+  <form id="logout-form" action="/auth/logout" method="post"></form>
 </nav>
-<hr>
+<hr> #}
+
+<nav class="navbar">
+
+  <div class="nav-brand">
+  </div>
+
+  <div class="nav-links">
+    {% include "elements/navLink.twig" with {name: 'Sign Up', path: '/signup'} %}
+    {% include "elements/navLink.twig" with {name: 'Log In', path: '/login'} %}
+    {% include "elements/navLink.twig" with {name: 'Add Product', path: '/add-product'} %}
+    {% include "elements/navLink.twig" with {name: 'Home', path: '/'} %}
+    {% include "elements/navLink.twig" with {name: 'About', path: '/about'} %}
+  </div>
+
+  <div class="nav-forms">
+    <div class="nav-search">
+      <input type="text">
+      <button class="btn btn-primary">Search</button>
+    </div>
+    <div class="logout">
+      <button class="btn btn-danger" form="logout-form">Logout</button>
+      <form action="/auth/logout" id="logout-form"></form>
+    </div>
+  </div>
+
+</nav>

@@ -1,0 +1,42 @@
+.navbar {
+  padding: 1em;
+  display: flex;
+  justify-content: center;
+  >* {
+    margin: 0 1em;
+  }
+  .nav-links {
+    display: flex;
+    .nav-link {
+      position: relative;
+      font-size: 1.2rem;
+      //margin: 0 .5em;
+      a {
+        text-decoration: none;
+      }
+      &::after{
+        content: '';
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        background: $primary;
+        height: 0.1em;
+        width: 0;
+        opacity: 0%;
+        transition: width .2s ease-in-out, opacity .2s ease-in-out;
+      }
+      &:hover, &.active{
+        &::after{
+          opacity: 100%;
+          width: 100%;
+        }
+      }
+    }
+  }
+  .nav-forms {
+    display: flex;
+    >* {
+      margin: 0 .12em;
+    }
+  }
+}

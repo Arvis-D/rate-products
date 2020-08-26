@@ -31,13 +31,15 @@ class ValidationServiceTest extends TestCase
             ->key('password')->required()->len(7)
             ->key('age')->required()->numeric()
             ->key('required')->required()
+            ->key('nonExistent')->required()
             ->getErrors();
 
         $this->assertSame([
             'username' => 'unique',
             'password' => 'length',
             'age' => 'numeric',
-            'required' => 'required'
+            'required' => 'required',
+            'nonExistent' => 'required'
         ], $errors);
     }
 }

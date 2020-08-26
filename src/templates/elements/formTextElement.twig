@@ -1,1 +1,15 @@
-<input type="{{ type ?? 'text' }}" placeholder="{{name|capitalize}}" name="{{name|lower|replace({' ': '-'})}}">
+<div class="form-group mb-3">
+  <label for="{{ 'form-' ~ name|lower }}">{{ name|capitalize ~ ':' }}</label>
+  <input 
+    type="{{ type ?? 'text' }}" 
+    class="form-control" 
+    {# placeholder="{{ name|capitalize }}"  #}
+    aria-label="{{ name|capitalize }}" 
+    name="{{ name|lower|replace({' ': '-'}) }}"
+    id="{{ 'form-' ~ name|lower }}"
+  >
+</div>
+
+{% if errors[name] is defined %}
+    <strong>{{ errors[name] }}</strong>
+{% endif %}

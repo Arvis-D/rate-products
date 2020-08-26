@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Repository;
 
 use \PDO;
-use App\Factory;
-use App\Config\DatabaseConfig;
 
 class MySQLDatabase
 {
@@ -49,7 +47,7 @@ class MySQLDatabase
      * @return array $result
      */
 
-    public function stmtQuery($queryStr, $queryParams = []): array
+    public function query($queryStr, $queryParams = []): array
     {
         $stmt = $this->pdo->prepare($queryStr);
         $stmt->execute($queryParams);

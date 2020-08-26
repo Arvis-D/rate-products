@@ -1,13 +1,24 @@
 {% extends "master.twig" %}
 
 {% block content %}
-    {% include "elements/navbar.twig" with {currentPath: '/auth/login'} %}
+    {% include "elements/navbar.twig" with {currentPath: '/signup'} %}
 
-    <form action="/auth/signup" method="post">
-        {% include "elements/formTextElement.twig" with {name: 'username'} %}
-        {% include "elements/formTextElement.twig" with {name: 'email'} %}
-        {% include "elements/formTextElement.twig" with {name: 'password', type: 'password'} %}
-        {% include "elements/formTextElement.twig" with {name: 'Repeat password', type: 'password'} %}
-        <button>submit</button>
-    </form>
+  <div class="container mt-5">
+    <div class="row justify-content-md-center">
+      <div class="col-md-6">
+        <div class="p-3 border">
+          <h3 class="mb-3 text-center">Sign Up</h3>
+          <form action="/auth/login" method="post">
+            {% include "elements/formTextElement.twig" with {name: 'username'} %}
+            {% include "elements/formTextElement.twig" with {name: 'email'} %}
+            {% include "elements/formTextElement.twig" with {name: 'password', type: 'password'} %}
+            {% include "elements/formTextElement.twig" with {name: 'repeat password', type: 'password'} %}
+            <button class="btn btn-primary w-100">login</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 {% endblock %}

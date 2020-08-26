@@ -2,13 +2,21 @@
 
 namespace App\Service\Auth;
 
+use Symfony\Component\HttpFoundation\Request;
+
 interface AuthServiceInterface
 {
-    public function login(string $username, string $password);
+    /**
+     * @return array errors
+     */
 
-    public function signup(string $username, string $password, string $email = null);
+    public function login(Request $request): bool;
+
+    public function signup(Request $request): bool;
 
     public function logout();
+
+    public function getAuthErrors(): array;
 
     public function authenticated(): bool;
 

@@ -17,4 +17,7 @@ $router->group('/auth', function($router) {
     $router->post('/signup', function($c) {
         return $c['AuthController']->signup($c['request']);
     });
+    $router->post('/logout', function($c) {
+        return $c['AuthController']->logout();
+    });
 });

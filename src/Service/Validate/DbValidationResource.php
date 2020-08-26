@@ -2,22 +2,22 @@
 
 namespace App\Service\Validate;
 
-use App\Models\Database;
+use App\Repository\MySQLDatabase;
 
 class DbValidationResource implements ValidationResourceInterface
 {
     private $db;
 
-    public function __construct(Database $db)
+    public function __construct(MySQLDatabase $db)
     {
         $this->db = $db;
     }
 
     public function checkUnique(string $uniqueWhere, string $uniqueWhat): bool
     {
-        [$table, $field] = explode('.', $uniqueWhat);
+        [$table, $field] = explode('.', $uniqueWhere);
 
-        $arr = $this->db->stmtQuery(
+        $arr = $this->db->query(
             "SELECT
              COUNT(*) AS count
              FROM {$table} 
