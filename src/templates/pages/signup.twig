@@ -8,12 +8,13 @@
       <div class="col-md-6">
         <div class="p-3 border">
           <h3 class="mb-3 text-center">Sign Up</h3>
-          <form action="/auth/login" method="post">
+          <form action="/auth/signup" method="post">
             {% include "elements/formTextElement.twig" with {name: 'username'} %}
             {% include "elements/formTextElement.twig" with {name: 'email'} %}
             {% include "elements/formTextElement.twig" with {name: 'password', type: 'password'} %}
             {% include "elements/formTextElement.twig" with {name: 'repeat password', type: 'password'} %}
-            <button class="btn btn-primary w-100">login</button>
+            {% include "elements/csrfToken.twig" %}
+            <button class="btn btn-primary w-100">Sign Up</button>
           </form>
         </div>
       </div>

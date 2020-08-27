@@ -22,8 +22,10 @@ class UserRepository
 
     public function getPasswordByUserName($username): string
     {
-        return $this->db->query(
+        $pwd = $this->db->query(
             'SELECT password FROM user WHERE name = :u'
-        , ['u' => $username])[0]['password'];
+        , ['u' => $username]);
+        
+        return (empty($pwd) ? '' : $pwd[0]['password']);
     }
 }

@@ -27,7 +27,9 @@
     </div>
     <div class="logout">
       <button class="btn btn-danger" form="logout-form">Logout</button>
-      <form action="/auth/logout" id="logout-form"></form>
+      <form method="post" action="/auth/logout" id="logout-form">
+        {% include "elements/csrfToken.twig" %}
+      </form>
     </div>
   </div>
 

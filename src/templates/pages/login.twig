@@ -8,18 +8,20 @@
       <div class="col-md-6">
         <div class="p-3 border">
           <h3 class="mb-3 text-center">Log In</h3>
+
           <form action="/auth/login" method="post">
             {% include "elements/formTextElement.twig" with {name: 'username'} %}
             {% include "elements/formTextElement.twig" with {name: 'password', type: 'password'} %}
+            {% include "elements/csrfToken.twig" %}
             <button class="btn btn-primary w-100">login</button>
           </form>
+          
+          {% if errors.login is defined %}
+            {{ errors.login }}
+          {% endif %}
         </div>
       </div>
     </div>
   </div>
-
-  {% if errors.login is defined %}
-    {{ errors.login }}
-  {% endif %}
   
 {% endblock %}

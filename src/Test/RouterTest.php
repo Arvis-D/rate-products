@@ -6,6 +6,7 @@ use App\Router\Router;
 use PHPUnit\Framework\TestCase;
 use Pimple\Container;
 use Symfony\Component\HttpFoundation\Response;
+use App\Router\Exception\NotFoundException;
 
 class RouterTest extends TestCase
 {
@@ -40,6 +41,7 @@ class RouterTest extends TestCase
         $this->assertSame('yes', $router->getResponse()->getContent());
 
 
+        $this->expectException(NotFoundException::class);
         $path = '/very/path';
         $router = new Router($path, 'GET');
         $router->get('/asd', function() {return new Response('no');});

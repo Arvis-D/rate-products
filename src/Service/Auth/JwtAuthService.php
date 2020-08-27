@@ -66,7 +66,7 @@ class JwtAuthService implements AuthServiceInterface
         $this->setHttpOnlyCookie(JWT::encode([
             'usr' => $request->get('username'),
             'ttl' => $ttl,
-            'role' => 'user'
+            'roles' => ['user']
         ], $_ENV['SECRET']));
     }
 
@@ -78,10 +78,10 @@ class JwtAuthService implements AuthServiceInterface
     public function authenticated(): bool
     {
         if ($this->getJwtParams() === null) {
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     public function getJwtParams(): ?object
@@ -100,15 +100,19 @@ class JwtAuthService implements AuthServiceInterface
         }
     }
 
-    public function hasRole(string $role): bool
+    public function roles(): array
     {
-        $decoded = $this->getJwtParams();
-        return ($decoded !== null && property_exists($decoded, 'role') && $decoded->role === $role);
+        if (null !== $roles = $this->getJwtParams()->roles) {
+            return (array) $roles;
+        }
+
+        return [];
     }
 
     public function getAuthErrors(): array
     {
-        return $this->session->getFlashBag()->get('errors');
+        $errors = $this->session->getFlashBag()->get('errors', []);
+        return $errors;
     }
 
     private function setSessionErrors(array $errors)

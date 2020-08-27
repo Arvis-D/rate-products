@@ -6,7 +6,7 @@ use App\Service\Auth\JwtAuthService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig\Environment;
+use App\Helper\View;
 
 class AuthController
 {
@@ -41,17 +41,13 @@ class AuthController
         return new RedirectResponse('/');
     }
 
-    public function loginForm(Environment $twig)
+    public function loginForm(View $view)
     {
-        return new Response($twig->render('pages/login.twig', [
-            'errors' => $this->authService->getAuthErrors()
-        ]));
+        return new Response($view->render('pages/login'));
     }
 
-    public function signupForm(Environment $twig)
+    public function signupForm(View $view)
     {
-        return new Response($twig->render('pages/signup.twig', [
-            'errors' => $this->authService->getAuthErrors()
-        ]));
+        return new Response($view->render('pages/signup'));
     }
 }

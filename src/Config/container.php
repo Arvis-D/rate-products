@@ -1,5 +1,7 @@
 <?php
 
+use App\Helper\Csrf;
+use App\Mediator\Listener\AuthSubscriber;
 use App\Service\Auth\JwtAuthService;
 
 $container = new Pimple\Container();
@@ -25,13 +27,19 @@ $container['session'] = function () {
     $session->start();
     return $session;
 };
+$container['dispatcher'] = function ($c) {
+    $dispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher;
+    $dispatcher->addSubscriber(new \App\Mediator\Listener\CsrfSubscriber($c['csrf']));
+    $dispatcher->addSubscriber(new AuthSubscriber($c['JwtAuthService']));
+    return $dispatcher;
+};
 
 /**
  * Controllers
  */
 
 $container['HomeController'] = function ($c) {
-    return new \App\Controller\HomeController($c['twig']);
+    return new \App\Controller\HomeController($c['view']);
 };
 $container['AuthController'] = function ($c) {
     return new \App\Controller\AuthController($c['JwtAuthService']);
@@ -50,7 +58,7 @@ $container['JwtAuthService'] = function ($c) {
 };
 
  /**
-  * Other
+  * DB related
   */
 
 $container['mysql'] = function ($c) {
@@ -68,6 +76,17 @@ $container['DbValidationResource'] = function ($c) {
 
 $container['UserRepository'] = function ($c) {
     return new \App\Repository\UserRepository($c['mysql']);
+};
+
+/**
+ * Other
+ */
+
+$container['view'] = function ($c) {
+  return new \App\Helper\View($c['twig'], $c['dispatcher']);
+};
+$container['csrf'] = function () {
+    return new Csrf(new \Symfony\Component\Security\Csrf\CsrfTokenManager());
 };
 
 return $container;

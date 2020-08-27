@@ -4,6 +4,7 @@ namespace App\Router;
 
 use Pimple\Container;
 use Symfony\Component\HttpFoundation\Response;
+use App\Router\Exception\NotFoundException;
 
 class Router
 {
@@ -13,10 +14,11 @@ class Router
     private $method = '';
     private $container = null;
 
-    public function __construct(string $path, string $method)
+    public function __construct(string $path, string $method, Container $container = null)
     {
         $this->path = $path;
         $this->method = $method;
+        $this->container = $container;
     }
 
     public function setContainer(Container $container): void
@@ -47,8 +49,12 @@ class Router
         return $this;
     }
 
-    public function getResponse(): ?Response
+    public function getResponse(): Response
     {
+        if ($this->response === null) {
+            throw new NotFoundException;
+        }
+
         return $this->response;
     }
 

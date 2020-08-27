@@ -3,19 +3,19 @@
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
-use Twig\Environment;
+use App\Helper\View;
 
 class HomeController
 {
-    private $twig;
+    private $view;
 
-    public function __construct(Environment $twig)
+    public function __construct(View $view)
     {
-        $this->twig = $twig;
+        $this->view = $view;
     }
 
     public function index()
     {
-        return new Response($this->twig->render('pages/home.twig'));
+        return new Response($this->view->render('pages/home'));
     }
 }

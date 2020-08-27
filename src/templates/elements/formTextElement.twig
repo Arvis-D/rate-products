@@ -2,7 +2,7 @@
   <label for="{{ 'form-' ~ name|lower }}">{{ name|capitalize ~ ':' }}</label>
   <input 
     type="{{ type ?? 'text' }}" 
-    class="form-control" 
+    class="form-control {% if errors[name] is defined %} border border-danger {% endif %}"
     {# placeholder="{{ name|capitalize }}"  #}
     aria-label="{{ name|capitalize }}" 
     name="{{ name|lower|replace({' ': '-'}) }}"
@@ -11,5 +11,7 @@
 </div>
 
 {% if errors[name] is defined %}
-    <strong>{{ errors[name] }}</strong>
+    <div class="mb-3">
+      <strong class="text-danger">{{ errors[name] }}</strong>
+    </div>
 {% endif %}

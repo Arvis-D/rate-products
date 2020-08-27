@@ -20,5 +20,5 @@ interface AuthServiceInterface
 
     public function authenticated(): bool;
 
-    public function hasRole(string $role): bool;
+    public function roles(): array;
 }
