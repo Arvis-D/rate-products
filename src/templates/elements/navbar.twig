@@ -1,36 +1,48 @@
-{# <nav>
-  {% include "elements/navElement.twig" with {name: 'Home', path: '/'} %}
-  {% include "elements/navElement.twig" with {name: 'Signup', path: '/signup'} %}
-  {% include "elements/navElement.twig" with {name: 'Login', path: '/login'} %}
-  <button class="btn btn-danger float-right" form="logout-form">Logout</button>
-  <form id="logout-form" action="/auth/logout" method="post"></form>
-</nav>
-<hr> #}
+{# Necessary to push content down #}
+<div class="dummy-navbar"></div>
 
-<nav class="navbar">
-
+<nav class="navbar-custom">
   <div class="nav-brand">
+    <h1>Rate products</h1>
   </div>
 
   <div class="nav-links">
-    {% include "elements/navLink.twig" with {name: 'Sign Up', path: '/signup'} %}
-    {% include "elements/navLink.twig" with {name: 'Log In', path: '/login'} %}
-    {% include "elements/navLink.twig" with {name: 'Add Product', path: '/add-product'} %}
-    {% include "elements/navLink.twig" with {name: 'Home', path: '/'} %}
+    {% include "elements/navLink.twig" with {name: 'Products', path: '/'} %}
+    {% include "elements/navLink.twig" with {name: 'Shops', path: '/add-product'} %}
     {% include "elements/navLink.twig" with {name: 'About', path: '/about'} %}
   </div>
 
-  <div class="nav-forms">
+  {# <div class="nav-forms">
     <div class="nav-search">
       <input type="text">
       <button class="btn btn-primary">Search</button>
     </div>
-    <div class="logout">
-      <button class="btn btn-danger" form="logout-form">Logout</button>
-      <form method="post" action="/auth/logout" id="logout-form">
-        {% include "elements/csrfToken.twig" %}
-      </form>
-    </div>
+  </div> #}
+
+  <div class="nav-search">
+    <input type="text" class="form-control" placeholder="Search in products...">
   </div>
 
+
+  <div class="nav-auth-controls">
+    {% if authenticated %}
+      <button class="btn btn-danger" form="logout-form">Logout</button>
+      <form class="hidden-form" method="post" action="/auth/logout" id="logout-form">
+        {% include "elements/csrfToken.twig" %}
+      </form>
+    {% else %}
+      <a href="/login" class="btn btn-primary">Log In</a>
+      <a href="/signup" class="btn btn-outline-primary">Sign Up</a>
+    {% endif %}
+  </div>
+
+  <div class="burger">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+
+  <div class="navbar-responsive">
+    
+  </div>
 </nav>

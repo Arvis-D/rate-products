@@ -16,6 +16,11 @@ class HomeController
 
     public function index()
     {
-        return new Response($this->view->render('pages/home'));
+        return new Response($this->view->render('pages/products'));
+    }
+
+    public function about()
+    {
+        return new Response($this->view->render('pages/about'));
     }
 }

@@ -45,7 +45,7 @@ class __TwigTemplate_cb8a0550cdbc963f48c3991f6a6c2dcf05052e75d070b991fb855f29c82
         // line 6
         $this->displayBlock('title', $context, $blocks);
         echo "</title>
-    <link rel=\"stylesheet\" href=\"styles/style.css\">
+    <link rel=\"stylesheet\" href=\"css/styles.css\">
 </head>
 <body>
 ";

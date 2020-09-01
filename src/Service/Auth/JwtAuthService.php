@@ -14,6 +14,7 @@ class JwtAuthService implements AuthServiceInterface
     private $validation;
     private $session;
     private $jwtParams;
+    private $allowedAlgs = ['HS256'];
 
     public function __construct(UserRepository $userRepository, AuthValidationService $validation, Session $session)
     {
@@ -62,7 +63,7 @@ class JwtAuthService implements AuthServiceInterface
 
     private function setJwtCookie(Request $request)
     {
-        $ttl = ($request->get('remember') ? (60 * 60 * 24 * 14) : (60 * 50));
+        $ttl = ($request->get('remember-me') === null ? (60 * 60 * 24 * 14) : (60 * 50));
         $this->setHttpOnlyCookie(JWT::encode([
             'usr' => $request->get('username'),
             'ttl' => $ttl,
@@ -72,12 +73,18 @@ class JwtAuthService implements AuthServiceInterface
 
     public function logout()
     {
-        setcookie('JWT', "", 0, "", "", false, true);
+        setcookie('JWT', " ", 0, "/", "", false, true);
     }
 
     public function authenticated(): bool
     {
-        if ($this->getJwtParams() === null) {
+        $params = $this->getJwtParams();
+        if ($params === null) {
+            return false;
+        }
+
+        if (time() > $params->ttl + time()) {
+            $this->logout();
             return false;
         }
 
@@ -93,7 +100,7 @@ class JwtAuthService implements AuthServiceInterface
         }
 
         try {
-            $this->jwtParams = JWT::decode($_COOKIE['JWT'], $_ENV['SECRET']);
+            $this->jwtParams = JWT::decode($_COOKIE['JWT'], $_ENV['SECRET'], $this->allowedAlgs);
             return $this->jwtParams;
         } catch (\Exception $e) {
             return null;
@@ -122,6 +129,6 @@ class JwtAuthService implements AuthServiceInterface
 
     private function setHttpOnlyCookie(string $cookie)
     {
-        setcookie('JWT', $cookie, 0, "", "", false, true);
+        setcookie('JWT', $cookie, 0, "/", "", false, true);
     }
 }

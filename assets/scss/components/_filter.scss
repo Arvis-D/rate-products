@@ -1,0 +1,8 @@
+.side-filter {
+  display: block;
+  position: fixed;
+  z-index: $zindex-sticky;
+  overflow-y: auto;
+  background-color: red;
+  max-height: 95vh;
+}

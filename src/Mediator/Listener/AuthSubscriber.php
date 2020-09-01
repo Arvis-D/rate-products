@@ -2,9 +2,7 @@
 
 namespace App\Mediator\Listener;
 
-use App\Helper\View;
 use App\Mediator\Event\BeforeRenderEvent;
-use App\Mediator\Event\BeforeRouterEvent;
 use App\Service\Auth\AuthServiceInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -21,8 +19,7 @@ class AuthSubscriber implements EventSubscriberInterface
     {
         $event->getView()->addDefaultParams([
             'authenticated' => $this->auth->authenticated(),
-            'errors' => $this->auth->getAuthErrors(),
-            
+            'errors' => $this->auth->getAuthErrors()
         ]);
     }
 

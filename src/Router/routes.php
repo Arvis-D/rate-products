@@ -3,6 +3,14 @@
 $router->get('/', function($c) {
     return $c['HomeController']->index();
 });
+$router->get('/about', function($c) {
+    return $c['HomeController']->about();
+});
+
+/**
+ * Auth routes
+ */
+
 $router->get('/login', function($c) {
     return $c['AuthController']->loginForm($c['view']);
 });
@@ -18,7 +26,6 @@ $router->group('/auth', function($router) {
         return $c['AuthController']->signup($c['request']);
     });
     $router->post('/logout', function($c) {
-        printf('s');
         return $c['AuthController']->logout();
     });
 });

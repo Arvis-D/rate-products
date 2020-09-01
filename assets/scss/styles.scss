@@ -1,2 +1,13 @@
+$primary: #324A5F;
+
 @import "../../node_modules/bootstrap/scss/bootstrap";
+
+$lg: map-get($grid-breakpoints, "lg");
+$xl: map-get($grid-breakpoints, "xl");
+$md: map-get($grid-breakpoints, "md");
+$sm: map-get($grid-breakpoints, "sm");
+$xs: map-get($grid-breakpoints, "xs");
+
 @import "./components/navbar";
+@import "./components/filter";
+@import "./utilities";

@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 use App\Router\Exception\NotFoundException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
+use App\Helper\View;
 
 class App
 {
@@ -31,9 +32,9 @@ class App
         try {
             return $this->resolveRoutes();
         } catch (InvalidCsrfTokenException $e) {
-            return new Response('Csrf token invalid', 403);
+            return new Response($this->errorPage($this->container['view'], '403', 'Invalid csrf token!'));
         } catch (NotFoundException $th) {
-            return new Response('Resource not found', 404);
+            return new Response($this->errorPage($this->container['view'], '404', 'Resource not found!'));
         }
     }
 
@@ -45,5 +46,13 @@ class App
         require __DIR__ . '/Router/routes.php';
 
         return $router->getResponse();
+    }
+
+    private function errorPage(View $view, $code, $message = ''): string
+    {
+        return $view->render('pages/error', [
+            'code' => $code,
+            'msg' => $message
+        ]);
     }
 }

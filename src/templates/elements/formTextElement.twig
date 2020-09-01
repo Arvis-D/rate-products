@@ -1,17 +1,26 @@
+{% set htmlPropertyName = name|lower|replace({' ': '-'}) %}
+{% if type != 'password' %}
+  {% set old = old[name] %}
+{% endif %}
+
+
 <div class="form-group mb-3">
-  <label for="{{ 'form-' ~ name|lower }}">{{ name|capitalize ~ ':' }}</label>
+  <label for="{{ 'form-' ~ htmlPropertyName }}">{{ name|capitalize ~ ':' }}</label>
   <input 
     type="{{ type ?? 'text' }}" 
     class="form-control {% if errors[name] is defined %} border border-danger {% endif %}"
     {# placeholder="{{ name|capitalize }}"  #}
     aria-label="{{ name|capitalize }}" 
-    name="{{ name|lower|replace({' ': '-'}) }}"
-    id="{{ 'form-' ~ name|lower }}"
+    name="{{ htmlPropertyName }}"
+    id="{{ 'form-' ~ htmlPropertyName }}"
+    {% if old is defined %}
+      value="{{ old }}"
+    {% endif %}
   >
 </div>
 
 {% if errors[name] is defined %}
-    <div class="mb-3">
-      <strong class="text-danger">{{ errors[name] }}</strong>
-    </div>
+  <div class="mb-3">
+    <strong class="text-danger">{{ errors[name] }}</strong>
+  </div>
 {% endif %}

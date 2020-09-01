@@ -1,0 +1,11 @@
+{% extends "master.twig" %}
+
+{% block content %}
+
+{% include "elements/navbar.twig" %}
+
+<div class="container mt-4">
+  <h1 class="text-danger">{{ code }}</h1>
+  <h2>{{ msg }}</h2>
+</div>
+{% endblock %}

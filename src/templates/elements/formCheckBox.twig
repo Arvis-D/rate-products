@@ -1,0 +1,16 @@
+
+{% set htmlPropertyName = name|lower|replace({' ': '-'}) %}
+
+  <div class="form-check mb-3">
+    <input type="checkbox"
+      class="form-check-input" 
+      id="{{ htmlPropertyName ~ 'checkbox' }}"
+      name="{{ htmlPropertyName }}"
+      value="{{ htmlPropertyName }}"
+     >
+    <label 
+      class="form-check-label" 
+      for="{{ htmlPropertyName ~ 'checkbox' }}">
+      {{ name|capitalize }}
+    </label>
+  </div>

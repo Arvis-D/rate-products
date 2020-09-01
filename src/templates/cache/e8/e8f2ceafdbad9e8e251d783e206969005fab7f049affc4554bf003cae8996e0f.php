@@ -48,27 +48,41 @@ class __TwigTemplate_d589da8e71e40183a7802b5e70dc6b47eda2e6e88d497e88f160003bdb2
         $macros = $this->macros;
         // line 4
         echo "    ";
-        $this->loadTemplate("elements/navbar.twig", "pages/signup.twig", 4)->display(twig_array_merge($context, ["currentPath" => "/auth/login"]));
+        $this->loadTemplate("elements/navbar.twig", "pages/signup.twig", 4)->display(twig_array_merge($context, ["currentPath" => "/signup"]));
         // line 5
         echo "
-    <div class=\"container mt-6\">
-        <form action=\"/auth/login\" method=\"post\">
+  <div class=\"container mt-5\">
+    <div class=\"row justify-content-md-center\">
+      <div class=\"col-md-6\">
+        <div class=\"p-3\">
+          <form action=\"/auth/signup\" method=\"post\">
             ";
-        // line 8
-        $this->loadTemplate("elements/formTextElement.twig", "pages/signup.twig", 8)->display(twig_array_merge($context, ["name" => "username"]));
-        // line 9
-        echo "            ";
-        $this->loadTemplate("elements/formTextElement.twig", "pages/signup.twig", 9)->display(twig_array_merge($context, ["name" => "email"]));
-        // line 10
-        echo "            ";
-        $this->loadTemplate("elements/formTextElement.twig", "pages/signup.twig", 10)->display(twig_array_merge($context, ["name" => "password", "type" => "password"]));
         // line 11
-        echo "            ";
-        $this->loadTemplate("elements/formTextElement.twig", "pages/signup.twig", 11)->display(twig_array_merge($context, ["name" => "repeat password", "type" => "password"]));
+        $this->loadTemplate("elements/formTextElement.twig", "pages/signup.twig", 11)->display(twig_array_merge($context, ["name" => "username"]));
         // line 12
-        echo "            <button class=\"btn btn-primary\">signup</button>
-        </form>
+        echo "            ";
+        $this->loadTemplate("elements/formTextElement.twig", "pages/signup.twig", 12)->display(twig_array_merge($context, ["name" => "email"]));
+        // line 13
+        echo "            ";
+        $this->loadTemplate("elements/formTextElement.twig", "pages/signup.twig", 13)->display(twig_array_merge($context, ["name" => "password", "type" => "password"]));
+        // line 14
+        echo "            ";
+        $this->loadTemplate("elements/formTextElement.twig", "pages/signup.twig", 14)->display(twig_array_merge($context, ["name" => "repeat password", "type" => "password"]));
+        // line 15
+        echo "            ";
+        $this->loadTemplate("elements/formCheckBox.twig", "pages/signup.twig", 15)->display(twig_array_merge($context, ["name" => "Remember me"]));
+        // line 16
+        echo "            ";
+        $this->loadTemplate("elements/csrfToken.twig", "pages/signup.twig", 16)->display($context);
+        // line 17
+        echo "            <button class=\"btn btn-primary w-100\">Sign Up</button>
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
+
+
 ";
     }
 
@@ -84,7 +98,7 @@ class __TwigTemplate_d589da8e71e40183a7802b5e70dc6b47eda2e6e88d497e88f160003bdb2
 
     public function getDebugInfo()
     {
-        return array (  69 => 12,  66 => 11,  63 => 10,  60 => 9,  58 => 8,  53 => 5,  50 => 4,  46 => 3,  35 => 1,);
+        return array (  78 => 17,  75 => 16,  72 => 15,  69 => 14,  66 => 13,  63 => 12,  61 => 11,  53 => 5,  50 => 4,  46 => 3,  35 => 1,);
     }
 
     public function getSourceContext()
