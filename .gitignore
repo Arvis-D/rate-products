@@ -4,4 +4,4 @@ node_modules
 src/templates/cache/*
 .vscode
 public/css/*
-public/js/*
+public/dist/*
