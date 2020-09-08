@@ -2,3 +2,6 @@ vendor
 node_modules
 .env
 src/templates/cache/*
+.vscode
+public/css/*
+public/js/*
