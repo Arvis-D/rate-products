@@ -5,7 +5,6 @@ namespace App\Service\Auth;
 use Firebase\JWT\JWT;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\UserRepository;
-use App\Service\Validate\AuthValidationService;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class JwtAuthService implements AuthServiceInterface
@@ -31,9 +30,9 @@ class JwtAuthService implements AuthServiceInterface
             return false;
         }
 
-        $password = $this->userRepository->getPasswordByUsername($request->get('username'));
-        if (password_verify($request->get('password'), $password)) {
-            $this->setJwtCookie($request);
+        $results = $this->userRepository->getPasswordIdByUsername($request->get('username'));
+        if ($results !== null && password_verify($request->get('password'), $results['password'])) {
+            $this->setJwtCookie($request, $results['id']);
             return true;
         }
 
@@ -50,22 +49,23 @@ class JwtAuthService implements AuthServiceInterface
             return false;
         }
 
-        $this->userRepository->createNewUser(
+        $userId = $this->userRepository->createNewUser(
             $request->get('username'),
             $request->get('email'),
             password_hash($request->get('password'), PASSWORD_DEFAULT)
         );
 
-        $this->setJwtCookie($request);
+        $this->setJwtCookie($request, $userId);
 
         return true;
     }
 
-    private function setJwtCookie(Request $request)
+    private function setJwtCookie(Request $request, $userId)
     {
-        $ttl = ($request->get('remember-me') === null ? (60 * 60 * 24 * 14) : (60 * 50));
+        $ttl = ($request->get('remember-me') !== null ? (60 * 60 * 24 * 14) : (60 * 60));
         $this->setHttpOnlyCookie(JWT::encode([
             'usr' => $request->get('username'),
+            'id' => $userId,
             'ttl' => $ttl,
             'roles' => ['user']
         ], $_ENV['SECRET']));
@@ -78,12 +78,12 @@ class JwtAuthService implements AuthServiceInterface
 
     public function authenticated(): bool
     {
-        $params = $this->getJwtParams();
-        if ($params === null) {
+        $params = $this->authParams();
+        if (empty($params)) {
             return false;
         }
 
-        if (time() > $params->ttl + time()) {
+        if (time() > $params['ttl'] + time()) {
             $this->logout();
             return false;
         }
@@ -91,26 +91,26 @@ class JwtAuthService implements AuthServiceInterface
         return true;
     }
 
-    public function getJwtParams(): ?object
+    public function authParams(): array
     {
         if (isset($this->jwtParams)) {
             return $this->jwtParams;
         } else if (!isset($_COOKIE['JWT'])) {
-            return null;
+            return [];
         }
 
         try {
-            $this->jwtParams = JWT::decode($_COOKIE['JWT'], $_ENV['SECRET'], $this->allowedAlgs);
+            $this->jwtParams = (array) JWT::decode($_COOKIE['JWT'], $_ENV['SECRET'], $this->allowedAlgs);
             return $this->jwtParams;
         } catch (\Exception $e) {
-            return null;
+            return [];
         }
     }
 
     public function roles(): array
     {
-        if (null !== $roles = $this->getJwtParams()->roles) {
-            return (array) $roles;
+        if (!empty($roles = $this->authParams()['roles'])) {
+            return $roles;
         }
 
         return [];

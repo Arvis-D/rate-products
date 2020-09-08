@@ -5,7 +5,7 @@
 
 
 <div class="form-group mb-3">
-  <label for="{{ 'form-' ~ htmlPropertyName }}">{{ name|capitalize ~ ':' }}</label>
+  <label for="{{ 'form-' ~ htmlPropertyName }}">{{ name|capitalize ~ other ~ ':' }}</label>
   <input 
     type="{{ type ?? 'text' }}" 
     class="form-control {% if errors[name] is defined %} border border-danger {% endif %}"

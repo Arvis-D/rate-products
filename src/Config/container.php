@@ -44,17 +44,30 @@ $container['HomeController'] = function ($c) {
 $container['AuthController'] = function ($c) {
     return new \App\Controller\AuthController($c['JwtAuthService']);
 };
+$container['ProductController'] = function ($c) {
+    return new \App\Controller\ProductController($c['ProductService']);
+};
 
 /**
  * Services
  */
 
 $container['AuthValidationService'] = function ($c) {
-    return new \App\Service\Validate\AuthValidationService($c['DbValidationResource']);
+    return new \App\Service\Auth\AuthValidationService($c['DbValidationResource']);
 };
-
+$container['ProductValidationService'] = function ($c) {
+    return new \App\Service\Product\ProductValidationService($c['DbValidationResource']);
+};
 $container['JwtAuthService'] = function ($c) {
     return new \App\Service\Auth\JwtAuthService($c['UserRepository'], $c['AuthValidationService'], $c['session']);
+};
+$container['ProductService'] = function ($c) {
+    return new \App\Service\Product\ProductService(
+        $c['ProductValidationService'], 
+        $c['ProductRepository'], 
+        $c['session'], 
+        $c['JwtAuthService']
+    );
 };
 
  /**
@@ -77,6 +90,9 @@ $container['DbValidationResource'] = function ($c) {
 $container['UserRepository'] = function ($c) {
     return new \App\Repository\UserRepository($c['mysql']);
 };
+$container['ProductRepository'] = function ($c) {
+    return new \App\Repository\ProductRepository($c['mysql']);
+};
 
 /**
  * Other
@@ -88,5 +104,14 @@ $container['view'] = function ($c) {
 $container['csrf'] = function () {
     return new \App\Helper\Csrf(new \Symfony\Component\Security\Csrf\CsrfTokenManager());
 };
-
+$container['router'] = function ($c) {
+    $router = new \App\Router\Router(
+        $c['request']->getPathInfo(),
+        $c['request']->getRealMethod(),
+        $c
+    );
+    $router->setAuth($c['JwtAuthService']);
+    
+    return $router;
+};
 return $container;

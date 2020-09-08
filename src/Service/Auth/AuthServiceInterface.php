@@ -12,6 +12,8 @@ interface AuthServiceInterface
 
     public function logout();
 
+    public function authParams(): array;
+
     public function getAuthErrors(): array;
 
     public function authenticated(): bool;

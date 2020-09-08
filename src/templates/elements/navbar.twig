@@ -1,5 +1,5 @@
 {# Necessary to push content down #}
-<div class="dummy-navbar"></div>
+<div class="dummy-navbar mb-3"></div>
 
 <nav class="navbar-custom">
   <div class="nav-brand">
@@ -31,8 +31,8 @@
         {% include "elements/csrfToken.twig" %}
       </form>
     {% else %}
-      <a href="/login" class="btn btn-primary">Log In</a>
-      <a href="/signup" class="btn btn-outline-primary">Sign Up</a>
+      <a href="/auth/login" class="btn btn-primary">Log In</a>
+      <a href="/auth/signup" class="btn btn-outline-primary">Sign Up</a>
     {% endif %}
   </div>
 

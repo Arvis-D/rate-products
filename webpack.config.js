@@ -2,24 +2,35 @@
 const path = require('path');
 
 module.exports = {
-  entry: './assets/js/index.js',
+  entry: {
+    addProduct: './assets/js/addProducts.ts',
+    navbar: './assets/js/navbar.ts'
+  },
   output: {
     path: path.join(__dirname, 'public/dist'),
-    filename: 'bundle.js'
+    filename: '[name].bundle.js'
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.ts$/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
+        loader: 'ts-loader'
       }
     ]
+  },
+  resolve: {
+    extensions: [ '.tsx', '.ts', '.js' ],
   },
   devServer: {
     host: 'localhost',
     port: 3000,
     historyApiFallback: true,
     open: true
-  }
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
 };

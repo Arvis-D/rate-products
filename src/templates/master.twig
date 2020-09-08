@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>{% block title %}Rate products{% endblock %}</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-{% block content %}{% endblock %}
-<script src="dist/bundle.js"></script>
+    {% block content %}{% endblock %}
+    <script src="/dist/vendors~navbar.bundle.js"></script>
+    <script src="/dist/navbar.bundle.js"></script>
+    {% block scripts %}{% endblock %}
 </body>
 </html>

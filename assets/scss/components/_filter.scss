@@ -3,6 +3,8 @@
   position: fixed;
   z-index: $zindex-sticky;
   overflow-y: auto;
-  background-color: red;
   max-height: 95vh;
+  @media screen and (max-width: $sm - 1) {
+    position: relative;
+  }
 }

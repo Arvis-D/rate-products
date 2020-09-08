@@ -2,23 +2,21 @@
 
 namespace App;
 
-use App\Factory\Provider;
 use App\Mediator\Event\BeforeRouterEvent;
 use App\Router\Router;
 use Pimple\Container;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig\Environment;
-use App\Router\Exception\NotFoundException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use App\Helper\View;
+use App\Router\Exception\RouterException;
 
 class App
 {
     private $dispatcher;
-    private $router = null;
     private $request;
+    private $container;
 
     public function __construct(Request $request, Container $container, EventDispatcher $dispatcher)
     {
@@ -32,19 +30,17 @@ class App
         try {
             return $this->resolveRoutes();
         } catch (InvalidCsrfTokenException $e) {
-            return new Response($this->errorPage($this->container['view'], '403', 'Invalid csrf token!'));
-        } catch (NotFoundException $th) {
-            return new Response($this->errorPage($this->container['view'], '404', 'Resource not found!'));
+            return new Response($this->errorPage($this->container['view'], '403', $e->getMessage()));
+        } catch (RouterException $e) {
+            return new Response($this->errorPage($this->container['view'], $e->getCode(), $e->getMessage()));
         }
     }
 
     private function resolveRoutes(): Response
     {
         $this->dispatcher->dispatch(new BeforeRouterEvent($this->request), 'beforeRouter');
-        $this->router = new Router($this->request->getPathInfo(), $this->request->getRealMethod(), $this->container);
-        $router = $this->router;
+        $router = $this->container['router'];
         require __DIR__ . '/Router/routes.php';
-
         return $router->getResponse();
     }
 

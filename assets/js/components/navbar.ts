@@ -1,12 +1,18 @@
-import anime from 'animejs/lib/anime.es.js';
+import anime from 'animejs';
 
 export default class Navbar {
-  responsiveOpen = false;
-  authInResponsive = false;
-  linksInResponsive = false;
-  breakpoints = [884, 700]
+  private responsiveOpen: boolean = false;
+  private authInResponsive: boolean = false;
+  private linksInResponsive: boolean = false;
+  private breakpoints: Array<number> = [884, 700];
 
-  constructor () {
+  private responsive: HTMLElement;
+  private burger: HTMLElement;
+  private links: HTMLElement;
+  private authControls: HTMLElement;
+  private search: HTMLElement;
+
+  constructor (private navbar: HTMLElement) {
     this.setDom();
     this.swapResponsiveIfNecessary();
     this.setEventListeners();

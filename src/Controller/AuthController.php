@@ -20,7 +20,7 @@ class AuthController
     public function login(Request $request)
     {
         if (!$this->authService->login($request)) {
-            return new RedirectResponse('/login');
+            return new RedirectResponse('/auth/login');
         } else {
             return new RedirectResponse('/');
         }
@@ -29,7 +29,7 @@ class AuthController
     public function signup(Request $request)
     {   
         if (!$this->authService->signup($request)) {
-            return new RedirectResponse('/signup');
+            return new RedirectResponse('/auth/signup');
         } else {
             return new RedirectResponse('/');
         }

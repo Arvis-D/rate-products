@@ -1,5 +1,7 @@
 {% extends "master.twig" %}
 
+{% block title %}Rate products | Log in{% endblock %}
+
 {% block content %}
   {% include "elements/navbar.twig" with {currentPath: '/login'} %}
 
@@ -9,8 +11,8 @@
         <div class="p-3">
 
           <form action="/auth/login" method="post">
-            {% include "elements/formTextElement.twig" with {name: 'username'} %}
-            {% include "elements/formTextElement.twig" with {name: 'password', type: 'password'} %}
+            {% include "elements/formText.twig" with {name: 'username'} %}
+            {% include "elements/formText.twig" with {name: 'password', type: 'password'} %}
             {% include "elements/csrfToken.twig" %}
             {% include "elements/formCheckBox.twig" with {name: 'Remember me'} %}
             <button class="btn btn-primary w-100">login</button>

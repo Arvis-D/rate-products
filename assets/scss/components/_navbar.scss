@@ -131,8 +131,10 @@
     right: calc(100% - 0.25em);
     top: 100%;
     width: 100%;
+    box-shadow: $box-shadow;
     flex-direction: column;
     .nav-links {
+      display: flex;
       flex-direction: column;
       align-items: center;
       .nav-link {
@@ -167,21 +169,18 @@
     }
   }
   @media screen and (max-width: 884px) {
+    .nav-links {
+      display: none;
+    }
     justify-content: space-between;
-    // .nav-links {
-    //   position: absolute;
-    //   bottom: 0;
-    //   transform: translate(0, 100%);
-    //   left: 50%;
-    // }
   }
   @media screen and (max-width: 700px) {
     .nav-search {
       flex-grow: 1;
     }
-    // .nav-auth-controls {
-    //   display: none;
-    // }
+    .nav-auth-controls {
+      display: none;
+    }
   }
   @media screen and (max-width: 500px) {
     .nav-brand{

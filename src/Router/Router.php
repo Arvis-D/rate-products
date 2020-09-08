@@ -5,6 +5,8 @@ namespace App\Router;
 use Pimple\Container;
 use Symfony\Component\HttpFoundation\Response;
 use App\Router\Exception\NotFoundException;
+use App\Router\Exception\InsufficientPrivilegeException;
+use App\Service\Auth\AuthServiceInterface;
 
 class Router
 {
@@ -13,6 +15,8 @@ class Router
     private $response = null;
     private $method = '';
     private $container = null;
+    private $auth = null;
+    private $routeMatch;
 
     public function __construct(string $path, string $method, Container $container = null)
     {
@@ -24,6 +28,43 @@ class Router
     public function setContainer(Container $container): void
     {
         $this->container = $container;
+    }
+
+    public function setAuth(AuthServiceInterface $auth)
+    {
+        $this->auth = $auth;
+    }
+
+    /**
+     * @param array<string> allowed roles
+     */
+
+    public function protected(array $roles = []): void
+    {
+        if (!$this->routeMatch) {
+            return;
+        }
+
+        if ($this->auth === null) {
+            throw new \Exception('Auth service not set!');
+        }
+
+        if (!$this->auth->authenticated()) {
+            throw new InsufficientPrivilegeException();
+        }
+
+        if (!empty($roles)) {
+            $authRoles = $this->auth->authParams()['roles'];
+            foreach ($roles as $role) {
+                if (in_array($role, $authRoles)) {
+                    return;
+                }
+            }
+
+            throw new InsufficientPrivilegeException();
+        }
+
+        return;
     }
 
     public function get(string $uri, callable $cb): Router
@@ -38,11 +79,13 @@ class Router
 
     private function route(string $method, string $uri, callable $cb)
     {
+        $this->routeMatch = false;
         if (
             !$this->response && 
             $this->method === $method && 
             $this->urisMatch($this->path, $this->groupPrefix . $uri)
         ) {
+            $this->routeMatch = true;;
             $this->match($this->groupPrefix . $uri, $cb);
         }
 
@@ -93,10 +136,8 @@ class Router
         $wildcardUri = explode('/', $wildcardUri);
         $wildcards = [];
         foreach ($wildcardUri as $key => $item) {
-            if ($item) {
-                if ($item[0] === ':') {
-                    array_push($wildcards, $params[$key]);
-                }
+            if (!empty($item) && $item[0] === ':' && !empty($params[$key])) {
+                array_push($wildcards, $params[$key]);
             }
         }
         return $wildcards;
@@ -117,14 +158,15 @@ class Router
         $routeUri = explode('/', $routeUri);
         if (count($path) === count($routeUri)) {
             foreach ($routeUri as $key => $item) {
-                if ($item) {
-                    if ($item[0] !== ':' && $item !== $path[$key]) {
-                        return false;
+                if ($path[$key] !== $item) {
+                    if (!empty($item) && $item[0] === ':' && !empty($path[$key])) {
+                        continue;
                     }
-                } else if($item !== $path[$key]) {
+
                     return false;
                 }
             }
+
             return true;
         }
 

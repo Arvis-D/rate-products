@@ -94,12 +94,24 @@ class ValidationService
         return $this;
     }
 
-    public function numeric()
+    public function numeric(float $min = null, float $max = null)
     {
         if ($this->firstError) return $this;
+        $value = $this->values[$this->keyUnderValidation];
 
-        if (!is_numeric($this->values[$this->keyUnderValidation])) {
+        if (!is_numeric($value)) {
             $this->setError('numeric');
+        } else {
+            if ($min !== null) {
+                if ($value < $min) {
+                    $this->setError('numericSize');
+                }
+            }
+            if ($max !== null) {
+                if ($value > $max) {
+                    $this->setError('numericSize');
+                }
+            }
         }
 
         return $this;
@@ -113,6 +125,18 @@ class ValidationService
 
         if ($pos < 1 || $pos > strlen($value) - 2) {
             $this->setError('email');
+        }
+
+        return $this;
+    }
+
+    public function optional()
+    {
+        if ($this->firstError) return $this;
+        $value = $this->values[$this->keyUnderValidation];
+
+        if (empty($value)) {
+            $this->firstError = true;
         }
 
         return $this;

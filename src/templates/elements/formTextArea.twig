@@ -1,0 +1,21 @@
+{% set htmlPropertyName = name|lower|replace({' ': '-'}) %}
+{% set old = old[name] %}
+{% if rows is not defined %}
+  {% set rows = 3 %}
+{% endif %}
+
+<div class="form-group">
+  <label for="{{ 'form-' ~ htmlPropertyName }}">{{ name|capitalize ~ other ~ ':' }}</label>
+  <textarea 
+    class="form-control {% if errors[name] is defined %} border border-danger {% endif %}"
+    id="{{ 'form-' ~ htmlPropertyName }}" 
+    rows="{{ rows }}"
+    name="{{ htmlPropertyName }}"
+  >{{ old }}</textarea>
+</div>
+
+{% if errors[name] is defined %}
+  <div class="mb-3">
+    <strong class="text-danger">{{ errors[name] }}</strong>
+  </div>
+{% endif %}

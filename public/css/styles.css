@@ -7254,8 +7254,10 @@ a.text-dark:hover, a.text-dark:focus {
     right: calc(100% - 0.25em);
     top: 100%;
     width: 100%;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
     flex-direction: column; }
     .navbar-custom .navbar-responsive .nav-links {
+      display: flex;
       flex-direction: column;
       align-items: center; }
       .navbar-custom .navbar-responsive .nav-links .nav-link {
@@ -7279,10 +7281,14 @@ a.text-dark:hover, a.text-dark:focus {
       display: none; } }
   @media screen and (max-width: 884px) {
     .navbar-custom {
-      justify-content: space-between; } }
+      justify-content: space-between; }
+      .navbar-custom .nav-links {
+        display: none; } }
   @media screen and (max-width: 700px) {
     .navbar-custom .nav-search {
-      flex-grow: 1; } }
+      flex-grow: 1; }
+    .navbar-custom .nav-auth-controls {
+      display: none; } }
   @media screen and (max-width: 500px) {
     .navbar-custom .nav-brand {
       display: none; } }
@@ -7292,8 +7298,10 @@ a.text-dark:hover, a.text-dark:focus {
   position: fixed;
   z-index: 1020;
   overflow-y: auto;
-  background-color: red;
   max-height: 95vh; }
+  @media screen and (max-width: 575px) {
+    .side-filter {
+      position: relative; } }
 
 .hidden-form {
   display: none; }

@@ -1,5 +1,7 @@
 {% extends "master.twig" %}
 
+{% block title %}Rate products | Sign Up{% endblock %}
+
 {% block content %}
     {% include "elements/navbar.twig" with {currentPath: '/signup'} %}
 
@@ -8,10 +10,10 @@
       <div class="col-md-6">
         <div class="p-3">
           <form action="/auth/signup" method="post">
-            {% include "elements/formTextElement.twig" with {name: 'username'} %}
-            {% include "elements/formTextElement.twig" with {name: 'email'} %}
-            {% include "elements/formTextElement.twig" with {name: 'password', type: 'password'} %}
-            {% include "elements/formTextElement.twig" with {name: 'repeat password', type: 'password'} %}
+            {% include "elements/formText.twig" with {name: 'username'} %}
+            {% include "elements/formText.twig" with {name: 'email'} %}
+            {% include "elements/formText.twig" with {name: 'password', type: 'password'} %}
+            {% include "elements/formText.twig" with {name: 'repeat password', type: 'password'} %}
             {% include "elements/formCheckBox.twig" with {name: 'Remember me'} %}
             {% include "elements/csrfToken.twig" %}
             <button class="btn btn-primary w-100">Sign Up</button>

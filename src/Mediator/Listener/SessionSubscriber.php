@@ -19,7 +19,8 @@ class SessionSubscriber implements EventSubscriberInterface
     public function onBeforeRender(BeforeRenderEvent $event)
     {
         $event->getView()->addDefaultParams([
-            'old' => $this->session->getFlashBag()->get('old')
+            'old' => $this->session->getFlashBag()->get('old'),
+            'errors' => $this->session->getFlashBag()->get('errors')
         ]);
     }
 

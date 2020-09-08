@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use Doctrine\Migrations\Query\Query;
 use \PDO;
 
 class MySQLDatabase
@@ -10,7 +11,8 @@ class MySQLDatabase
     private string $name ;
     private string $username;
     private string $password;
-    private PDO $pdo;
+    public PDO $pdo;
+    private $queries = 0;
 
     public function __construct($host, $name, $username, $password)
     {
@@ -39,25 +41,23 @@ class MySQLDatabase
         return $this->conn;
     }
 
-    /**
-     * Used if the query returns a result
-     *
-     * @param string $queryStr
-     * @param array $queryParams
-     * @return array $result
-     */
-
-    public function query($queryStr, $queryParams = []): array
+    public function sql(string $sqlStr, array $params = null): void
     {
-        $stmt = $this->pdo->prepare($queryStr);
-        $stmt->execute($queryParams);
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
+        $this->queries++;
+        $stmt = $this->pdo->prepare($sqlStr);
+        $stmt->execute($params);
     }
 
-    public function stmt($queryStr, $queryParams = []): void
+    public function sqlFetch(string $sqlStr, array $params = null): array
     {
-        $stmt = $this->pdo->prepare($queryStr);
-        $stmt->execute($queryParams);
+        $this->queries++;
+        $stmt = $this->pdo->prepare($sqlStr);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function __destruct()
+    {
+        
     }
 }

@@ -1,0 +1,34 @@
+{% extends "master.twig" %}
+
+{% block title %}Rate products | Add new product{% endblock %}
+
+{% block content %}
+
+{% include "elements/navbar.twig" %}
+
+<div class="container">
+  <h2 class="">Add a new product</h2>
+    <div class="container mt-5">
+    <div class="row justify-content-md-center">
+      <div class="col-md-6">
+        <div class="p-3">
+
+          <form action="/product/store" method="post">
+            {% include "elements/formText.twig" with {name: 'name'} %}
+            {% include "elements/formText.twig" with {name: 'price', other: ' (optional)'} %}
+            {% include "elements/formText.twig" with {name: 'rating', other: ' (optional)'} %}
+            {% include "elements/formText.twig" with {name: 'picture', other: ' (optional)'} %}
+            {% include "elements/formTextArea.twig" with {name: 'comment', other: ' (optional)'} %}
+
+
+            {% include "elements/csrfToken.twig" %}
+            <button class="btn btn-primary w-100">Save</button>
+          </form>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,6 +1,9 @@
 <?php
 
-namespace App\Service\Validate;
+namespace App\Service\Auth;
+
+use App\Service\Validate\ValidationResourceInterface;
+use App\Service\Validate\ValidationService;
 
 class AuthValidationService extends ValidationService
 {

@@ -25,10 +25,8 @@ class CsrfSubscriber implements EventSubscriberInterface
     public function onBeforeRouter(BeforeRouterEvent $event)
     {
         $request = $event->getRequest();
-        if ($request->getRealMethod() === 'POST') {
-            if (!$this->csrf->check($request->get('csrf'))) {
-                throw new InvalidCsrfTokenException();
-            }
+        if ($request->getRealMethod() === 'POST' && !$this->csrf->check($request->get('csrf'))) {
+            throw new InvalidCsrfTokenException();
         }
     }
 
