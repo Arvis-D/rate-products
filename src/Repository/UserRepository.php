@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Repository\MySQLDatabase;
+use App\Helper\MySQLDatabase;
 
 class UserRepository
 {

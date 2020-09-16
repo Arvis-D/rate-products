@@ -28,6 +28,7 @@ final class Version20200825134604 extends AbstractMigration
         $this->createProductPicturesTable();
         $this->createProductCommentLikesTable();
         $this->createProductPriceTable();
+        $this->createProductPictureLikesTable();
 
         $this->addSql('SET foreign_key_checks = 1');
     }
@@ -42,6 +43,7 @@ final class Version20200825134604 extends AbstractMigration
             product_comment,
             product_picture,
             product_comment_like,
+            product_picture_like,
             product_price,
             product_rating
             ;
@@ -119,7 +121,7 @@ final class Version20200825134604 extends AbstractMigration
                 id int UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
                 product_id int UNSIGNED NOT NULL,
                 user_id int UNSIGNED NOT NULL,
-                picture text NOT NULL,
+                url text NOT NULL,
                 time_created int UNSIGNED NOT NULL,
 
                 FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE,
@@ -155,6 +157,21 @@ final class Version20200825134604 extends AbstractMigration
                 like_or_dislike tinyint NOT NULL,
 
                 FOREIGN KEY (comment_id) REFERENCES product_comment(id) ON DELETE CASCADE,
+                FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+            );'
+        );
+    }
+
+    private function createProductPictureLikesTable()
+    {
+        $this->addSql(
+            'CREATE TABLE product_picture_like(
+                id int UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
+                picture_id int UNSIGNED NOT NULL,
+                user_id int UNSIGNED NOT NULL,
+                like_or_dislike tinyint NOT NULL,
+
+                FOREIGN KEY (picture_id) REFERENCES product_picture(id) ON DELETE CASCADE,
                 FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
             );'
         );

@@ -2,7 +2,7 @@
 
 namespace App\Service\Validate;
 
-use App\Repository\MySQLDatabase;
+use App\Helper\MySQLDatabase;
 
 class DbValidationResource implements ValidationResourceInterface
 {

@@ -25,13 +25,15 @@ class ProductValidationService extends ValidationService
         ];
     }
 
-    public function validateProductCreation(array $params): array
+    public function validateProductCreation(array $params): bool
     {
-        return $this->setValues($params)
+        $errors = $this->setValues($params)
             ->key('name')->required()->unique('product.name')
             ->key('price')->optional()->numeric(0)
             ->key('rating')->optional()->numeric(0, 5)
             ->key('comment')->optional()->len(0, 500)
             ->translateErrors($this->getTranslations())->getErrors();
+
+        return $this->noErrors($errors);
     }
 }

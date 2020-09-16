@@ -4,7 +4,8 @@ const path = require('path');
 module.exports = {
   entry: {
     addProduct: './assets/js/addProducts.ts',
-    navbar: './assets/js/navbar.ts'
+    navbar: './assets/js/navbar.ts',
+    product: './assets/js/product.ts'
   },
   output: {
     path: path.join(__dirname, 'public/dist'),

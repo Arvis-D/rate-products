@@ -4,11 +4,13 @@ namespace App\Service\Auth;
 
 use App\Service\Validate\ValidationResourceInterface;
 use App\Service\Validate\ValidationService;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class AuthValidationService extends ValidationService
 {
-    public function __construct(ValidationResourceInterface $resource)
+    public function __construct(ValidationResourceInterface $resource, Session $session)
     {
+        $this->setSession($session);
         $this->setResource($resource);
     }
 
@@ -25,20 +27,24 @@ class AuthValidationService extends ValidationService
         ];
     }
 
-    public function validateSignup(array $params): array
+    public function validateSignup(array $params): bool
     {
-        return $this->setValues($params)
+        $errors = $this->setValues($params)
             ->key('password')->required()->len(7)
             ->key('username')->required()->unique('user.name')
             ->key('email')->required()->unique('user.email')->email()
             ->translateErrors($this->getTranslations())->getErrors();
+
+        return $this->noErrors($errors);
     }
 
-    public function validateLogin(array $params): array
+    public function validateLogin(array $params): bool
     {
-        return $this->setValues($params)
+        $errors = $this->setValues($params)
             ->key('password')->required()->len(7)
             ->key('username')->required()
             ->translateErrors($this->getTranslations())->getErrors();
+
+        return $this->noErrors($errors);
     }
 }

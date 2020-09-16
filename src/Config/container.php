@@ -47,27 +47,33 @@ $container['AuthController'] = function ($c) {
 $container['ProductController'] = function ($c) {
     return new \App\Controller\ProductController($c['ProductService']);
 };
+$container['ProductPictureController'] = function ($c) {
+    return new \App\Controller\ProductPictureController($c['ProductRepository'], $c['JwtAuthService']);
+};
 
 /**
  * Services
  */
 
 $container['AuthValidationService'] = function ($c) {
-    return new \App\Service\Auth\AuthValidationService($c['DbValidationResource']);
+    return new \App\Service\Auth\AuthValidationService($c['DbValidationResource'], $c['session']);
 };
 $container['ProductValidationService'] = function ($c) {
     return new \App\Service\Product\ProductValidationService($c['DbValidationResource']);
 };
 $container['JwtAuthService'] = function ($c) {
-    return new \App\Service\Auth\JwtAuthService($c['UserRepository'], $c['AuthValidationService'], $c['session']);
+    return new \App\Service\Auth\JwtAuthService($c['UserRepository'], $c['AuthValidationService']);
 };
 $container['ProductService'] = function ($c) {
     return new \App\Service\Product\ProductService(
         $c['ProductValidationService'], 
-        $c['ProductRepository'], 
-        $c['session'], 
-        $c['JwtAuthService']
+        $c['ProductRepository'],  
+        $c['JwtAuthService'],
+        $c['ImageService']
     );
+};
+$container['ImageService'] = function () {
+    return new \App\Service\ImageService(new \Intervention\Image\ImageManager(['driver' => 'imagick']));
 };
 
  /**
@@ -75,7 +81,7 @@ $container['ProductService'] = function ($c) {
   */
 
 $container['mysql'] = function ($c) {
-    return new \App\Repository\MySQLDatabase(
+    return new \App\Helper\MySQLDatabase(
         $_ENV['DB_HOST'],
         $_ENV['DB_NAME'],
         $_ENV['DB_USER'],

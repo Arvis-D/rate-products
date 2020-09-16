@@ -1,5 +1,7 @@
 <?php
 
+use PHPUnit\TextUI\XmlConfiguration\Group;
+
 $router->get('/about', function($c) {
     return $c['HomeController']->about();
 });
@@ -45,5 +47,23 @@ $router->group('/product', function($router) {
 
     $router->get('/show/:id', function($id, $c) {
         return $c['ProductController']->show($c['view'], $id);
+    });
+});
+
+$router->group('/ajax', function($router) {
+    $router->group('/product', function($router){
+        $router->group('/picture', function($router){
+            $router->post('/store', function($c) {
+                return $c['ProductPictureController']->store($c['request']);
+            });
+
+            $router->post('/like', function($c) {
+                return $c['ProductPictureController']->like($c['request']);
+            })->protected();
+
+            $router->post('/delete', function($c) {
+                return $c['ProductPictureController']->delete($c['request']);
+            })->protected();
+        });
     });
 });

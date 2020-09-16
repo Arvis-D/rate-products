@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repository;
+namespace App\Helper;
 
 use Doctrine\Migrations\Query\Query;
 use \PDO;

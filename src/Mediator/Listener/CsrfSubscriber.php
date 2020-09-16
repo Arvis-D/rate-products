@@ -26,7 +26,7 @@ class CsrfSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
         if ($request->getRealMethod() === 'POST' && !$this->csrf->check($request->get('csrf'))) {
-            throw new InvalidCsrfTokenException();
+            throw new InvalidCsrfTokenException('Invalid/missing csrf token, try reloading the page');
         }
     }
 

@@ -1,0 +1,52 @@
+<div class="container picture-catalogue">
+  <div class="row">
+    <div class="col-lg-6 p-1">
+      <div class="picture-main">
+
+        <a href="{{ pictures[randomPicture].url }}" class="picture" style="background-image: url('{{ pictures[randomPicture].url }}');"></a>
+
+        <div class="pic-controls">
+          <div class="pic-info">
+            <strong>Ronaldo  </strong>
+            <span class="text-secondary">2d</span>
+          </div>
+          {% if authenticated %}
+          <div class="like-controls">
+            <a class="btn btn-small">
+              <span class="icon">thumb_up</span> 4
+            </a>
+            <a class="btn btn-small"><span class="icon">thumb_down</span> 2</a>
+          </div>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+    <div class="col-lg-6 p-1">
+      <div class="picture-selector small-scrollbar">
+
+        {% for picture in pictures %}
+          <div class="selector-thumbnail" style="background-image: url('{{ picture.url }}');"></div>
+        {% endfor %}
+
+      </div>
+
+      {% if true %}
+        <h3 class="my-3">Upload an image:</h3>
+        <div class="image-upload">
+          <div class="upload-input mr-2">
+            <form method="POST" action="/ajax/product/picture/store" class="image-upload-form">
+              <input type="file" name="image" class="image-input">
+              {% include "elements/csrfToken.twig" %}
+            </form>
+            <button class="btn btn-primary btn-sm upload-btn">Upload</button>
+          </div>
+          <div class="upload-showcase"></div>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+<div class="p-3 bg-secondary"></div>

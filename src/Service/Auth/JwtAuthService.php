@@ -11,22 +11,18 @@ class JwtAuthService implements AuthServiceInterface
 {
     private $userRepository;
     private $validation;
-    private $session;
     private $jwtParams;
     private $allowedAlgs = ['HS256'];
 
-    public function __construct(UserRepository $userRepository, AuthValidationService $validation, Session $session)
+    public function __construct(UserRepository $userRepository, AuthValidationService $validation)
     {
-        $this->session = $session;
         $this->userRepository = $userRepository;
         $this->validation = $validation;
     }
 
     public function login(Request $request): bool
     {
-        $errors = $this->validation->validateLogin($request->request->all());
-        if (!empty($errors)) {
-            $this->setSessionErrors($errors);
+        if (!$this->validation->validateLogin($request->request->all())) {
             return false;
         }
 
@@ -36,16 +32,13 @@ class JwtAuthService implements AuthServiceInterface
             return true;
         }
 
-        $this->setSessionErrors(['login' => 'Incorrect username or password.']);
+        $this->validation->setSessionErrors(['login' => 'Incorrect username or password.']);
         return false;
     }
 
     public function signup(Request $request): bool
     {
-        $errors = $this->validation->validateSignup($request->request->all());
-        
-        if (!empty($errors)) {
-            $this->setSessionErrors($errors);
+        if (!$this->validation->validateSignup($request->request->all())) {
             return false;
         }
 
@@ -118,13 +111,7 @@ class JwtAuthService implements AuthServiceInterface
 
     public function getAuthErrors(): array
     {
-        $errors = $this->session->getFlashBag()->get('errors', []);
-        return $errors;
-    }
-
-    private function setSessionErrors(array $errors)
-    {
-        $this->session->getFlashBag()->set('errors', $errors);
+        return $this->validation->getErrors();
     }
 
     private function setHttpOnlyCookie(string $cookie)

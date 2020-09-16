@@ -11,7 +11,7 @@ use App\Service\Auth\AuthServiceInterface;
 class Router
 {
     private $path;
-    private $groupPrefix = '';
+    private $groupPrefix = [];
     private $response = null;
     private $method = '';
     private $container = null;
@@ -80,13 +80,15 @@ class Router
     private function route(string $method, string $uri, callable $cb)
     {
         $this->routeMatch = false;
+        $prefix = implode($this->groupPrefix);
+        
         if (
             !$this->response && 
             $this->method === $method && 
-            $this->urisMatch($this->path, $this->groupPrefix . $uri)
+            $this->urisMatch($this->path, $prefix . $uri)
         ) {
             $this->routeMatch = true;;
-            $this->match($this->groupPrefix . $uri, $cb);
+            $this->match($prefix . $uri, $cb);
         }
 
         return $this;
@@ -103,9 +105,9 @@ class Router
 
     public function group(string $prefix, callable $cb)
     {
-        $this->groupPrefix = $prefix;
+        $this->groupPrefix[] = $prefix;
         $cb($this);
-        $this->groupPrefix = '';
+        array_pop($this->groupPrefix);
     }
 
     private function match(string $uri, callable $cb)

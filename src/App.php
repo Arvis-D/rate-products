@@ -30,9 +30,9 @@ class App
         try {
             return $this->resolveRoutes();
         } catch (InvalidCsrfTokenException $e) {
-            return new Response($this->errorPage($this->container['view'], '403', $e->getMessage()));
+            return new Response($this->errorPage($this->container['view'], 403, $e->getMessage()), 403);
         } catch (RouterException $e) {
-            return new Response($this->errorPage($this->container['view'], $e->getCode(), $e->getMessage()));
+            return new Response($this->errorPage($this->container['view'], $e->getCode(), $e->getMessage()), $e->getCode());
         }
     }
 

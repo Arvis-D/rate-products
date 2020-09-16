@@ -4,33 +4,32 @@ namespace App\Service\Product;
 
 use App\Repository\ProductRepository;
 use App\Service\Auth\AuthServiceInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
+use App\Service\ImageService;
 
 class ProductService
 {
     private $validationService;
     private $repository;
-    private $session;
     private $auth;
+    private $imageService;
 
     public function __construct(
         ProductValidationService $validationService,
         ProductRepository $repository, 
-        Session $session,
-        AuthServiceInterface $auth
+        AuthServiceInterface $auth,
+        ImageService $imageService
         ) {
         $this->validationService = $validationService;
         $this->repository = $repository;
-        $this->session = $session;
         $this->auth = $auth;
+        $this->imageService = $imageService;
     }
 
     public function tryCreateNewProduct(array $params): bool
     {
-        if (!empty($errors = $this->validationService->validateProductCreation($params))) {
-            $this->session->getFlashBag()->set('errors', $errors);
+        if (!$this->validationService->validateProductCreation($params)) {
             return false;
-        }
+        };
 
         ['name' => $name, 'price' => $price, 'rating' => $rating, 'picture' => $picture] = $params;
         $userId = $this->auth->authParams()['id'];
@@ -48,6 +47,11 @@ class ProductService
         return true;
     }
 
+    public function uploadPicture($file)
+    {
+        $this->image;
+    }
+
     public function getProducts()
     {
         $products = $this->repository->getProductsWithBasicInfo();
@@ -57,6 +61,9 @@ class ProductService
 
     public function getProduct(int $id)
     {
-        return $this->repository->fetchProducInfo($id);
+        $product = $this->repository->fetchProducInfo($id);
+        $product['randomPicture'] = rand(0, count($product['pictures']) - 1);
+
+        return $product;
     }
 }

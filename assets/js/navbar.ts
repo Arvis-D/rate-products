@@ -1,3 +1,3 @@
-import Navbar from './components/navbar';
+import Navbar from './components/Navbar';
 
-let navbar = new Navbar(document.querySelector('.navbar-custom'));
+let navbar = new Navbar(document.querySelector('.navbar-custom'))

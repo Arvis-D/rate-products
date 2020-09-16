@@ -18,7 +18,9 @@
         "vlucas/phpdotenv": "^5.1",
         "firebase/php-jwt": "^5.2",
         "doctrine/migrations": "^3.0",
-        "phpmailer/phpmailer": "^6.1"
+        "phpmailer/phpmailer": "^6.1",
+        "intervention/image": "^2.5",
+        "spatie/image-optimizer": "^1.2"
     },
     "autoload": {
         "psr-4": {"App\\": "src/"}

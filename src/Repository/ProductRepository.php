@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Repository\MySQLDatabase;
+use App\Helper\MySQLDatabase;
 
 class ProductRepository
 {
@@ -59,30 +59,36 @@ class ProductRepository
     {
         return $this->db->sqlFetch(
             'SELECT 
+                prod.id,
                 prod.name,
-                prod.id, 
+                ANY_VALUE(pic.url) as picture,
                 AVG(r.rating) AS rating,
-                COUNT(r.rating) AS number_of_ratings,
+                COUNT(DISTINCT r.id) AS number_of_ratings,
                 AVG(p.price) AS price,
-                COUNT(p.price) AS number_of_prices,
-                ANY_VALUE(pic.picture) as picture
+                COUNT(DISTINCT p.id) AS number_of_prices
 
                 FROM product AS prod
 
+                LEFT JOIN (SELECT * FROM product_picture ORDER BY time_created DESC) pic ON prod.id = pic.product_id
                 LEFT JOIN product_rating r ON prod.id = r.product_id
                 LEFT JOIN product_price p ON prod.id = p.product_id
-                LEFT JOIN product_picture pic ON prod.id = pic.product_id
 
                 GROUP BY prod.id;
             '
         );
     }
 
-    public function selectAvgPriceNumberOfRecords()
+    public function getAvgPriceNumberOfRecords()
     {
         return $this->db->sqlFetch(
             'SELECT AVG(price) AS price, COUNT(*) AS number_of_records FROM product_price;'
         );
+    }
+
+    public function insertPictureLike(int $userId, int $pictureId, bool $like)
+    {
+        $like = (int) $like;
+        $this->db->sql("INSERT INTO product_picture_like VALUES(null, {$userId}, {$pictureId}, {$like})");
     }
 
     public function fetchProducInfo(int $id)
@@ -96,11 +102,27 @@ class ProductRepository
             ['i' => $id]
         );
 
-        $comments = $this->db->sqlFetch('SELECT * FROM t_product_picture');
-        $pictures = $this->db->sqlFetch('SELECT * FROM t_product_comment');
+        $comments = $this->db->sqlFetch('SELECT * FROM t_product_comment');
+        $pictures = $this->db->sqlFetch(
+            'SELECT 
+                p.id,
+                ANY_VALUE(p.url) as url,
+                ANY_VALUE(u.name) as added_by,
+                ANY_VALUE(p.time_created) as time_created,
+                SUM(l.like_or_dislike) as likes,
+                COUNT(l.like_or_dislike) as total
+
+                FROM product_picture AS p 
+
+                LEFT JOIN product_picture_like l ON p.id = l.picture_id
+                LEFT JOIN user u ON p.user_id = u.id
+                
+                GROUP BY p.id'
+                );
 
         $product = $this->db->sqlFetch(
             'SELECT 
+                prod.id,
                 prod.name,
                 AVG(r.rating) AS rating,
                 COUNT(r.rating) AS number_of_ratings,
@@ -117,6 +139,7 @@ class ProductRepository
 
         $product['comments'] = $comments;
         $product['pictures'] = $pictures;
+
 
         return $product;
     }

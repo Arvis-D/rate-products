@@ -4,6 +4,7 @@ namespace App\Service\Validate;
 
 use App\Models\Database;
 use App\Service\Validate\ValidationResourceInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class ValidationService
 {
@@ -12,10 +13,41 @@ class ValidationService
     private $firstError = false;
     private $values = [];
     private $keyUnderValidation;
+    private $session = null;
 
     public function __construct(array $values = [])
     {
         $this->values = $values;        
+    }
+
+    public function setSession(Session $session) 
+    {
+        $this->session = $session;
+    }
+
+    public function setSessionErrors(array $errors)
+    {
+        if ($this->session === null) {
+            throw new \Exception('session not set!');
+        }
+
+        $this->session->getFlashBag()->set('errors', $errors);
+    }
+
+    /**
+     * Checks wether errors are empty and sets them in the session flashbag if they are not
+     * 
+     * @return bool true if empty
+     */
+
+    public function noErrors(array $errors): bool
+    {
+        if (empty($errors)) {
+            return true;
+        } else {
+            $this->setSessionErrors($errors);
+            return false;
+        }
     }
 
     public function setValues(array $values)

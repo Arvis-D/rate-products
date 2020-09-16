@@ -8,6 +8,9 @@ $md: map-get($grid-breakpoints, "md");
 $sm: map-get($grid-breakpoints, "sm");
 $xs: map-get($grid-breakpoints, "xs");
 
+$dark-overlay: rgba($color: $black, $alpha: .1);
+
 @import "./components/navbar";
 @import "./components/filter";
+@import "./components/picture-catalogue";
 @import "./utilities";
