@@ -4,23 +4,23 @@ namespace App\Controller;
 
 use App\Repository\ProductRepository;
 use App\Service\Auth\AuthServiceInterface;
+use App\Service\Product\ProductService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductPictureController
 {
-    private $repository;
-    private $auth;
+    private $productService;
 
-    public function __construct(ProductRepository $respository, AuthServiceInterface $auth)
+    public function __construct(ProductService $productService)
     {
-        $this->repository = $respository;
-        $this->auth = $auth;
+        $this->productService = $productService;
     }
 
     public function store(Request $request)
     {
-        return new Response('success');
+        $this->productService->uploadPicture($request->files->get('image'), $request->get('product-id'));
+        return new Response('yeah yeah');
     }
 }

@@ -4,7 +4,7 @@ $thumbNailPadding: calc(20% / 2 - .25em * 4 / 5);
   .picture-selector {
     position: relative;
     overflow-y: auto;
-    height: 14em;
+    max-height: 14em;
     .selector-thumbnail {
       cursor: pointer;
       float: left;

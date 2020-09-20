@@ -26,7 +26,7 @@ class ProductController
 
     public function store(Request $request) 
     {
-        if ($this->productService->tryCreateNewProduct($request->request->all())) {
+        if ($this->productService->tryCreateNewProduct($request->request->all(), $request->files->get('image'))) {
             return new RedirectResponse('/');
         }
 

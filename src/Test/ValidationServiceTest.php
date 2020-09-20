@@ -6,6 +6,7 @@ use App\Service\Validate\DbValidationResource;
 use App\Service\Validate\ValidationResourceInterface;
 use PHPUnit\Framework\TestCase;
 use App\Service\Validate\ValidationService;
+use App\Service\Validate\ValidatorFactory;
 
 class ValidationServiceTest extends TestCase
 {
@@ -19,25 +20,25 @@ class ValidationServiceTest extends TestCase
             'required' => ''
         ];
 
-        $validate = new ValidationService($values);
+        $validator = ValidatorFactory::create()->setParams($values);
         $resource = $this->createMock(ValidationResourceInterface::class);
         $resource
             ->method('checkUnique')
             ->willReturn(false);
 
-        $errors = $validate
-            ->key('email')->required()->email()
-            ->key('username')->required()->setResource($resource)->unique('user.name')
-            ->key('password')->required()->len(7)
-            ->key('age')->required()->numeric()
-            ->key('required')->required()
-            ->key('nonExistent')->required()
-            ->getErrors();
+        $validator->setValidationResource($resource);
+        $validator->string(true, 'email')->email();
+        $validator->string(true, 'username')->unique('user.name');
+        $validator->string(true, 'password')->length(7);
+        $validator->number(true, 'age');
+        $validator->string(true, 'required');
+        $validator->string(true, 'nonExistent');
+        $errors = $validator->getErrors();
 
         $this->assertSame([
             'username' => 'unique',
             'password' => 'length',
-            'age' => 'numeric',
+            'age' => 'number',
             'required' => 'required',
             'nonExistent' => 'required'
         ], $errors);

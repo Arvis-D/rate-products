@@ -5,3 +5,4 @@ src/templates/cache/*
 .vscode
 public/css/*
 public/dist/*
+public/img/*

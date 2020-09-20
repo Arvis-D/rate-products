@@ -48,7 +48,7 @@ $container['ProductController'] = function ($c) {
     return new \App\Controller\ProductController($c['ProductService']);
 };
 $container['ProductPictureController'] = function ($c) {
-    return new \App\Controller\ProductPictureController($c['ProductRepository'], $c['JwtAuthService']);
+    return new \App\Controller\ProductPictureController($c['ProductService']);
 };
 
 /**
@@ -59,7 +59,7 @@ $container['AuthValidationService'] = function ($c) {
     return new \App\Service\Auth\AuthValidationService($c['DbValidationResource'], $c['session']);
 };
 $container['ProductValidationService'] = function ($c) {
-    return new \App\Service\Product\ProductValidationService($c['DbValidationResource']);
+    return new \App\Service\Product\ProductValidationService($c['DbValidationResource'], $c['session']);
 };
 $container['JwtAuthService'] = function ($c) {
     return new \App\Service\Auth\JwtAuthService($c['UserRepository'], $c['AuthValidationService']);
@@ -73,7 +73,7 @@ $container['ProductService'] = function ($c) {
     );
 };
 $container['ImageService'] = function () {
-    return new \App\Service\ImageService(new \Intervention\Image\ImageManager(['driver' => 'imagick']));
+    return new \App\Service\Image\ImageService(new \Intervention\Image\ImageManager(['driver' => 'imagick']));
 };
 
  /**

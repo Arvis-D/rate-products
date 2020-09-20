@@ -26,7 +26,7 @@
       <div class="picture-selector small-scrollbar">
 
         {% for picture in pictures %}
-          <div class="selector-thumbnail" style="background-image: url('{{ picture.url }}');"></div>
+          <div class="selector-thumbnail" style="background-image: url('{{ picture.url|replace({'--size': '--icon'}) }}');"></div>
         {% endfor %}
 
       </div>
@@ -37,6 +37,7 @@
           <div class="upload-input mr-2">
             <form method="POST" action="/ajax/product/picture/store" class="image-upload-form">
               <input type="file" name="image" class="image-input">
+              <input type="hidden" name="product-id" value="{{ product.id }}">
               {% include "elements/csrfToken.twig" %}
             </form>
             <button class="btn btn-primary btn-sm upload-btn">Upload</button>

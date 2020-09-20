@@ -13,9 +13,9 @@ export default class PictureCatalogue {
 
   private choosPicture(ev: Event) {
     let thumbnail = ev.target as HTMLElement
-    let cssUrl = thumbnail.style.backgroundImage;
+    let cssUrl = thumbnail.style.backgroundImage.replace('--icon', '--size');
     this.picture.style.backgroundImage = cssUrl;
     let url = cssUrl.split('"')[1];
-    this.picture.setAttribute('href', url)
+    this.picture.setAttribute('href', url);
   }
 }

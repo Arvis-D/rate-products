@@ -4,7 +4,9 @@ namespace App\Service\Product;
 
 use App\Repository\ProductRepository;
 use App\Service\Auth\AuthServiceInterface;
-use App\Service\ImageService;
+use App\Service\Image\ImageService;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 
 class ProductService
 {
@@ -25,9 +27,9 @@ class ProductService
         $this->imageService = $imageService;
     }
 
-    public function tryCreateNewProduct(array $params): bool
+    public function tryCreateNewProduct(array $params, \SplFileInfo $file): bool
     {
-        if (!$this->validationService->validateProductCreation($params)) {
+        if (!$this->validationService->validateProductCreation($params, $file)) {
             return false;
         };
 
@@ -47,9 +49,11 @@ class ProductService
         return true;
     }
 
-    public function uploadPicture($file)
+    public function uploadPicture(UploadedFile $file, int $productId)
     {
-        $this->image;
+        $uid = $this->auth->authParams()['id'];
+        $path = $this->imageService->createSetOfImages($file, 'product', $uid);
+        $this->repository->insertNewPicture($path, $productId, $uid);
     }
 
     public function getProducts()

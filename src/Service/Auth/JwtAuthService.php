@@ -32,7 +32,8 @@ class JwtAuthService implements AuthServiceInterface
             return true;
         }
 
-        $this->validation->setSessionErrors(['login' => 'Incorrect username or password.']);
+        $this->validation->session->getFlashBag()->set('errors', ['login' => 'Incorrect username or password!']);
+
         return false;
     }
 
@@ -55,11 +56,11 @@ class JwtAuthService implements AuthServiceInterface
 
     private function setJwtCookie(Request $request, $userId)
     {
-        $ttl = ($request->get('remember-me') !== null ? (60 * 60 * 24 * 14) : (60 * 60));
+        $ttl = time() + ($request->get('remember-me') !== null ? (60 * 60 * 24 * 14) : (60 * 60));
         $this->setHttpOnlyCookie(JWT::encode([
             'usr' => $request->get('username'),
             'id' => $userId,
-            'ttl' => $ttl,
+            'exp' => $ttl,
             'roles' => ['user']
         ], $_ENV['SECRET']));
     }
@@ -76,7 +77,7 @@ class JwtAuthService implements AuthServiceInterface
             return false;
         }
 
-        if (time() > $params['ttl'] + time()) {
+        if (time() > $params['exp']) {
             $this->logout();
             return false;
         }
@@ -111,7 +112,7 @@ class JwtAuthService implements AuthServiceInterface
 
     public function getAuthErrors(): array
     {
-        return $this->validation->getErrors();
+        return $this->validation->errors;
     }
 
     private function setHttpOnlyCookie(string $cookie)
