@@ -39,12 +39,14 @@ class ProductRepository
         ]);
     }
 
-    public function insertNewPicture(string $pictureUrl, int $productId, int $userId)
+    public function insertNewPicture(string $pictureUrl, int $productId, int $userId): int
     {
         $time = time();
         $this->db->sql("INSERT INTO product_picture VALUES(null, {$productId}, {$userId}, :p, {$time});", [
             'p' => $pictureUrl
         ]);
+
+        return $this->db->pdo->lastInsertId();
     }
 
     public function insertNewComment(string $comment, int $productId, int $userId)

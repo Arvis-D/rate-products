@@ -1,0 +1,36 @@
+.spinner {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 4em;
+    height: 4em;
+    border: .5em solid transparent;
+    border-top: .5em solid $secondary;
+    border-radius: 50%;
+    animation: spin .85s linear infinite;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.spinner-small {
+  @extend .spinner;
+  &::after {
+    width: 2em;
+    height: 2em;
+    border: .25em solid transparent;
+    border-top: .25em solid $secondary;
+  }
+}

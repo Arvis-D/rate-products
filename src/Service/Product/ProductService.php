@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ProductService
 {
     private $validationService;
-    private $repository;
+    public $repository;
     private $auth;
     private $imageService;
 
@@ -53,7 +53,7 @@ class ProductService
     {
         $uid = $this->auth->authParams()['id'];
         $path = $this->imageService->createSetOfImages($file, 'product', $uid);
-        $this->repository->insertNewPicture($path, $productId, $uid);
+        return $this->repository->insertNewPicture($path, $productId, $uid);
     }
 
     public function getProducts()

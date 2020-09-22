@@ -2,8 +2,8 @@
 
 namespace App\Service\Validate;
 
-use App\Service\Validate\Requirement\NumberRequirement;
-use App\Service\Validate\Requirement\NumberSizeRequirement;
+use App\Service\Validate\Requirement\Number\NumberRequirement;
+use App\Service\Validate\Requirement\Number\NumberSizeRequirement;
 
 class NumberValidatorDecorator extends PrimitiveValidator
 {

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Service\Validate\Requirement;
+namespace App\Service\Validate\Requirement\Primitive;
 
+use App\Service\Validate\Requirement\RequirementInterface;
 use App\Service\Validate\ValidationResourceInterface;
 
 class UniqueRequirement implements RequirementInterface

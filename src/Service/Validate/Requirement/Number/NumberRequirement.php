@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Service\Validate\Requirement;
+namespace App\Service\Validate\Requirement\Number;
+
+use App\Service\Validate\Requirement\RequirementInterface;
 
 class NumberRequirement implements RequirementInterface
 {

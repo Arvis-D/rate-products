@@ -54,8 +54,8 @@ $router->group('/ajax', function($router) {
     $router->group('/product', function($router){
         $router->group('/picture', function($router){
             $router->post('/store', function($c) {
-                return $c['ProductPictureController']->store($c['request']);
-            });
+                return $c['ProductPictureController']->store($c['request'], $c['view']);
+            })->protected();
 
             $router->post('/like', function($c) {
                 return $c['ProductPictureController']->like($c['request']);

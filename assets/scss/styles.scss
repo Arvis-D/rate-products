@@ -13,4 +13,6 @@ $dark-overlay: rgba($color: $black, $alpha: .1);
 @import "./components/navbar";
 @import "./components/filter";
 @import "./components/picture-catalogue";
-@import "./utilities";
+@import "./utilities/icon";
+@import "./utilities/spinner";
+@import "./utilities/scroll";

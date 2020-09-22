@@ -2,6 +2,8 @@
 
 namespace App\Service\Validate;
 
+use App\Service\Validate\Requirement\Number\NumberSizeRequirement;
+
 class FileValidatorDecorator
 {
     private $validator;
@@ -11,9 +13,14 @@ class FileValidatorDecorator
         $this->validator = $validator;
     }
 
-    public function size()
+    public function maxSize(float $sizeKb): self
     {
+        $this->validator->validate(
+            new NumberSizeRequirement($_FILES[$this->validator->currentKey]['size'], null, $sizeKb),
+            'maxSize'
+        );
 
+        return $this;
     }
 
     public function type()

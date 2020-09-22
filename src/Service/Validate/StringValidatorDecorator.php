@@ -2,8 +2,8 @@
 
 namespace App\Service\Validate;
 
-use App\Service\Validate\Requirement\EmailRequirement;
-use App\Service\Validate\Requirement\StringLengthRequirement;
+use App\Service\Validate\Requirement\String\EmailRequirement;
+use App\Service\Validate\Requirement\String\StringLengthRequirement;
 
 class StringValidatorDecorator extends PrimitiveValidator
 {

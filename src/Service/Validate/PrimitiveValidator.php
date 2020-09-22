@@ -2,8 +2,8 @@
 
 namespace App\Service\Validate;
 
-use App\Service\Validate\Requirement\RequiredRequirement;
-use App\Service\Validate\Requirement\UniqueRequirement;
+use App\Service\Validate\Requirement\Primitive\RequiredRequirement;
+use App\Service\Validate\Requirement\Primitive\UniqueRequirement;
 
 abstract class PrimitiveValidator
 {

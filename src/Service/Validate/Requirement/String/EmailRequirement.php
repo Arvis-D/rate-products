@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Service\Validate\Requirement;
+namespace App\Service\Validate\Requirement\String;
+
+use App\Service\Validate\Requirement\RequirementInterface;
 
 class EmailRequirement implements RequirementInterface
 {

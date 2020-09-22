@@ -1,0 +1,20 @@
+<div class="picture-main">
+
+  <a href="{{ pictures[randomPicture].url }}" class="picture" style="background-image: url('{{ pictures[randomPicture].url }}');"></a>
+
+  <div class="pic-controls">
+    <div class="pic-info">
+      <strong>Ronaldo  </strong>
+      <span class="text-secondary">2d</span>
+    </div>
+    {% if authenticated %}
+    <div class="like-controls">
+      <a class="btn btn-small">
+        <span class="icon">thumb_up</span> 4
+      </a>
+      <a class="btn btn-small"><span class="icon">thumb_down</span> 2</a>
+    </div>
+    {% endif %}
+  </div>
+
+</div>
