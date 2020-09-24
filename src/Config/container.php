@@ -1,36 +1,36 @@
 <?php
 
-$container = new Pimple\Container();
+$c = new Pimple\Container();
 
 /**
  * Libraries
  */
 
-$container['twigLoader'] = function () {
+$c['twigLoader'] = function () {
     return new \Twig\Loader\FilesystemLoader(__DIR__ . '/../templates');
 };
-$container['twig'] = function ($c) {
+$c['twig'] = function ($c) {
     $cache = ($_ENV['TWIG_CACHE'] === 'on') ? __DIR__ . '/../templates/cache' : false;
     return new \Twig\Environment($c['twigLoader'], [
         'cache' => $cache,
     ]);
 };
-$container['request'] = function () {
+$c['request'] = function () {
     return \Symfony\Component\HttpFoundation\Request::createFromGlobals();
 };
-$container['session'] = function () {
+$c['session'] = function () {
     $session = new \Symfony\Component\HttpFoundation\Session\Session();
     $session->start();
     return $session;
 };
-$container['dispatcher'] = function ($c) {
+$c['dispatcher'] = function ($c) {
     $dispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher;
     $dispatcher->addSubscriber(new \App\Mediator\Listener\CsrfSubscriber($c['csrf']));
     $dispatcher->addSubscriber(new \App\Mediator\Listener\AuthSubscriber($c['JwtAuthService']));
     $dispatcher->addSubscriber(new \App\Mediator\Listener\SessionSubscriber($c['session']));
     return $dispatcher;
 };
-$container['EmailValidationService'] = function ($c) {
+$c['EmailValidationService'] = function ($c) {
     
 };
 
@@ -38,16 +38,16 @@ $container['EmailValidationService'] = function ($c) {
  * Controllers
  */
 
-$container['HomeController'] = function ($c) {
+$c['HomeController'] = function ($c) {
     return new \App\Controller\HomeController($c['view']);
 };
-$container['AuthController'] = function ($c) {
+$c['AuthController'] = function ($c) {
     return new \App\Controller\AuthController($c['JwtAuthService']);
 };
-$container['ProductController'] = function ($c) {
+$c['ProductController'] = function ($c) {
     return new \App\Controller\ProductController($c['ProductService']);
 };
-$container['ProductPictureController'] = function ($c) {
+$c['ProductPictureController'] = function ($c) {
     return new \App\Controller\ProductPictureController($c['ProductService']);
 };
 
@@ -55,16 +55,16 @@ $container['ProductPictureController'] = function ($c) {
  * Services
  */
 
-$container['AuthValidationService'] = function ($c) {
+$c['AuthValidationService'] = function ($c) {
     return new \App\Service\Auth\AuthValidationService($c['DbValidationResource'], $c['session']);
 };
-$container['ProductValidationService'] = function ($c) {
+$c['ProductValidationService'] = function ($c) {
     return new \App\Service\Product\ProductValidationService($c['DbValidationResource'], $c['session']);
 };
-$container['JwtAuthService'] = function ($c) {
+$c['JwtAuthService'] = function ($c) {
     return new \App\Service\Auth\JwtAuthService($c['UserRepository'], $c['AuthValidationService']);
 };
-$container['ProductService'] = function ($c) {
+$c['ProductService'] = function ($c) {
     return new \App\Service\Product\ProductService(
         $c['ProductValidationService'], 
         $c['ProductRepository'],  
@@ -72,7 +72,7 @@ $container['ProductService'] = function ($c) {
         $c['ImageService']
     );
 };
-$container['ImageService'] = function () {
+$c['ImageService'] = function () {
     return new \App\Service\Image\ImageService(new \Intervention\Image\ImageManager(['driver' => 'imagick']));
 };
 
@@ -80,7 +80,7 @@ $container['ImageService'] = function () {
   * DB related
   */
 
-$container['mysql'] = function ($c) {
+$c['mysql'] = function ($c) {
     return new \App\Helper\MySQLDatabase(
         $_ENV['DB_HOST'],
         $_ENV['DB_NAME'],
@@ -89,28 +89,45 @@ $container['mysql'] = function ($c) {
     );
 };
 
-$container['DbValidationResource'] = function ($c) {
+$c['DbValidationResource'] = function ($c) {
     return new \App\Service\Validate\DbValidationResource($c['mysql']);
 };
 
-$container['UserRepository'] = function ($c) {
-    return new \App\Repository\UserRepository($c['mysql']);
+$c['UserRepository'] = function ($c) {
+    return new \App\Repository\MySql\UserRepository($c['mysql']);
 };
-$container['ProductRepository'] = function ($c) {
-    return new \App\Repository\ProductRepository($c['mysql']);
+$c['LikeRepository'] = function ($c) {
+    return new \App\Repository\MySql\LikeRepository($c['mysql']);
+};
+$c['CommentRepository'] = function ($c) {
+    return new \App\Repository\MySql\CommentRepository($c['mysql']);
+};
+$c['PictureRepository'] = function ($c) {
+    return new \App\Repository\MySql\PictureRepository(
+        $c['mysql'],
+        $c['LikeRepository'],
+        $c['UserRepository']
+    );
+};
+$c['ProductRepository'] = function ($c) {
+    return new \App\Repository\MySql\ProductRepository(
+        $c['mysql'],
+        $c['PictureRepository'],
+        $c['CommentRepository'],
+    );
 };
 
 /**
  * Other
  */
 
-$container['view'] = function ($c) {
+$c['view'] = function ($c) {
   return new \App\Helper\View($c['twig'], $c['dispatcher']);
 };
-$container['csrf'] = function () {
+$c['csrf'] = function () {
     return new \App\Helper\Csrf(new \Symfony\Component\Security\Csrf\CsrfTokenManager());
 };
-$container['router'] = function ($c) {
+$c['router'] = function ($c) {
     $router = new \App\Router\Router(
         $c['request']->getPathInfo(),
         $c['request']->getRealMethod(),
@@ -120,4 +137,5 @@ $container['router'] = function ($c) {
     
     return $router;
 };
-return $container;
+
+return $c;

@@ -12,6 +12,8 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20200825134604 extends AbstractMigration
 {
+    private $tables = [];
+
     public function getDescription() : string
     {
         return '';
@@ -21,33 +23,27 @@ final class Version20200825134604 extends AbstractMigration
     {
         $this->addSql('SET foreign_key_checks = 0');
         $this->createUserTable();
-
         $this->createProductsTable();
-        $this->createProductRatingTable();
-        $this->createProductCommentsTable();
-        $this->createProductPicturesTable();
-        $this->createProductCommentLikesTable();
         $this->createProductPriceTable();
-        $this->createProductPictureLikesTable();
+
+        $this->createLikeTable('product_picture');
+        $this->createRatingTable('product');
+        $this->createCommentTable('product');
+        $this->createPictureTable('product');
 
         $this->addSql('SET foreign_key_checks = 1');
     }
 
     public function down(Schema $schema) : void
     {
+        $tables = implode(',', $this->tables);
+
         $this->addSql(
-            'SET foreign_key_checks = 0;
+            "SET foreign_key_checks = 0;
             DROP TABLE IF EXISTS
-            user,
-            product,
-            product_comment,
-            product_picture,
-            product_comment_like,
-            product_picture_like,
-            product_price,
-            product_rating
+            {$tables}
             ;
-            SET foreign_key_checks = 1;'
+            SET foreign_key_checks = 1;"
         );
     }
 
@@ -63,6 +59,8 @@ final class Version20200825134604 extends AbstractMigration
                 time_last_active int UNSIGNED NOT NULL
             );'
         );
+
+        array_push($this->tables, "user");
     }
 
     private function createProductsTable()
@@ -78,6 +76,8 @@ final class Version20200825134604 extends AbstractMigration
                 FOREIGN KEY (user_id) REFERENCES user(id)
             );'
         );
+
+        array_push($this->tables, "product");
     }
 
     private function createProductPriceTable()
@@ -95,9 +95,11 @@ final class Version20200825134604 extends AbstractMigration
                 FOREIGN KEY (user_id) REFERENCES user(id)
             );'
         );
+
+        array_push($this->tables, "product_price");
     }
 
-    private function createProductRatingTable()
+    private function createRatingTable(string $subject)
     {
         $this->addSql(
             'CREATE TABLE product_rating(
@@ -112,68 +114,61 @@ final class Version20200825134604 extends AbstractMigration
                 FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
             );'
         );
+
+        array_push($this->tables, "{$subject}_like");
     }
 
-    private function createProductPicturesTable()
+    private function createPictureTable(string $subject)
     {
         $this->addSql(
-            'CREATE TABLE product_picture(
+            "CREATE TABLE {$subject}_picture(
                 id int UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
-                product_id int UNSIGNED NOT NULL,
+                {$subject}_id int UNSIGNED NOT NULL,
                 user_id int UNSIGNED NOT NULL,
                 url text NOT NULL,
                 time_created int UNSIGNED NOT NULL,
 
-                FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE,
+                FOREIGN KEY ({$subject}_id) REFERENCES {$subject}(id) ON DELETE CASCADE,
                 FOREIGN KEY (user_id) REFERENCES user(id)
-            );'
+            );"
         );
+
+        array_push($this->tables, "{$subject}_like");
     }
 
-    private function createProductCommentsTable()
+    private function createCommentTable(string $subject)
     {
         $this->addSql(
-            'CREATE TABLE product_comment(
+            "CREATE TABLE {$subject}_comment(
                 id int UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
-                product_id int UNSIGNED NOT NULL,
+                {$subject}_id int UNSIGNED NOT NULL,
                 user_id int UNSIGNED NOT NULL,
                 content text NOT NULL,
                 time_created int UNSIGNED NOT NULL,
                 time_changed int UNSIGNED NOT NULL,
 
-                FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE,
+                FOREIGN KEY ({$subject}_id) REFERENCES {$subject}(id) ON DELETE CASCADE,
                 FOREIGN KEY (user_id) REFERENCES user(id)
-            );'
+            );"
         );
+
+        array_push($this->tables, "{$subject}_like");
     }
 
-    private function createProductCommentLikesTable()
+    private function createLikeTable(string $subject)
     {
         $this->addSql(
-            'CREATE TABLE product_comment_like(
+            "CREATE TABLE {$subject}_like(
                 id int UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
-                comment_id int UNSIGNED NOT NULL,
+                {$subject}_id int UNSIGNED NOT NULL,
                 user_id int UNSIGNED NOT NULL,
                 like_or_dislike tinyint NOT NULL,
 
-                FOREIGN KEY (comment_id) REFERENCES product_comment(id) ON DELETE CASCADE,
+                FOREIGN KEY ({$subject}_id) REFERENCES {$subject}(id) ON DELETE CASCADE,
                 FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
-            );'
+            );"
         );
-    }
 
-    private function createProductPictureLikesTable()
-    {
-        $this->addSql(
-            'CREATE TABLE product_picture_like(
-                id int UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
-                picture_id int UNSIGNED NOT NULL,
-                user_id int UNSIGNED NOT NULL,
-                like_or_dislike tinyint NOT NULL,
-
-                FOREIGN KEY (picture_id) REFERENCES product_picture(id) ON DELETE CASCADE,
-                FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
-            );'
-        );
+        array_push($this->tables, "{$subject}_like");
     }
 }

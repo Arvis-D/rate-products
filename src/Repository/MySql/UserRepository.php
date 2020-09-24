@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repository\MySql;
 
 use App\Helper\MySQLDatabase;
+use App\Repository\UserRepositoryInterface;
 
-class UserRepository
+class UserRepository implements UserRepositoryInterface
 {
     private $db;
 
@@ -13,28 +14,28 @@ class UserRepository
         $this->db = $db;
     }
 
-    public function createNewUser(string $username, string $email, string $password): int
+    public function addUser(string $username, string $email, string $password): int
     {
         $time = time();
-        $this->db->sql(
+        $this->db->write(
             "INSERT INTO user VALUES(NULL, :u, :e, :p, {$time}, {$time});"
         , ['u' => $username, 'e' => $email, 'p' => $password]);
 
         return (int) $this->db->pdo->lastInsertId();
     }
 
-    public function getPasswordIdByUsername(string $username): ?array
+    public function getIdAndPassword(string $username): ?array
     {
-        $results = $this->db->sqlFetch(
+        $results = $this->db->write(
             'SELECT password, id FROM user WHERE name = :u'
         , ['u' => $username]);
         
         return (empty($results) ? null : $results[0]);
     }
 
-    public function getIdByUsername(string $username): ?string
+    public function getId(string $username): ?int
     {
-        $id = $this->db->sqlFetch(
+        $id = $this->db->write(
             'SELECT id FROM user WHERE name = :u'
         , ['u' => $username]);
         

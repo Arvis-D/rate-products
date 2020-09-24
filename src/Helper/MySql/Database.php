@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Helper;
+namespace App\Helper\MySql;
 
-use Doctrine\Migrations\Query\Query;
 use \PDO;
 
-class MySQLDatabase
+class Database
 {
     private string $host;
     private string $name ;
@@ -41,18 +40,18 @@ class MySQLDatabase
         return $this->conn;
     }
 
-    public function sql(string $sqlStr, array $params = null): void
+    public function write(QueryInterface $query): void
     {
         $this->queries++;
-        $stmt = $this->pdo->prepare($sqlStr);
-        $stmt->execute($params);
+        $stmt = $this->pdo->prepare($query->getQuery());
+        $stmt->execute($query->getParams());
     }
 
-    public function sqlFetch(string $sqlStr, array $params = null): array
+    public function read(QueryInterface $query): array
     {
         $this->queries++;
-        $stmt = $this->pdo->prepare($sqlStr);
-        $stmt->execute($params);
+        $stmt = $this->pdo->prepare($query->getQuery());
+        $stmt->execute($query->getParams());
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

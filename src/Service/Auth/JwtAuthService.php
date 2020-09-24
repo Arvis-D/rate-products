@@ -4,8 +4,7 @@ namespace App\Service\Auth;
 
 use Firebase\JWT\JWT;
 use Symfony\Component\HttpFoundation\Request;
-use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Session\Session;
+use App\Repository\UserRepositoryInterface;
 
 class JwtAuthService implements AuthServiceInterface
 {
@@ -14,7 +13,7 @@ class JwtAuthService implements AuthServiceInterface
     private $jwtParams;
     private $allowedAlgs = ['HS256'];
 
-    public function __construct(UserRepository $userRepository, AuthValidationService $validation)
+    public function __construct(UserRepositoryInterface $userRepository, AuthValidationService $validation)
     {
         $this->userRepository = $userRepository;
         $this->validation = $validation;
@@ -26,7 +25,7 @@ class JwtAuthService implements AuthServiceInterface
             return false;
         }
 
-        $results = $this->userRepository->getPasswordIdByUsername($request->get('username'));
+        $results = $this->userRepository->getIdAndPassword($request->get('username'));
         if ($results !== null && password_verify($request->get('password'), $results['password'])) {
             $this->setJwtCookie($request, $results['id']);
             return true;
@@ -43,7 +42,7 @@ class JwtAuthService implements AuthServiceInterface
             return false;
         }
 
-        $userId = $this->userRepository->createNewUser(
+        $userId = $this->userRepository->addUser(
             $request->get('username'),
             $request->get('email'),
             password_hash($request->get('password'), PASSWORD_DEFAULT)

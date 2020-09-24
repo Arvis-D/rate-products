@@ -2,7 +2,8 @@
 
 namespace App\Service\Product;
 
-use App\Repository\ProductRepository;
+use App\Helper\Time;
+use App\Repository\ProductRepositoryInterface;
 use App\Service\Auth\AuthServiceInterface;
 use App\Service\Image\ImageService;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -17,7 +18,7 @@ class ProductService
 
     public function __construct(
         ProductValidationService $validationService,
-        ProductRepository $repository, 
+        ProductRepositoryInterface $repository, 
         AuthServiceInterface $auth,
         ImageService $imageService
         ) {
@@ -27,46 +28,39 @@ class ProductService
         $this->imageService = $imageService;
     }
 
-    public function tryCreateNewProduct(array $params, \SplFileInfo $file): bool
+    public function tryCreateNewProduct(array $params, UploadedFile $file): bool
     {
-        if (!$this->validationService->validateProductCreation($params, $file)) {
+        if (!$this->validationService->validateProductCreation($params)) {
             return false;
         };
 
-        ['name' => $name, 'price' => $price, 'rating' => $rating, 'picture' => $picture] = $params;
-        $userId = $this->auth->authParams()['id'];
+        $params['picture'] = ($file === null ? '' : $this->uploadPicture($file));
 
-        $productId = $this->repository->insertNewProduct($name, $userId);
-        if (!empty($price)) 
-            $this->repository->insertNewPrice($price, $productId, $userId);
-        if (!empty($rating)) 
-            $this->repository->insertNewRating($rating, $productId, $userId);
-        if (!empty($picture)) 
-            $this->repository->insertNewPicture($picture, $productId, $userId);
-        if (!empty($comment)) 
-            $this->repository->insertNewComment($comment, $productId, $userId);
+        $userId = $this->auth->authParams()['id'];
+        $this->repository->addProduct($params, $userId);
 
         return true;
     }
 
-    public function uploadPicture(UploadedFile $file, int $productId)
+    public function uploadPicture(UploadedFile $file)
     {
         $uid = $this->auth->authParams()['id'];
-        $path = $this->imageService->createSetOfImages($file, 'product', $uid);
-        return $this->repository->insertNewPicture($path, $productId, $uid);
+
+        return $this->imageService->createSetOfImages($file, 'product', $uid);
     }
 
     public function getProducts()
     {
-        $products = $this->repository->getProductsWithBasicInfo();
+        $products = $this->repository->getProductsBasic();
 
         return $products;
     }
 
     public function getProduct(int $id)
     {
-        $product = $this->repository->fetchProducInfo($id);
-        $product['randomPicture'] = rand(0, count($product['pictures']) - 1);
+        $product = $this->repository->getProductFull($id);
+        $time = $product['randomPicture']['time_created'];
+        $product['randomPicture']['elapsedTime'] = Time::getElapsedTime($time);
 
         return $product;
     }

@@ -17,7 +17,7 @@ class DbValidationResource implements ValidationResourceInterface
     {
         [$table, $field] = explode('.', $uniqueWhere);
 
-        $arr = $this->db->sqlFetch(
+        $arr = $this->db->read(
             "SELECT
              COUNT(*) AS count
              FROM {$table} 

@@ -17,7 +17,7 @@ class FileTypeRequirement implements RequirementInterface
 
     public function check(): bool
     {
-        $type = explode('/', $_FILES[$this->allowedTypes])[1];
+        $type = explode('/', $_FILES[$this->key]['type'])[1];
 
         return in_array($type, $this->allowedTypes);
     }

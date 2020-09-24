@@ -22,7 +22,6 @@ class ProductPictureController
     public function store(Request $request, View $view)
     {
         $id = $this->productService->uploadPicture($request->files->get('image'), $request->get('product-id'));
-        sleep(5);
 
         return new Response($view->render('elements/pictureUpload', [
             'picture' => ['id' => $id],
