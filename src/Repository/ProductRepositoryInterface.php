@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Model\Product\ProductFull;
 use App\Repository\PictureRepositoryInterface;
+use App\Model\Product\ProductCard;
 
 interface ProductRepositoryInterface
 {
@@ -10,7 +12,7 @@ interface ProductRepositoryInterface
 
     public function getProductsBasic(): array;
 
-    public function getProductFull(int $productId): array;
+    public function getProductFull(int $productId, int $userId): array;
 
     public function addPrice(int $id, int $userId, int $price);
 

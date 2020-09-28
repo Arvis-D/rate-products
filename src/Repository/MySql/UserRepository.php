@@ -2,42 +2,37 @@
 
 namespace App\Repository\MySql;
 
-use App\Helper\MySQLDatabase;
+use App\Helper\MySql\Database;
+use App\Helper\MySql\SimpleQuery;
 use App\Repository\UserRepositoryInterface;
 
-class UserRepository implements UserRepositoryInterface
+class UserRepository extends AbstractRepository implements UserRepositoryInterface
 {
-    private $db;
-
-    public function __construct(MySQLDatabase $db)
+    public function __construct(Database $db)
     {
-        $this->db = $db;
+        parent::__construct($db);
+        $this->setTable('user');
     }
 
     public function addUser(string $username, string $email, string $password): int
     {
         $time = time();
-        $this->db->write(
-            "INSERT INTO user VALUES(NULL, :u, :e, :p, {$time}, {$time});"
-        , ['u' => $username, 'e' => $email, 'p' => $password]);
+        $query = $this->table->insert([$username, $email, $password, $time, $time]);
+        $this->write($query);
 
         return (int) $this->db->pdo->lastInsertId();
     }
 
     public function getIdAndPassword(string $username): ?array
     {
-        $results = $this->db->write(
-            'SELECT password, id FROM user WHERE name = :u'
-        , ['u' => $username]);
+        $results = $this->db->read($this->table->select(['id', 'password'], ['name' => $username]));
         
         return (empty($results) ? null : $results[0]);
     }
 
     public function getId(string $username): ?int
     {
-        $id = $this->db->write(
-            'SELECT id FROM user WHERE name = :u'
-        , ['u' => $username]);
+        $id = $this->db->read( $this->table->select(['id'], ['name' => $username]))[0];
         
         return (empty($id) ? null : $id[0]['id']);
     }

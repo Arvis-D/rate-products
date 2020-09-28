@@ -50,7 +50,7 @@ $router->group('/product', function($router) {
     });
 });
 
-$router->group('/ajax', function($router) {
+$router->group('/api', function($router) {
     $router->group('/product', function($router){
         $router->group('/picture', function($router){
             $router->post('/store', function($c) {
@@ -61,9 +61,17 @@ $router->group('/ajax', function($router) {
                 return $c['ProductPictureController']->like($c['request']);
             })->protected();
 
-            $router->post('/delete', function($c) {
-                return $c['ProductPictureController']->delete($c['request']);
+            $router->post('/dislike', function($c) {
+                return $c['ProductPictureController']->dislike($c['request']);
             })->protected();
+
+            $router->post('/delete', function($c) {
+                return $c['ProductPictureController']->delete($c['request'], $c['view']);
+            })->protected();
+
+            $router->get('/show/:id', function($id, $c) {
+                return $c['ProductPictureController']->show($id);
+            });
         });
     });
 });

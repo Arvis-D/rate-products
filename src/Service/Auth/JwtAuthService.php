@@ -10,7 +10,7 @@ class JwtAuthService implements AuthServiceInterface
 {
     private $userRepository;
     private $validation;
-    private $jwtParams;
+    private $jwtParams = null;
     private $allowedAlgs = ['HS256'];
 
     public function __construct(UserRepositoryInterface $userRepository, AuthValidationService $validation)
@@ -71,32 +71,44 @@ class JwtAuthService implements AuthServiceInterface
 
     public function authenticated(): bool
     {
-        $params = $this->authParams();
-        if (empty($params)) {
+        if (null === $params = $this->authParams()) {
             return false;
         }
 
         if (time() > $params['exp']) {
             $this->logout();
+
             return false;
         }
 
         return true;
     }
 
-    public function authParams(): array
+    public function authParams(string $key = null, $default = null)
     {
-        if (isset($this->jwtParams)) {
-            return $this->jwtParams;
-        } else if (!isset($_COOKIE['JWT'])) {
-            return [];
+        if (null === $params = $this->jwtParams ?? $this->tryDecode()) {
+            return $default;
         }
 
+        if ($key !== null) {
+            if (array_key_exists($key, $params)) {
+                return $params[$key];
+            }
+
+            return $default;
+        }
+
+        return $params;
+    }
+
+    private function tryDecode(): ?array
+    {
         try {
             $this->jwtParams = (array) JWT::decode($_COOKIE['JWT'], $_ENV['SECRET'], $this->allowedAlgs);
+
             return $this->jwtParams;
         } catch (\Exception $e) {
-            return [];
+            return null;
         }
     }
 

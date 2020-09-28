@@ -1,20 +1,21 @@
-{% if imageAdded %}
+{% if product.userPicture %}
   <div class="upload-input mr-2">
     <form method="POST" action="/ajax/product/picture/delete" class="image-upload-form">
-      <input type="hidden" name="product-id" value="{{ picture.id }}">
+      <input type="hidden" name="picture-id" value="{{ product.userPicture.id }}">
+      <input type="hidden" name="picture-url" value="{{ product.userPicture.url }}">
       {% include "elements/csrfToken.twig" %}
     </form>
     <button class="btn btn-danger btn-sm upload-btn">Delete</button>
   </div>
-  <div class="upload-showcase" style="background-image: url('{{ picture.url|replace({'--size': '--icon'}) }}');"></div>
+  <div class="upload-showcase" style="background-image: url('{{ product.userPicture.url|replace({'--size': '--icon'}) }}');"></div>
 {% else %}
   <div class="upload-input mr-2">
-    <form method="POST" action="/ajax/product/picture/store" class="image-upload-form">
+    <form method="POST" action="/api/product/picture/store" class="image-upload-form">
       <input type="file" name="image" class="image-input">
-      <input type="hidden" name="product-id" value="{{ product.id }}">
+      <input type="hidden" name="product-id" value="{{ product.id|default(old['product-id']) }}">
       {% include "elements/csrfToken.twig" %}
     </form>
-    <button class="btn btn-primary btn-sm upload-btn">Upload</button>
+    <button class="btn btn-primary upload-btn">Upload</button>
   </div>
   <div class="upload-showcase"></div>
 {% endif %}

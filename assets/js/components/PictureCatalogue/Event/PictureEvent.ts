@@ -1,5 +1,9 @@
 import Event from '../../../helpers/Subscriber/Event';
 
 export default interface PictureEvent extends Event {
-  pictureUrl: string;
+  readonly url?: string;
+  readonly id?: number;
+  readonly addedBy?: string;
+  readonly timeElapsed?: string;
+  readonly userHasLiked?: boolean;
 }

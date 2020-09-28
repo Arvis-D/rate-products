@@ -1,13 +1,15 @@
-<div class="col-sm-12 col-lg-4 col-xl-3 px-3">
-  <div class="mb-3">
-      <div class="card">
-  <img src="{{ product.picture|replace({'--size': '--thumb'}) }}" class="card-img-top" style="" alt="...">
-  <div class="card-body">
-    <a href="/product/show/{{ product.id }}"><h5 class="card-title">{{ product.name }}</h5></a>
-    <p class="card-text">{{ product.rating|number_format(2) }} ({{ product.number_of_ratings }})</p>
-    <p class="card-text">{{ (product.price / 100)|number_format(2, '.', ',')   }} ({{ product.number_of_prices }})</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>
-</div>
+<div class="col-sm-12 col-lg-4 col-xl-3 px-2">
+  <div class="mb-4">
+    <div class="card product-card">
+      <div 
+        class="product-thumbnail card-img-top"
+        style="background-image: url('{{ product.picture is empty ? '/img/none.webp' : product.picture|replace({'--size': '--thumb'}) }}');"
+      ></div>
+      <div class="card-body">
+        <a href="/product/show/{{ product.id }}"><h5 class="card-title">{{ product.name }}</h5></a>
+        <p class="card-text">{{ product.rating|number_format(2) }} ({{ product.number_of_ratings }})</p>
+        <p class="card-text">{{ (product.price / 100)|number_format(2, '.', ',')   }} ({{ product.number_of_prices }})</p>
+      </div>
+    </div>
   </div>
 </div>

@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-interface CommentRepositoryInterface
+interface CommentRepositoryInterface extends SubjectInterface
 {
     public function addComment(int $subjectId, string $commentContent, int $userId): int;
     

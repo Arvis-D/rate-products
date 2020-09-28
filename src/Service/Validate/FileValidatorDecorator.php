@@ -10,9 +10,15 @@ class FileValidatorDecorator
 {
     private $validator;
 
-    public function __construct(Validator $validator)
+    public function __construct(Validator $validator, bool $required)
     {
         $this->validator = $validator;
+
+        if ($required) {
+            $this->required();
+        } else {
+            $this->optional();
+        }
     }
 
     public function maxSize(float $sizeKb): self
@@ -30,12 +36,12 @@ class FileValidatorDecorator
         $this->validator->validate(New FileTypeRequirement($this->validator->currentKey, $types), 'type');
     }
 
-    public function required()
+    private function required()
     {
         $this->validator->validate(New FileRequiredRequirement($this->validator->currentKey), 'required');
     }
 
-    public function optional()
+    private function optional()
     {
         $this->validator->validate(New FileRequiredRequirement($this->validator->currentKey));
     }

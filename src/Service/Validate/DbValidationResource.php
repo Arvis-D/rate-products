@@ -2,13 +2,14 @@
 
 namespace App\Service\Validate;
 
-use App\Helper\MySQLDatabase;
+use App\Helper\MySql\Database;
+use App\Helper\MySql\Query;
 
 class DbValidationResource implements ValidationResourceInterface
 {
     private $db;
 
-    public function __construct(MySQLDatabase $db)
+    public function __construct(Database $db)
     {
         $this->db = $db;
     }
@@ -16,17 +17,16 @@ class DbValidationResource implements ValidationResourceInterface
     public function checkUnique(string $uniqueWhere, string $uniqueWhat): bool
     {
         [$table, $field] = explode('.', $uniqueWhere);
-
-        $arr = $this->db->read(
+        $query = new Query(
             "SELECT
              COUNT(*) AS count
              FROM {$table} 
-             WHERE {$field} = :val", 
-             [
-            'val' => $uniqueWhat
-        ]);
+             WHERE {$field} = :val",
+             ['val' => $uniqueWhat]
+        );
 
-        $count = $arr[0]['count'];
+        $raw = $this->db->read($query);
+        $count = $raw[0]['count'];
         return ($count > 0 ? false : true);
     }
 }

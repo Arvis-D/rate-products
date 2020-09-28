@@ -6,7 +6,6 @@
 .navbar-custom {
   z-index: $zindex-sticky + 1;
   background: $white;
-  //padding: 1em;
   height: 4em;
   display: flex;
   flex-wrap: wrap;
@@ -16,7 +15,8 @@
   left: 0;
   justify-content: center;
   align-items: center;
-  border-bottom: solid .12em $gray-200;
+  //border-bottom: solid .12em $gray-200;
+  box-shadow: $light-shadow;
   >* {
     margin: 0 1em;
   }

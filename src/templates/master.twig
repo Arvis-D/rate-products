@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
+  {% include "elements/csrfToken.twig" %}
   {% block content %}{% endblock %}
   <script src="/dist/vendors~navbar.bundle.js"></script>
   <script src="/dist/navbar.bundle.js"></script>

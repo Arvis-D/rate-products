@@ -1,0 +1,7 @@
+.product-card {
+  border: none;
+  box-shadow: $light-shadow;
+  .product-thumbnail {
+    @include aspect-ratio-image(4, 3);
+  }
+}

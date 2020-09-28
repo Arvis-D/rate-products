@@ -2,48 +2,44 @@
 
 namespace App\Repository\MySql;
 
+use App\Helper\MySql\Database;
+use App\Helper\MySql\SimpleQuery;
+use App\Model\Picture\PictureFull;
 use App\Repository\PictureRepositoryInterface;
-use App\Helper\MySQLDatabase;
 use App\Repository\LikeRepositoryInterface;
 use App\Repository\Model\Picture\Picture;
+use App\Repository\MySql\Query\Picture\PictureFullQuery;
 use App\Repository\UserRepositoryInterface;
 
-class PictureRepository implements PictureRepositoryInterface
+class PictureRepository extends AbstractRepository implements PictureRepositoryInterface
 {
-    private $db;
-    private $subject;
     private $user;
-    public $like;
+    private $like;
 
     public function __construct(
-        MySQLDatabase $db, 
+        Database $db, 
         LikeRepositoryInterface $like,
         UserRepositoryInterface $user
     ) {
-        $this->db = $db;
+        parent::__construct($db);
         $this->like = $like;
         $this->user = $user;
+        $this->postFix = '_picture';
     }
 
     public function getLikeRepository(): LikeRepositoryInterface
     {
-        $this->like->setSubject('product_picture');
+        $this->like->setSubject($this->tableName);
 
         return $this->like;
-    }
-
-    public function setSubject(string $subject)
-    {
-        $this->subject = $subject;
-        $this->like->setSubject("{$subject}_picture");
     }
 
     public function addPicture(int $subjectId, string $pictureUrl, int $userId): int
     {
         $time = time();
-        $this->db->write("INSERT INTO {$this->subject}_picture VALUES(null, {$subjectId}, {$userId}, :p, {$time});", [
-            'p' => $pictureUrl
-        ]);
+        $this->db->write(
+            $this->table->insert([$subjectId, $userId, $pictureUrl, $time])
+        );
 
         return $this->db->pdo->lastInsertId();
     }
@@ -51,37 +47,35 @@ class PictureRepository implements PictureRepositoryInterface
     public function getPictures(int $subjectId): array
     {
         return $this->db->read(
-            "SELECT id, url FROM {$this->subject}_picture WHERE {$this->subject}_id = :id"
-        , ['id' => $subjectId]);
+            $this->table->select(['id', 'url'], [$this->subject . '_id' => $subjectId])
+        );
     }
 
-    public function removePicture(int $id)
+    public function getUserPictures(int $subjectId, int $userId): array
     {
-        $this->db->write(
-            "DELETE FROM {$this->subject}_picture WHERE id = :id"
-        , ['id' => $id]);
+        return $this->db->read(
+            $this->table->select(['id', 'url'], [$this->subject . '_id' => $subjectId, 'user_id' => $userId])
+        );
     }
 
-    public function getPicture(int $id): array
+    public function removePicture(string $criteria, $value)
     {
-        $raw = $this->db->read(
-            "SELECT 
-                pic.url,
-                pic.time_created,
-                pic.id,
-                u.name as addedBy
-            FROM {$this->subject}_picture pic 
-            INNER JOIN user u ON u.id = pic.user_id
-            WHERE pic.id = :id;
-            ;"
-        , ['id' => $id])[0];
+        $this->db->write($this->table->delete([$criteria => $value]));
+    }
 
-        $likes = $this->like->getLikes($id);
+    public function getPicture(int $id, int $userId): array
+    {
+        $picture = $this->db->read(New PictureFullQuery($id, $this->tableName))[0];
+        $likes = $this->getLikeRepository()->getLikes($id);
+        $picture['userLike'] = $this->getLikeRepository()->getUserLike($id, $userId);
 
-        $picture = new Picture;
-        $picture->id = $raw['id'];
-        $picture->likes = $likes;
+        return array_merge($picture, $likes);
+    }
 
-        return array_merge($raw, $likes);
+    public function pictureAdded(int $subjectId, int $userId): bool
+    {
+        return !empty($this->read($this->table->
+            select(['COUNT(*) AS count'], ["{$this->subject}_id" => $subjectId, 'user_id' => $userId]
+        )));
     }
 }

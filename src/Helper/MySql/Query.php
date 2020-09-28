@@ -7,7 +7,7 @@ class Query implements QueryInterface
     private $query;
     private $params;
 
-    public function __construct(string $query, array $params)
+    public function __construct(string $query, array $params = [])
     {
         $this->query = $query;
         $this->params = $params;

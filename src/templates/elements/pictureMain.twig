@@ -1,18 +1,38 @@
 <div class="picture-main">
 
-  <a href="{{ randomPicture.url }}" class="picture" style="background-image: url('{{ randomPicture.url }}');"></a>
+  <a 
+  href="{{ randomPicture.url }}" 
+  class="picture {{ randomPicture.url == null ? 'no-image' : '' }}" 
+  style="background-image: url('{{ randomPicture.url }}');"
+  ></a>
 
   <div class="pic-controls">
     <div class="pic-info">
-      <strong>{{ randomPicture.addedBy }}</strong>
-      <span class="text-secondary">{{ randomPicture.elapsedTime }}</span>
+      <strong>{{ randomPicture.username }}</strong>
+      <span class="text-secondary">{{ randomPicture.time_created|elapsed }}</span>
     </div>
-    {% if authenticated %}
+    {% if randomPicture.id is defined %}
     <div class="like-controls">
-      <a class="btn btn-small">
-        <span class="icon">thumb_up</span> {{ randomPicture.likes }}
-      </a>
-      <a class="btn btn-small"><span class="icon">thumb_down</span> {{ randomPicture.dislikes }}</a>
+
+      {% if randomPicture.userLike.like is defined%}
+        {% if randomPicture.userLike.like == true %}
+          {% set likeActive = 'active' %}
+        {% else %}
+          {% set dislikeActive = 'active' %}
+        {% endif %}
+      {% endif %}
+
+      <div class="d-none subject-id">{{ randomPicture.id }}</div>
+      <button class="btn btn-small thumb-up {{ likeActive }}">
+        <span class="icon">thumb_up</span> <span>{{ randomPicture.likes }}</span>
+      </button>
+      <button class="btn btn-small thumb-down {{ dislikeActive }}">
+        <span class="icon">thumb_down</span> <span>{{ randomPicture.dislikes }}</span>
+      </button>
+      <form action="/ajax/product/picture/like" method="post" class="like-form">
+        {% include "elements/csrfToken.twig" %}
+        <input type="hidden" name="like" class="like-value" value="0">
+      </form>
     </div>
     {% endif %}
   </div>

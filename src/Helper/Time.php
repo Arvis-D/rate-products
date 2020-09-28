@@ -11,8 +11,12 @@ class Time
      * @example 60 second input will return "1min"
      */
 
-    public static function getElapsedTime(int $timeCreated): string
+    public static function getElapsedTime(?int $timeCreated): ?string
     {
+        if ($timeCreated === null) {
+            return null;
+        }
+
         $elapsed = time() - $timeCreated;
         $minute = 60;
         $hour = $minute * 60;

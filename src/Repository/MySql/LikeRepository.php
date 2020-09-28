@@ -2,62 +2,66 @@
 
 namespace App\Repository\MySql;
 
-use App\Helper\MySQLDatabase;
+use App\Helper\MySql\Database;
+use App\Helper\MySql\SimpleQuery;
+use App\Model\Likes\Like;
+use App\Model\User\UserId;
 use App\Repository\LikeRepositoryInterface;
+use App\Repository\MySql\Query\Like\ChangeLikeQuery;
 
-class LikeRepository implements LikeRepositoryInterface
+class LikeRepository extends AbstractRepository implements LikeRepositoryInterface
 {
-    private $db;
-    private $subject = '';
-
-    public function __construct(MySQLDatabase $db, string $subject = '')
+    public function __construct(Database $db)
     {
-        $this->db = $db;
-        $this->subject = $subject;
-    }
-
-    public function setSubject(string $subject)
-    {
-        $this->subject = $subject;
+        parent::__construct($db);
+        $this->postFix = '_like';
     }
 
     public function like(int $subjectId, bool $like, int $userID): int
     {
-        $this->db->write(
-            "INSERT INTO {$this->subject}_like VALUES (null, :subject_id, {$userID}, {(int) $like});",
-            ['subject_id' => $subjectId]
-        );
+        $this->db->write($this->table->insert([$subjectId, $userID, (int) $like]));
 
         return $this->db->pdo->lastInsertId();
     }
 
-    public function getUserLike(int $userID): bool
+    public function get(string $criteria, $value): array
     {
-        return (bool) $this->db->read(
-            "SELECT like_or_dislike from {$this->subject}_like WHERE user_id = :id;",
-            ['id' => $userID]
-        )[0]['like_or_dislike'];
+        return $this->db->read($this->table->select(['like_or_dislike', 'id'], [$criteria => $value]))[0];
     }
 
-    public function removeLike(int $userId)
+    public function getUserLike(int $subjectId, int $userId): ?array
     {
-        $this->db->write(
-            "DELETE FROM {$this->subject}_like WHERE user_id = :id",
-            ['id' => $userId]
-        );
+        $like = $this->db->read($this->table->
+            select(['like_or_dislike', 'id'], ['user_id' => $userId, "{$this->subject}_id" => $subjectId]
+        ));
+
+        if (empty($like)) {
+            return null;
+        } else {
+            $like = $like[0];
+            $like['like'] = ($like['like_or_dislike'] === '0' ? false : true);
+
+            return $like;
+        }
+    }
+
+    public function changeLike(int $likeId, bool $like)
+    {
+        $this->db->write(new ChangeLikeQuery($this->tableName, $likeId, $like));
+    }
+
+    public function removeLike(string $criteria, $value)
+    {
+        $this->db->write($this->table->delete([$criteria => $value]));
     }
 
     public function getLikes(int $subjectId): array
     {
-        $result = $this->db->read(
-            "SELECT
-                COUNT(*) as total,
-                SUM(likes.like_or_dislike) as liked
-            FROM {$this->subject}_like likes
-
-            WHERE likes.{$this->subject}_id = :subId;",
-            ['subId' => $subjectId]
-        )[0];
+        $result = $this->db->read( 
+            $this->table->select(
+                ['COUNT(*) AS total', 'SUM(like_or_dislike) as liked'],
+                [$this->subject . '_id' => $subjectId]
+        ))[0];
 
         return [
             'likes' => (int) $result['liked'],

@@ -1,0 +1,11 @@
+@mixin aspect-ratio($width, $height) {
+  padding-top: $height / $width  * 100%;
+}
+
+@mixin aspect-ratio-image($width, $height) {
+  @include aspect-ratio($width, $height);
+  background-color: $white;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

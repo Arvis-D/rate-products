@@ -4,14 +4,21 @@
     {% include "elements/pictureMain.twig" %}
     </div>
     <div class="col-lg-6 p-1">
-      <div class="picture-selector small-scrollbar">
+      <div class="picture-selector small-scrollbar {% if picture %} 'mb-3' {% endif %}">
         {% for picture in pictures %}
-          <div class="selector-thumbnail" style="background-image: url('{{ picture.url|replace({'--size': '--icon'}) }}');"></div>
+          <div class="selector-thumbnail" style="background-image: url('{{ picture.url|replace({'--size': '--icon'}) }}');">
+            <input type="hidden" value="{{ picture.id }}">
+          </div>
         {% endfor %}
       </div>
 
-      {% if true %}
-        <h3 class="my-3">Upload an image:</h3>
+      {% if authenticated %}
+        {% if not product.userPicture %}
+          <h3 class="mb-3">Upload an image:</h3>
+        {% else %}
+          <h3 class="mb-3">Delete an image:</h3>
+        {% endif %}
+        
         <div class="image-upload">
           {% include "elements/pictureUpload.twig" %}
         </div>

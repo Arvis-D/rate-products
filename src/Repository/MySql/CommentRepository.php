@@ -2,30 +2,21 @@
 
 namespace App\Repository\MySql;
 
-use App\Helper\MySQLDatabase;
+use App\Helper\MySql\Database;
 use App\Repository\CommentRepositoryInterface;
 
-class CommentRepository implements CommentRepositoryInterface
+class CommentRepository extends AbstractRepository implements CommentRepositoryInterface
 {
-    private $db;
-    private $subject;
-
-    public function __construct(MySQLDatabase $db)
+    public function __construct(Database $db)
     {
-        $this->db = $db;
-    }
-
-    public function setSubject(string $subject)
-    {
-        $this->subject = $subject;
+        parent::__construct($db);
+        $this->postfix = '_comment';
     }
 
     public function addComment(int $subjectId, string $commentContent, int $userId): int
     {
         $time = time();
-        $this->db->write("INSERT INTO {$this->subject}_comment VALUES(null, {$subjectId}, {$userId}, :c, {$time}, {$time});", [
-            'c' => $commentContent
-        ]);
+        $this->write($this->table->insert([$subjectId, $userId, $commentContent, $time, $time]));
 
         return $this->db->pdo->lastInsertId();
     }

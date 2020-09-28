@@ -15,6 +15,8 @@ class FileRequiredRequirement implements RequirementInterface
 
     public function check(): bool
     {
-        return array_key_exists($this->key, $_FILES);
+        $exists = array_key_exists($this->key, $_FILES) && !empty($_FILES[$this->key]['type']);
+
+        return $exists;
     }
 }

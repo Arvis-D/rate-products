@@ -1,4 +1,5 @@
 $primary: #324A5F;
+$info: #4fc3f7;
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
@@ -8,11 +9,15 @@ $md: map-get($grid-breakpoints, "md");
 $sm: map-get($grid-breakpoints, "sm");
 $xs: map-get($grid-breakpoints, "xs");
 
-$dark-overlay: rgba($color: $black, $alpha: .1);
+$dark-overlay: rgba(0, 0, 0, .2);
+$light-shadow: 0 0 .5em rgba(0, 0, 0, .2);
+
+@import "./utilities/icon";
+@import "./utilities/spinner";
+@import "./utilities/scroll";
+@import "./utilities/aspect-ratio";
 
 @import "./components/navbar";
 @import "./components/filter";
 @import "./components/picture-catalogue";
-@import "./utilities/icon";
-@import "./utilities/spinner";
-@import "./utilities/scroll";
+@import "./components/product-card";

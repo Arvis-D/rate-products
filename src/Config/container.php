@@ -11,9 +11,13 @@ $c['twigLoader'] = function () {
 };
 $c['twig'] = function ($c) {
     $cache = ($_ENV['TWIG_CACHE'] === 'on') ? __DIR__ . '/../templates/cache' : false;
-    return new \Twig\Environment($c['twigLoader'], [
+    $elapsed = new \Twig\TwigFilter('elapsed', [\App\Helper\Time::class, 'getElapsedTime']);
+    $twig = new \Twig\Environment($c['twigLoader'], [
         'cache' => $cache,
     ]);
+    $twig->addFilter($elapsed);
+
+    return $twig;
 };
 $c['request'] = function () {
     return \Symfony\Component\HttpFoundation\Request::createFromGlobals();
@@ -48,7 +52,7 @@ $c['ProductController'] = function ($c) {
     return new \App\Controller\ProductController($c['ProductService']);
 };
 $c['ProductPictureController'] = function ($c) {
-    return new \App\Controller\ProductPictureController($c['ProductService']);
+    return new \App\Controller\ProductPictureController($c['PictureService']);
 };
 
 /**
@@ -73,7 +77,21 @@ $c['ProductService'] = function ($c) {
     );
 };
 $c['ImageService'] = function () {
-    return new \App\Service\Image\ImageService(new \Intervention\Image\ImageManager(['driver' => 'imagick']));
+    return new \App\Service\ImageService(new \Intervention\Image\ImageManager(['driver' => 'imagick']));
+};
+$c['PictureService'] = function ($c) {
+    return new \App\Service\Picture\PictureService(
+        $c['PictureRepository'],
+        $c['PictureValidationService'],
+        $c['JwtAuthService'],
+        $c['ImageService']
+    );
+};
+$c['PictureValidationService'] = function ($c) {
+    return new \App\Service\Picture\PictureValidationService(
+        $c['session'],
+        $c['DbValidationResource']
+    );
 };
 
  /**
@@ -81,7 +99,7 @@ $c['ImageService'] = function () {
   */
 
 $c['mysql'] = function ($c) {
-    return new \App\Helper\MySQLDatabase(
+    return new \App\Helper\MySql\Database(
         $_ENV['DB_HOST'],
         $_ENV['DB_NAME'],
         $_ENV['DB_USER'],

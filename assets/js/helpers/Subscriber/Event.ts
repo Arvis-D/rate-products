@@ -3,5 +3,5 @@
  */
 
 export default interface Event {
-  name: string;
+  readonly name: string;
 }
