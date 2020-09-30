@@ -37,13 +37,13 @@ $router->get('/', function($c) {
     return $c['ProductController']->index($c['view']);
 });
 $router->group('/product', function($router) {
-    $router->get('/create', function($c) {
+    $router->protected()->get('/create', function($c) {
         return $c['ProductController']->create($c['view']);
-    })->protected();
+    });
 
-    $router->post('/store', function($c) {
+    $router->protected()->post('/store', function($c) {
         return $c['ProductController']->store($c['request']);
-    })->protected();
+    });
 
     $router->get('/show/:id', function($id, $c) {
         return $c['ProductController']->show($c['view'], $id);
@@ -53,21 +53,21 @@ $router->group('/product', function($router) {
 $router->group('/api', function($router) {
     $router->group('/product', function($router){
         $router->group('/picture', function($router){
-            $router->post('/store', function($c) {
+            $router->protected()->post('/store', function($c) {
                 return $c['ProductPictureController']->store($c['request'], $c['view']);
-            })->protected();
+            });
 
-            $router->post('/like', function($c) {
+            $router->protected()->post('/like', function($c) {
                 return $c['ProductPictureController']->like($c['request']);
-            })->protected();
+            });
 
-            $router->post('/dislike', function($c) {
+            $router->protected()->post('/dislike', function($c) {
                 return $c['ProductPictureController']->dislike($c['request']);
-            })->protected();
+            });
 
-            $router->post('/delete', function($c) {
+            $router->protected()->post('/delete', function($c) {
                 return $c['ProductPictureController']->delete($c['request'], $c['view']);
-            })->protected();
+            });
 
             $router->get('/show/:id', function($id, $c) {
                 return $c['ProductPictureController']->show($id);

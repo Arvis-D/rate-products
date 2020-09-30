@@ -101,7 +101,7 @@ export default class LikeControls  implements Subscriber{
     .add('like', (like ? '1' : '0'))
     .setUrl(this.url)
     .send()
-    .then(res => res.ok)
+    .then(res => res.status === 200)
     .catch(err => console.log(err));
   }
 

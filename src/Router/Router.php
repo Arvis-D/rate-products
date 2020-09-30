@@ -16,7 +16,8 @@ class Router
     private $method = '';
     private $container = null;
     private $auth = null;
-    private $routeMatch;
+    private $protectedRoute = false;
+    private $allowedRoles = [];
 
     public function __construct(string $path, string $method, Container $container = null)
     {
@@ -39,12 +40,16 @@ class Router
      * @param array<string> allowed roles
      */
 
-    public function protected(array $roles = []): void
+    public function protected(array $roles = []): self
     {
-        if (!$this->routeMatch) {
-            return;
-        }
+        $this->protectedRoute = true;
+        $this->allowedRoles = $roles;
 
+        return $this;
+    }
+
+    private function checkAuth()
+    {
         if ($this->auth === null) {
             throw new \Exception('Auth service not set!');
         }
@@ -53,18 +58,18 @@ class Router
             throw new InsufficientPrivilegeException();
         }
 
-        if (!empty($roles)) {
+        if (!empty($this->allowedRoles)) {
             $authRoles = $this->auth->authParams()['roles'];
-            foreach ($roles as $role) {
+            foreach ($this->allowedRoles as $role) {
                 if (in_array($role, $authRoles)) {
-                    return;
+                    return $this;
                 }
             }
 
             throw new InsufficientPrivilegeException();
         }
 
-        return;
+        return $this;
     }
 
     public function get(string $uri, callable $cb): Router
@@ -79,7 +84,6 @@ class Router
 
     private function route(string $method, string $uri, callable $cb)
     {
-        $this->routeMatch = false;
         $prefix = implode($this->groupPrefix);
         
         if (
@@ -87,9 +91,11 @@ class Router
             $this->method === $method && 
             $this->urisMatch($this->path, $prefix . $uri)
         ) {
-            $this->routeMatch = true;;
             $this->match($prefix . $uri, $cb);
         }
+
+        $this->protectedRoute = false;
+        $this->allowedRoles = [];
 
         return $this;
     }
@@ -112,6 +118,10 @@ class Router
 
     private function match(string $uri, callable $cb)
     {
+        if ($this->protectedRoute) {
+            $this->checkAuth();
+        }
+
         $params = $this->getWildcards($this->path, $uri);
         if ($this->container !== null) {
             $params[] = $this->container;
