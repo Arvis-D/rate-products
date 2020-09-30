@@ -7,3 +7,7 @@ let catalogue = new PictueCatalogue(
   document.querySelector('.picture-catalogue'),
   new Dispatcher()
 );
+
+
+
+

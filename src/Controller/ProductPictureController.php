@@ -31,10 +31,14 @@ class ProductPictureController
     public function delete(Request $request)
     {
         $this->pictureService->removePicture($request->get('picture-id'), $request->get('picture-url'));
+
+        return new Response();
     }
 
     public function like(Request $request)
     {
+        sleep(1);
+
         $this->pictureService->like($request->get('subject-id'), (bool) $request->get('like'));
 
         return new Response();

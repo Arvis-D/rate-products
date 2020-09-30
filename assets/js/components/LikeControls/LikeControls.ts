@@ -1,9 +1,9 @@
 import Subscriber from '../../helpers/Subscriber/Subscriber';
 import LikeEvent from './LikeEvent';
-import { likeEvents } from './events';
 import Request from '../../helpers/Request';
 import csrf from '../../helpers/Subscriber/csrf';
 import { spinnerType, toggleSpinner } from '../../helpers/spinner';
+import LikeInfoRecieved from './Event/LikeInfoRecieved';
 
 export default class LikeControls  implements Subscriber{
   private thumbUp: HTMLElement;
@@ -12,7 +12,9 @@ export default class LikeControls  implements Subscriber{
   private likes: number;
   private dislikes: number;
   private csrf: string;
-  public subscribedEvents = [likeEvents.infoRecieved];
+  public subscribedEvents = {
+    [LikeInfoRecieved.name]: this.onLikeInfoRecieved.bind(this)
+  };
 
   constructor(
     private url: string,
@@ -28,6 +30,10 @@ export default class LikeControls  implements Subscriber{
 
     this.csrf = csrf();
     this.id = parseInt(this.dom.querySelector('.subject-id').innerHTML);
+  }
+
+  public onLikeInfoRecieved(event: LikeInfoRecieved) {
+    this.changeData(event);
   }
 
   private handleDislike() {
@@ -52,13 +58,11 @@ export default class LikeControls  implements Subscriber{
   private toggle(like: boolean) {
     if (like) {
       if (this.isActive(this.thumbDown)) {
-        console.log('t')
         this.toggleDislike()
       }
       this.toggleLike();
     } else {
       if (this.isActive(this.thumbUp)) {
-        console.log('d')
         this.toggleLike();
       }
       this.toggleDislike();
@@ -94,10 +98,26 @@ export default class LikeControls  implements Subscriber{
     this.thumbDown.children[1].innerHTML = this.dislikes.toString();
   }
 
-  public actOnEvent(event: LikeEvent) {
+  private changeData(event: LikeInfoRecieved) {
     this.likes = event.likes;
     this.dislikes = event.dislikes;
+    this.resetActivity(event.userLike);
     this.changeLikeNumber();
-    this.id = event.id;
+    this.id = event.subjectId;
+  }
+
+  private resetActivity(like?: boolean) {
+    if (like !== null) {
+      if (like) {
+        this.thumbDown.classList.remove('active');
+        this.thumbUp.classList.add('active');
+      } else {
+        this.thumbDown.classList.add('active');
+        this.thumbUp.classList.remove('active');
+      }
+    } else {
+      this.thumbDown.classList.remove('active');
+      this.thumbUp.classList.remove('active');
+    }
   }
 }

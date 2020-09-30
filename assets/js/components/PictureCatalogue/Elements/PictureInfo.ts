@@ -1,11 +1,36 @@
 import Subscriber from '../../../helpers/Subscriber/Subscriber';
-import PictureEvent from '../Event/PictureEvent';
-import { pictureEvents } from '../Event/events';
+import PictureFetched from '../Event/PictureFetched';
+import LastPictureRemoved from '../Event/LastPictureRemoved';
+import FirstPictureAdded from '../Event/FirstPictureAdded';
+import CurrentPictureDeleted from '../Event/CurrentPictureDeleted';
 
 export default class PictureInfo implements Subscriber{
   private username: HTMLElement;
   private timeElapsed: HTMLElement;
-  public subscribedEvents = [pictureEvents.fetched];
+
+  public subscribedEvents = {
+    [PictureFetched.name]: this.onPictureFetch.bind(this),
+    [LastPictureRemoved.name]: this.onLastPicture.bind(this),
+    [FirstPictureAdded.name]: this.onFirstPicture.bind(this),
+    [CurrentPictureDeleted.name]: this.onCurrentPictureDelete.bind(this)
+  }
+
+  public onPictureFetch(event: PictureFetched) {
+    this.setTimeElapsed(event.elapsed);
+    this.setUsername(event.addedBy);
+  }
+
+  public onLastPicture() {
+
+  }
+
+  public onFirstPicture() {
+
+  }
+
+  public onCurrentPictureDelete() {
+
+  }
 
   constructor(
     private dom: HTMLElement
@@ -20,11 +45,5 @@ export default class PictureInfo implements Subscriber{
 
   setTimeElapsed(name: string) {
     this.timeElapsed.innerHTML = name;
-  }
-
-  actOnEvent(event: PictureEvent) {
-    console.log(event);
-    this.setTimeElapsed(event.timeElapsed);
-    this.setUsername(event.addedBy);
   }
 }

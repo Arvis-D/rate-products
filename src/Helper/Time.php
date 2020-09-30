@@ -17,6 +17,10 @@ class Time
             return null;
         }
 
+        if ($timeCreated >= time()) {
+            return 0 . 's';
+        }
+
         $elapsed = time() - $timeCreated;
         $minute = 60;
         $hour = $minute * 60;
@@ -29,9 +33,11 @@ class Time
         $postfix = ['s', 'min', 'h', 'd', 'w', 'm'];
 
         $count = 0;
-        while (1 < $elapsed / $times[$count]) {
+
+        do {
             $count++;
-        }
+        } while (1 <= $elapsed / $times[$count]);
+
         $count -= 1;
 
         return floor($elapsed / $times[$count]) . $postfix[$count];

@@ -8,11 +8,14 @@ export default class Dispatcher {
     this.subscribers.push(subscriber);
   }
 
-  public dispatch(event: Event) {
+  public dispatch(event: object) {
+    let eventName = event.constructor.name;
+
+    console.log('!!DISPATCH!!!', eventName, event);
     this.subscribers.forEach(subscriber => {
-      if (subscriber.subscribedEvents.includes(event.name)) {
-        subscriber.actOnEvent(event);
-      };
+      if (eventName in subscriber.subscribedEvents) {
+        subscriber.subscribedEvents[eventName](event);
+      }
     });
   }
 }

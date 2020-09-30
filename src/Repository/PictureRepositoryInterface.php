@@ -11,13 +11,13 @@ interface PictureRepositoryInterface extends SubjectInterface
 
     public function removePicture(string $criteria, $value);
 
-    public function getPicture(int $id, int $userId): array;
+    public function getPicture(int $id, ?int $userId): array;
 
     /**
      * @return picture added by user
      */
 
-    public function getUserPictures(int $subjectId, int $userId): array;
+    public function getUserPicture(int $subjectId, int $userId): array;
 
     //public function getPictureUrlByUserId(int $userId);
 

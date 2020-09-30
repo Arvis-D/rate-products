@@ -1,13 +1,14 @@
 import Subscriber from '../../../helpers/Subscriber/Subscriber';
-import PictureEvent from '../Event/PictureEvent';
-import { pictureEvents } from '../Event/events';
+import PictureChosen from '../Event/PictureChosen';
 
 export default class PreUploadPic implements Subscriber{
-  public subscribedEvents = [pictureEvents.chosen];
+  public subscribedEvents = {
+    [PictureChosen.name]: this.onPictureChosen.bind(this)
+  }
 
   constructor(private dom: HTMLElement) { }
 
-  public actOnEvent(event: PictureEvent) {
+  public onPictureChosen(event: PictureChosen) {
     this.showPicture(event.url);
   }
 

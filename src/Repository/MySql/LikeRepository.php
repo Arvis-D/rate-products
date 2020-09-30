@@ -3,9 +3,6 @@
 namespace App\Repository\MySql;
 
 use App\Helper\MySql\Database;
-use App\Helper\MySql\SimpleQuery;
-use App\Model\Likes\Like;
-use App\Model\User\UserId;
 use App\Repository\LikeRepositoryInterface;
 use App\Repository\MySql\Query\Like\ChangeLikeQuery;
 

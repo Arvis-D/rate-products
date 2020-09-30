@@ -26,11 +26,10 @@ export default class PictueCatalogue {
 
   private createElements() {
     this.createImageInput();
-    this.createLikeAndInfo();
-    this.createPicture();
     this.createUpload();
     this.createPreUpload();
     this.createSelector();
+    this.createPicture();
   }
 
   private createLikeAndInfo() {
@@ -47,21 +46,35 @@ export default class PictueCatalogue {
   }
 
   private createPicture() {
+    this.createLikeAndInfo();
     this.picture = new ChangeablePicture(
       this.dom.querySelector('.picture'),
       `/api/${this.subject}/picture/show`,
       this.dispatcher
     );
     this.dispatcher.addSubscriber(this.picture);
+    this.picture.localDispatcher.addSubscriber(this.like);
+    this.picture.localDispatcher.addSubscriber(this.picInfo);
   }
 
   private createUpload() {
-    let dom = this.dom.querySelector('.upload-button') as HTMLButtonElement;
+    let dom = this.dom.querySelector('.upload-btn') as HTMLButtonElement;
     if (dom) {
+      let deleteIdDom = this.dom.querySelector('.delete-pic-id');
+      let deleteId = (deleteIdDom ? parseInt(deleteIdDom.innerHTML) : null);
+
       this.upload = new UploadButton(
         dom,
-        `api/${this.subject}/picture/store`
+        this.dom.querySelector('.image-upload-form'),
+        `/api/${this.subject}/picture/delete`,
+        deleteId
       )
+
+      if (deleteId) {
+        this.upload.setDeleteUrl(this.dom.querySelector('.delete-pic-url').innerHTML);
+      }
+      this.upload.setDispatcher(this.dispatcher);
+      this.dispatcher.addSubscriber(this.upload);
     }
   }
 

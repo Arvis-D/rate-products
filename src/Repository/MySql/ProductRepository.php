@@ -86,7 +86,7 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
         );
     }
 
-    public function getProductFull(int $id, int $userId): array
+    public function getProductFull(int $id, ?int $userId): array
     {
         $product = $this->db->read(new ProductFullQuery($id))[0];
 

@@ -51,7 +51,7 @@ class PictureRepository extends AbstractRepository implements PictureRepositoryI
         );
     }
 
-    public function getUserPictures(int $subjectId, int $userId): array
+    public function getUserPicture(int $subjectId, int $userId): array
     {
         return $this->db->read(
             $this->table->select(['id', 'url'], [$this->subject . '_id' => $subjectId, 'user_id' => $userId])
@@ -63,11 +63,11 @@ class PictureRepository extends AbstractRepository implements PictureRepositoryI
         $this->db->write($this->table->delete([$criteria => $value]));
     }
 
-    public function getPicture(int $id, int $userId): array
+    public function getPicture(int $id, ?int $userId): array
     {
         $picture = $this->db->read(New PictureFullQuery($id, $this->tableName))[0];
         $likes = $this->getLikeRepository()->getLikes($id);
-        $picture['userLike'] = $this->getLikeRepository()->getUserLike($id, $userId);
+        $picture['userLike'] = ($userId === null ? null : $this->getLikeRepository()->getUserLike($id, $userId));
 
         return array_merge($picture, $likes);
     }

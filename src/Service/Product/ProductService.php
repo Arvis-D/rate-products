@@ -61,7 +61,7 @@ class ProductService
         if (null !== $userId = $this->auth->authParams('id')) {
             $product['userPicture'] = $this->repository
                 ->getPictureRepository()
-                ->getUserPictures($id, $userId)[0] ?? null;
+                ->getUserPicture($id, $userId)[0] ?? null;
         }
         
         return $product;

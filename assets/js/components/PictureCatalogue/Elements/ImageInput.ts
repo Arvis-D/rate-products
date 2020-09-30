@@ -1,10 +1,12 @@
 import Dispatcher from '../../../helpers/Subscriber/Dispatcher';
-import PictureEvent from '../Event/PictureEvent';
-import { pictureEvents } from '../Event/events';
 import Subscriber from '../../../helpers/Subscriber/Subscriber';
+import PictureDeleted from '../Event/PictureDeleted';
+import PictureChosen from '../Event/PictureChosen';
 
 export default class ImageInput implements Subscriber{
-  public subscribedEvents = [pictureEvents.uploaded, pictureEvents.deleted];
+  public subscribedEvents = {
+    [PictureDeleted.name]: this.onPictureDelete.bind(this)
+  }
 
   constructor (
     private dom: HTMLInputElement,
@@ -13,20 +15,23 @@ export default class ImageInput implements Subscriber{
     this.dom.addEventListener('change', () => {this.chooseImage()});
   }
 
-  public actOnEvent(event: PictureEvent) {
+  public onPictureDelete(event: PictureDeleted) {
 
   }
 
   private chooseImage() {
-    let url = URL.createObjectURL(this.dom.files[0]);
-    this.dispatcher.dispatch({name: pictureEvents.chosen, url: url} as PictureEvent);
+    try {
+      console.log('asdasdsadsd')
+      let url = URL.createObjectURL(this.dom.files[0]);
+      this.dispatcher.dispatch(new PictureChosen(url));
+    } catch(e) { }
   }
 
   public display() {
-    this.dom.style.removeProperty('display');
+    this.dom.classList.remove('d-none');
   }
 
   public hide() {
-    this.dom.style.display = 'none';
+    this.dom.classList.add('d-none');
   }
 }

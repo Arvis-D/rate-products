@@ -1,18 +1,22 @@
 <div class="picture-main">
 
   <a 
-  href="{{ randomPicture.url }}" 
-  class="picture {{ randomPicture.url == null ? 'no-image' : '' }}" 
-  style="background-image: url('{{ randomPicture.url }}');"
+    href="{{ randomPicture.url }}" 
+    class="picture {{ randomPicture.url == null ? 'no-image' : '' }}" 
+    style="background-image: url('{{ randomPicture.url }}');"
   ></a>
 
+  {% if randomPicture.id is not defined %}
+    {% set hideLikeAndInfo = 'd-none' %}
+  {% endif %}
+
   <div class="pic-controls">
-    <div class="pic-info">
+    <div class="pic-info {{ hideLikeAndInfo }}">
       <strong>{{ randomPicture.username }}</strong>
       <span class="text-secondary">{{ randomPicture.time_created|elapsed }}</span>
     </div>
-    {% if randomPicture.id is defined %}
-    <div class="like-controls">
+
+    <div class="like-controls {{ hideLikeAndInfo }}">
 
       {% if randomPicture.userLike.like is defined%}
         {% if randomPicture.userLike.like == true %}
@@ -29,12 +33,8 @@
       <button class="btn btn-small thumb-down {{ dislikeActive }}">
         <span class="icon">thumb_down</span> <span>{{ randomPicture.dislikes }}</span>
       </button>
-      <form action="/ajax/product/picture/like" method="post" class="like-form">
-        {% include "elements/csrfToken.twig" %}
-        <input type="hidden" name="like" class="like-value" value="0">
-      </form>
+
     </div>
-    {% endif %}
   </div>
 
 </div>
