@@ -87,7 +87,7 @@ class Router
         $prefix = implode($this->groupPrefix);
         
         if (
-            !$this->response && 
+            $this->response === null && 
             $this->method === $method && 
             $this->urisMatch($this->path, $prefix . $uri)
         ) {
@@ -172,6 +172,11 @@ class Router
             foreach ($routeUri as $key => $item) {
                 if ($path[$key] !== $item) {
                     if (!empty($item) && $item[0] === ':' && !empty($path[$key])) {
+                        if (!$this->validateSegment($item, $path[$key])) {
+
+                            return false;
+                        }
+
                         continue;
                     }
 
@@ -183,6 +188,26 @@ class Router
         }
 
         return false;
+    }
+
+    private function validateSegment(string $routeSegment, string $realSegment): bool
+    {
+        $requrements = explode(':', $routeSegment);
+        if (count($requrements) < 3) {
+            return true;
+        }
+
+        $requrements = array_filter($requrements, function($value) { return ($value !== ''); });
+
+        foreach ($requrements as $key => $value) {
+            if ($value === 'n') {
+                if (!is_numeric($realSegment)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
     
 }

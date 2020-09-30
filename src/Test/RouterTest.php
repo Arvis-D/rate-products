@@ -70,6 +70,22 @@ class RouterTest extends TestCase
         $router->get('/', function() {return new Response('no');});
         $router->get('/about', function() {return new Response('no');});
         $this->assertSame('1213+', $router->getResponse()->getContent());
+
+        $path = '/user/undefined';
+        $router = new Router($path, 'GET');
+        $router->get('/user', function($id) {return new Response($id);});
+        $router->get('/user/:id:n', function($id) {return new Response($id);});
+        $router->get('/user/:id', function($id) {return new Response($id . '+');});
+        $router->get('/', function($id) {return new Response($id);});
+        $this->assertSame('undefined+', $router->getResponse()->getContent());
+
+        $path = '/user/12';
+        $router = new Router($path, 'GET');
+        $router->get('/user', function($id) {return new Response($id);});
+        $router->get('/user/:id:n', function($id) {return new Response($id . '+');});
+        $router->get('/user/:id', function($id) {return new Response($id);});
+        $router->get('/', function($id) {return new Response($id);});
+        $this->assertSame('12+', $router->getResponse()->getContent());
     }
 
     public function testContainerAccessible()
