@@ -1,1 +1,3 @@
-export default class FirstPictureAdded {}
+export default class FirstPictureAdded {
+  constructor(public readonly pictureId: number) { }
+}

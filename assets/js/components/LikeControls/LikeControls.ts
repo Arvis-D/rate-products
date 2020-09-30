@@ -4,6 +4,8 @@ import Request from '../../helpers/Request';
 import csrf from '../../helpers/Subscriber/csrf';
 import { spinnerType, toggleSpinner } from '../../helpers/spinner';
 import LikeInfoRecieved from './Event/LikeInfoRecieved';
+import ParentShown from '../Events/ParentShown';
+import ParentHidden from '../Events/ParentHidden';
 
 export default class LikeControls  implements Subscriber{
   private thumbUp: HTMLElement;
@@ -13,7 +15,9 @@ export default class LikeControls  implements Subscriber{
   private dislikes: number;
   private csrf: string;
   public subscribedEvents = {
-    [LikeInfoRecieved.name]: this.onLikeInfoRecieved.bind(this)
+    [LikeInfoRecieved.name]: this.onLikeInfoRecieved.bind(this),
+    [ParentShown.name]: this.onParentShow.bind(this),
+    [ParentHidden.name]: this.onParentHide.bind(this)
   };
 
   constructor(
@@ -34,6 +38,14 @@ export default class LikeControls  implements Subscriber{
 
   public onLikeInfoRecieved(event: LikeInfoRecieved) {
     this.changeData(event);
+  }
+
+  public onParentHide() {
+    this.dom.classList.add('d-none');
+  }
+
+  public onParentShow() {
+    this.dom.classList.remove('d-none');
   }
 
   private handleDislike() {

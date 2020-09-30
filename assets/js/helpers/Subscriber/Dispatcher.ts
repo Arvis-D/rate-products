@@ -10,11 +10,10 @@ export default class Dispatcher {
 
   public dispatch(event: object) {
     let eventName = event.constructor.name;
-
-    console.log('!!DISPATCH!!!', eventName, event);
     this.subscribers.forEach(subscriber => {
       if (eventName in subscriber.subscribedEvents) {
         subscriber.subscribedEvents[eventName](event);
+        //console.log(`${eventName}: ${subscriber.constructor.name}`)
       }
     });
   }

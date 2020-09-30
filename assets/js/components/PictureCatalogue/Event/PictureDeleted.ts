@@ -1,5 +1,5 @@
 export default class PictureDeleted {
   constructor (
-    public readonly deletedId?: number
+    public readonly deletedId: number
   ) { }
 }

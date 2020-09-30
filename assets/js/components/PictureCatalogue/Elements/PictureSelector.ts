@@ -11,9 +11,8 @@ import LastPictureRemoved from '../Event/LastPictureRemoved';
 export default class PictureSelector implements Subscriber{
   private thumbnails: Array<Thumbnail> = [];
   public subscribedEvents = {
-    [PictureDeleted.name]: this.onLastPicture.bind(this),
-    [PictureUploaded.name]: this.onFirstPicture.bind(this),
-    [CurrentPictureDeleted.name]: this.onCurrentPictureDelete.bind(this)
+    [PictureDeleted.name]: this.onPictureDeleted.bind(this),
+    [PictureUploaded.name]: this.onPictureUploaded.bind(this)
   }
 
   constructor (
@@ -21,36 +20,32 @@ export default class PictureSelector implements Subscriber{
     private dispatcher: Dispatcher
   ) {
     this.dom.querySelectorAll('.selector-thumbnail').forEach(e => {
-      this.addThumbnail(e as HTMLElement);
+      this.addPicture(e as HTMLElement);
     });
   }
 
-  public onCurrentPictureDelete() {
-
+  public onPictureUploaded(event: PictureUploaded) {
+    this.addThumbnail(event.id, event.url)
   }
 
-  public onFirstPicture() {
-
-  }
-
-  public onLastPicture() {
-
+  public onPictureDeleted(event: PictureDeleted) {
+    this.removeThumbnail(event.deletedId);
   }
 
   private getLastId() {
     return (this.thumbnails.length === 0 ? null : this.thumbnails[this.thumbnails.length - 1].id);
   }
 
-  private addThumbnail(el: HTMLElement) {
+  private addPicture(el: HTMLElement) {
     let thumbnail = new Thumbnail(el as HTMLElement, this.dispatcher);
     this.thumbnails.push(thumbnail);
   }
 
-  private addPicture(id: number, url: string) {
-    this.check(false);
+  private addThumbnail(id: number, url: string) {
     let thumb = Thumbnail.createDom(id, url);
     this.dom.appendChild(thumb)
-    this.addThumbnail(thumb);
+    this.addPicture(thumb);
+    this.checkIfFirst();
   }
 
   private removeThumbnail(id: number) {
@@ -62,7 +57,7 @@ export default class PictureSelector implements Subscriber{
       }
     });
 
-    if (!this.check(true)) {
+    if (!this.checkIfLast()) {
       this.dispatcher.dispatch(new ThumbnailRemoved(
         id,
         this.getLastId()
@@ -70,17 +65,34 @@ export default class PictureSelector implements Subscriber{
     }
   }
 
-  private check(last: boolean = true) {
+  /**
+   * checks if there are no thumbnails.
+   * 
+   * if there are no thumbnails and picture is being added or removed
+   * appropriate event will fire
+   * 
+   * if thumnails are not empty it will just return false
+   */
+
+  private checkIfLast() {
     if (this.thumbnails.length === 0) {
-      if (last) {
         this.dispatcher.dispatch(new LastPictureRemoved);
-      } else {
-        this.dispatcher.dispatch(new FirstPictureAdded)
-      }
-      return false;
-    } else {
 
       return true;
+    } else {
+
+      return false;
+    }
+  }
+
+  private checkIfFirst() {
+    if (this.thumbnails.length === 1) {
+        this.dispatcher.dispatch(new FirstPictureAdded(this.getLastId()))
+
+      return true;
+    } else {
+
+      return false;
     }
   }
 }

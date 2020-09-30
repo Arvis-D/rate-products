@@ -2,16 +2,21 @@ import Subscriber from '../../../helpers/Subscriber/Subscriber';
 import Request from '../../../helpers/Request';
 import Dispatcher from '../../../helpers/Subscriber/Dispatcher';
 import { toggleSpinner } from '../../../helpers/spinner';
-import Event from '../../../helpers/Subscriber/Event';
 import PictureSelected from '../Event/PictureSelected';
-import CurrentPictureDeleted from '../Event/CurrentPictureDeleted';
-import PictureHidden from '../Event/PictureHidden';
 import LikeInfoRecieved from '../../LikeControls/Event/LikeInfoRecieved';
 import PictureFetched from '../Event/PictureFetched';
+import ParentHidden from '../../Events/ParentHidden';
+import ThumbnailRemoved from '../Event/ThumbnailRemoved';
+import FirstPictureAdded from '../Event/FirstPictureAdded';
+import LastPictureRemoved from '../Event/LastPictureRemoved';
+import ParentShown from '../../Events/ParentShown';
 
 export default class ChangeablePicture implements Subscriber {
   public subscribedEvents = {
-    [PictureSelected.name]: this.onPictureSelected.bind(this)
+    [PictureSelected.name]: this.onPictureSelected.bind(this),
+    [ThumbnailRemoved.name]: this.onThumbnailRemove.bind(this),
+    [FirstPictureAdded.name]: this.onFirstPicture.bind(this),
+    [LastPictureRemoved.name]: this.onLastPicture.bind(this)
   };
   public picture: HTMLElement;
   private currentId: number = null;
@@ -30,10 +35,29 @@ export default class ChangeablePicture implements Subscriber {
     this.localDispatcher = new Dispatcher();
   }
 
+  public onThumbnailRemove(event: ThumbnailRemoved) {
+    if (this.checkIfRemovedCurrent(event.removedId)) {
+      this.changePicture(event.newLastId);
+    }
+  }
+
+  public onLastPicture() {
+    this.noPicture();
+  }
+
+  public onFirstPicture(event: FirstPictureAdded) {
+    this.show();
+    this.changePicture(event.pictureId);
+  }
+
+  private show() {
+    this.dom.classList.remove('no-image');
+    this.localDispatcher.dispatch(new ParentShown);
+  }
+
   public async changePicture(id: number) {
     toggleSpinner(this.dom);
     let data = await this.fetchPicture(id);
-    //console.log('changePicture', data)
     if (data) {
       this.currentId = id;
       this.successfulFetch(data);
@@ -74,20 +98,21 @@ export default class ChangeablePicture implements Subscriber {
       .methodGet()
       .setUrl(this.fetchUrl + `/${id}`)
       .send()
-      .then(res => (res.ok ? res.json() : null))
+      .then(res => (res.status === 200 ? res.json() : null))
       .catch(error => console.log(error));
   }
 
   private noPicture() {
     this.showPicture('/img/blank.jpg');
-    this.dom.classList.add('.no-image');
-    this.dispatcher.dispatch(new PictureHidden);
+    this.dom.classList.add('no-image');
+    this.localDispatcher.dispatch(new ParentHidden);
   }
 
-  private checkIfDeletedCurrent(id: number) {
+  private checkIfRemovedCurrent(id: number) {
     if (this.currentId === id) {
-      this.noPicture();
-      this.dispatcher.dispatch(new CurrentPictureDeleted());
+      return true;
     }
+
+    return false;
   }
 }

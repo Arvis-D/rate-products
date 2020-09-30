@@ -3,6 +3,8 @@ import PictureFetched from '../Event/PictureFetched';
 import LastPictureRemoved from '../Event/LastPictureRemoved';
 import FirstPictureAdded from '../Event/FirstPictureAdded';
 import CurrentPictureDeleted from '../Event/CurrentPictureDeleted';
+import ParentShown from '../../Events/ParentShown';
+import ParentHidden from '../../Events/ParentHidden';
 
 export default class PictureInfo implements Subscriber{
   private username: HTMLElement;
@@ -10,9 +12,8 @@ export default class PictureInfo implements Subscriber{
 
   public subscribedEvents = {
     [PictureFetched.name]: this.onPictureFetch.bind(this),
-    [LastPictureRemoved.name]: this.onLastPicture.bind(this),
-    [FirstPictureAdded.name]: this.onFirstPicture.bind(this),
-    [CurrentPictureDeleted.name]: this.onCurrentPictureDelete.bind(this)
+    [ParentShown.name]: this.onParentShow.bind(this),
+    [ParentHidden.name]: this.onParentHide.bind(this)
   }
 
   public onPictureFetch(event: PictureFetched) {
@@ -20,12 +21,12 @@ export default class PictureInfo implements Subscriber{
     this.setUsername(event.addedBy);
   }
 
-  public onLastPicture() {
-
+  public onParentHide() {
+    this.dom.classList.add('d-none');
   }
 
-  public onFirstPicture() {
-
+  public onParentShow() {
+    this.dom.classList.remove('d-none');
   }
 
   public onCurrentPictureDelete() {

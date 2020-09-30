@@ -76,14 +76,9 @@ export default class UploadButton implements Subscriber{
 
   private handleSucessfulUpload() {
     this.toggleButton();
-    // this.dispatcher.dispatch({
-    //   name: pictureEvents.uploaded,
-    //   id: this.imageId,
-    //   url: this.tempUrl
-    // } as PictureEvent)
-
     this.dispatcher.dispatch(new PictureUploaded(
-      this.imageId
+      this.imageId,
+      this.tempUrl
     ));
   }
 
