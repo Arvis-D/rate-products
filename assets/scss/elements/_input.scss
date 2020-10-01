@@ -1,0 +1,66 @@
+.input-field {
+  position: relative;
+  width: 100%;
+  border-bottom: .2em $gray-300 solid;
+  &::after {
+    bottom: -.2em;
+    left: 0;
+    position: absolute;
+    content: '';
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: 0%;
+    opacity: 0;
+    background-color: $info;
+    height: .2em;
+    transition: transform .2s ease-in-out, opacity .2s ease-in-out;
+  }
+
+  &:focus-within {
+    label {
+      color: $info;
+    }
+    &::after {
+      transform: scaleX(1);
+      opacity: 100%;
+    }
+  }
+
+  &:focus-within label, input:not(:placeholder-shown) + label {
+    transform-origin: 0%;
+    transform: translateY(-1.5em) scale(0.7);
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    & + label {
+      transform-origin: 0%;
+      transform: translateY(-1.5em) scale(0.7);
+    }
+  }
+
+  input {
+    background-color: transparent;
+    width: 100%;
+    margin-top: 1em;
+    border: none;
+    outline: none;
+    padding: .5em;
+
+    // &:not(:placeholder-shown) + label {
+    //   transform-origin: 0%;
+    //   transform: translateY(-1.5em) scale(0.7);
+    // }
+  }
+
+  label {
+    transform-origin: 0%;
+    transition: transform .2s ease-in-out, color .2s ease-in-out;
+    position: absolute;
+    top: 1.5em;
+    left: 0;
+  }
+}

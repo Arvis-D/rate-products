@@ -4,11 +4,11 @@
 {% endif %}
 
 
-<div class="form-group mb-3">
-  <label for="{{ 'form-' ~ htmlPropertyName }}">{{ name|capitalize ~ other ~ ':' }}</label>
+<div class="input-field mb-3">
   <input 
+    placeholder=" "
     type="{{ type ?? 'text' }}" 
-    class="form-control {% if errors[name] is defined %} border border-danger {% endif %}"
+    class="{% if errors[name] is defined %} border border-danger {% endif %}"
     {# placeholder="{{ name|capitalize }}"  #}
     aria-label="{{ name|capitalize }}" 
     name="{{ htmlPropertyName }}"
@@ -17,6 +17,7 @@
       value="{{ old }}"
     {% endif %}
   >
+  <label for="{{ 'form-' ~ htmlPropertyName }}">{{ name|capitalize ~ other ~ ':' }}</label>
 </div>
 
 {% if errors[name] is defined %}

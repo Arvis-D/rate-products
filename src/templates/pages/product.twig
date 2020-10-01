@@ -9,8 +9,12 @@
   {% if product.id != null %}
   <h1>{{ product.name }}</h1>
 
+  <h3>Pictures:</h3>
   {% include "elements/pictureCatalogue.twig" 
   with {pictures: product.pictures, randomPicture: product.randomPicture} %}
+
+  <h3>Comments:</h3>
+  {% include "elements/comments.twig" %}
   
   {% else %}
     <h2>No such product exists!</h2>

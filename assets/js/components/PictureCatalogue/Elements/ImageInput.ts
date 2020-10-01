@@ -3,6 +3,7 @@ import Subscriber from '../../../helpers/Subscriber/Subscriber';
 import PictureDeleted from '../Event/PictureDeleted';
 import PictureChosen from '../Event/PictureChosen';
 import PictureUploaded from '../Event/PictureUploaded';
+import PictureChoiceCancelled from '../Event/PictureChoiceCanceled';
 
 export default class ImageInput implements Subscriber{
   public subscribedEvents = {
@@ -30,7 +31,9 @@ export default class ImageInput implements Subscriber{
     try {
       let url = URL.createObjectURL(this.dom.files[0]);
       this.dispatcher.dispatch(new PictureChosen(url));
-    } catch(e) { }
+    } catch(e) {
+      this.dispatcher.dispatch(new PictureChoiceCancelled);
+    }
   }
 
   public display() {

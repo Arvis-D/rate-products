@@ -6,10 +6,12 @@ import Dispatcher from '../../../helpers/Subscriber/Dispatcher';
 import PictureChosen from '../Event/PictureChosen';
 import PictureUploaded from '../Event/PictureUploaded';
 import PictureDeleted from '../Event/PictureDeleted';
+import PictureChoiceCancelled from '../Event/PictureChoiceCanceled';
 
 export default class UploadButton implements Subscriber{
   public subscribedEvents = {
-    [PictureChosen.name]: this.onPictureChosen.bind(this)
+    [PictureChosen.name]: this.onPictureChosen.bind(this),
+    [PictureChoiceCancelled.name]: this.onChoiceCancel.bind(this)
   }
   private imageChosen: boolean = false;
   private dispatcher: Dispatcher;
@@ -28,6 +30,23 @@ export default class UploadButton implements Subscriber{
   public onPictureChosen(event: PictureChosen) {
     this.imageChosen = true;
     this.tempUrl = event.url;
+    this.unsetDisabled();
+    console.log('asdasdsa')
+  }
+
+  public onChoiceCancel() {
+    this.setDisabled();
+    this.imageChosen = false;
+  }
+
+  private setDisabled() {
+    this.dom.disabled = true;
+    this.dom.classList.replace('btn-primary', 'btn-secondary');
+  }
+
+  private unsetDisabled() {
+    this.dom.disabled = false;
+    this.dom.classList.replace('btn-secondary', 'btn-primary')
   }
 
   public setDispatcher(dispatcher: Dispatcher) {

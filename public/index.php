@@ -5,17 +5,17 @@
 
 // phpinfo();
 
-// use App\App;
+use App\App;
 
-// require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
-// $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
-// $dotenv->load();
-// $container = require __DIR__ . '/../src/Config/container.php';
+$dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+$container = require __DIR__ . '/../src/Config/container.php';
 
-// $app = new App($container['request'], $container, $container['dispatcher']);
-// $response = $app->handle();
-// $response->send();
+$app = new App($container['request'], $container, $container['dispatcher']);
+$response = $app->handle();
+$response->send();
 
 // $memEnd = memory_get_usage();
 // $timeEnd = microtime(true);

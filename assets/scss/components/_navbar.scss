@@ -47,14 +47,16 @@
         bottom: -.12em;
         background: $primary;
         height: 0.1em;
-        width: 0;
+        width: 100%;
         opacity: 0%;
-        transition: width .2s ease-in-out, opacity .2s ease-in-out;
+        transform-origin: 0%;
+        transform: scaleX(0);
+        transition: transform .2s ease-in-out, opacity .2s ease-in-out;
       }
       &:hover, &.active{
         &::after{
           opacity: 100%;
-          width: 100%;
+          transform: scaleX(1);
         }
       }
     }
