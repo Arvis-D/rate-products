@@ -1,20 +1,20 @@
 {% set htmlPropertyName = name|lower|replace({' ': '-'}) %}
-{% if type != 'password' %}
-  {% set old = old[name] %}
-{% endif %}
+{% set old = old[name] %}
 
 
-<div class="input-field mb-3">
+<div class="input-field mb-3 {% if errors[name] is defined %} error {% endif %} {{ 'input-' ~ htmlPropertyName }}">
   <input 
     placeholder=" "
     type="{{ type ?? 'text' }}" 
-    class="{% if errors[name] is defined %} border border-danger {% endif %}"
     {# placeholder="{{ name|capitalize }}"  #}
     aria-label="{{ name|capitalize }}" 
     name="{{ htmlPropertyName }}"
     id="{{ 'form-' ~ htmlPropertyName }}"
     {% if old is defined %}
       value="{{ old }}"
+    {% endif %}
+    {% if required %}
+      required
     {% endif %}
   >
   <label for="{{ 'form-' ~ htmlPropertyName }}">{{ name|capitalize ~ other ~ ':' }}</label>

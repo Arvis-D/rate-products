@@ -43,4 +43,9 @@ class BaseValidationService
             ->setValidationResource($this->resource)
             ->setTranslation($this->errorTranslations);
     }
+
+    public function getErrors()
+    {
+        
+    }
 }

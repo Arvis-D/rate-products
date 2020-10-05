@@ -51,6 +51,11 @@ $router->group('/product', function($router) {
 });
 
 $router->group('/api', function($router) {
+
+    $router->get('/unique/:resource/:field/:value', function($resource, $field, $value, $c) {
+        return $c['ApiValidationController']->unique($resource, $field, $value);
+    });
+
     $router->group('/product', function($router){
         $router->group('/picture', function($router){
             $router->protected()->post('/store', function($c) {

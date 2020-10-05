@@ -1,0 +1,11 @@
+{
+  "requirements": {
+    "image": {
+      "type": ["jpg", "jpeg", "png"],
+      "size": 2048
+    }
+  },
+  "errors": {
+
+  }
+}

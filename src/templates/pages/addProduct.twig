@@ -14,14 +14,24 @@
         <div class="p-3">
 
           <form action="/product/store" method="post" enctype="multipart/form-data">
-            {% include "elements/formText.twig" with {name: 'name'} %}
+            {% include "elements/formText.twig" with {name: 'name', required: true} %}
             {% include "elements/formText.twig" with {name: 'price', other: ' (optional)'} %}
             {% include "elements/formText.twig" with {name: 'rating', other: ' (optional)'} %}
-            {% include "elements/formText.twig" with {name: 'picture', other: ' (optional)'} %}
             {% include "elements/formTextArea.twig" with {name: 'comment', other: ' (optional)'} %}
-            {% include "elements/formFile.twig" with {name: 'image', other: ' (optional)'} %}
             {% include "elements/csrfToken.twig" %}
-            <button class="btn btn-primary w-100">Save</button>
+            <span class="text-secondary">Image (optional):</span>
+            <div class="image-upload mb-3 mt-3">
+              <div class="upload-input">
+                <input class="image-input" type="file" name="image" id="form-image">
+              </div>
+              <div class="upload-showcase">
+              </div>
+            </div>
+            {% if errors.image is defined %}
+              <span class="text-danger mb-3 d-inline-block">{{ errors.image }}</span>
+            {% endif %}
+            
+            <button class="btn btn-primary w-100 submit">Save</button>
           </form>
           
         </div>
@@ -30,4 +40,9 @@
   </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+    <script src="/dist/addProduct~signup.bundle.js"></script>
+    <script src="/dist/addProduct.bundle.js"></script>
 {% endblock %}

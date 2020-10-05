@@ -12,8 +12,8 @@ export default class Dispatcher {
     let eventName = event.constructor.name;
     this.subscribers.forEach(subscriber => {
       if (eventName in subscriber.subscribedEvents) {
-        subscriber.subscribedEvents[eventName](event);
         //console.log(`${eventName}: ${subscriber.constructor.name}`)
+        subscriber.subscribedEvents[eventName](event);
       }
     });
   }

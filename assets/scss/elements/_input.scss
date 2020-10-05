@@ -2,6 +2,13 @@
   position: relative;
   width: 100%;
   border-bottom: .2em $gray-300 solid;
+  &.error {
+    border-bottom: .2em $danger solid;
+    label {
+      color: $danger;
+    }
+  }
+
   &::after {
     bottom: -.2em;
     left: 0;
@@ -26,9 +33,10 @@
     }
   }
 
-  &:focus-within label, input:not(:placeholder-shown) + label {
+  &:focus-within label, input:not(:placeholder-shown) + label, textarea:not(:placeholder-shown) + label {
     transform-origin: 0%;
     transform: translateY(-1.5em) scale(0.7);
+    z-index: 0;
   }
 
   input:-webkit-autofill,
@@ -42,7 +50,7 @@
     }
   }
 
-  input {
+  input, textarea{
     background-color: transparent;
     width: 100%;
     margin-top: 1em;
@@ -50,13 +58,14 @@
     outline: none;
     padding: .5em;
 
-    // &:not(:placeholder-shown) + label {
-    //   transform-origin: 0%;
-    //   transform: translateY(-1.5em) scale(0.7);
-    // }
+    &:invalid {
+      color: $danger;
+    }
   }
 
   label {
+    z-index: -1;
+    color: $secondary;
     transform-origin: 0%;
     transition: transform .2s ease-in-out, color .2s ease-in-out;
     position: absolute;

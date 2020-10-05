@@ -18,6 +18,9 @@ class EmailRequirement implements RequirementInterface
         $pos = strpos($this->value, '@');
         $count = strlen($this->value);
 
-        return !($pos < 1 || $pos > $count - 2);
+        $valid = ($pos && !($pos < 1 || $pos > $count - 2));
+
+
+        return $valid;
     }
 }

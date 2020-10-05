@@ -22,6 +22,8 @@ class SessionSubscriber implements EventSubscriberInterface
             'old' => $this->session->getFlashBag()->get('old'),
             'errors' => $this->session->getFlashBag()->get('errors')
         ]);
+
+        $asd  = 2+2;
     }
 
     public function onBeforeRouter(BeforeRouterEvent $event)

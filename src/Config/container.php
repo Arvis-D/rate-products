@@ -54,6 +54,9 @@ $c['ProductController'] = function ($c) {
 $c['ProductPictureController'] = function ($c) {
     return new \App\Controller\ProductPictureController($c['PictureService']);
 };
+$c['ApiValidationController'] = function ($c) {
+    return new \App\Controller\ApiValidationController($c['DbValidationResource']);
+};
 
 /**
  * Services

@@ -4,14 +4,16 @@
   {% set rows = 3 %}
 {% endif %}
 
-<div class="form-group">
-  <label for="{{ 'form-' ~ htmlPropertyName }}">{{ name|capitalize ~ other ~ ':' }}</label>
+<div class="input-field mb-3">
   <textarea 
-    class="form-control {% if errors[name] is defined %} border border-danger {% endif %}"
+    placeholder=" "
+    class="small-scrollbar {% if errors[name] is defined %} error {% endif %}"
     id="{{ 'form-' ~ htmlPropertyName }}" 
     rows="{{ rows }}"
     name="{{ htmlPropertyName }}"
   >{{ old }}</textarea>
+
+  <label for="{{ 'form-' ~ htmlPropertyName }}">{{ name|capitalize ~ other ~ ':' }}</label>
 </div>
 
 {% if errors[name] is defined %}

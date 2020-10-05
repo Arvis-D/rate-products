@@ -5,7 +5,8 @@ module.exports = {
   entry: {
     addProduct: './assets/js/addProducts.ts',
     navbar: './assets/js/navbar.ts',
-    product: './assets/js/product.ts'
+    product: './assets/js/product.ts',
+    signup: './assets/js/signup.ts'
   },
   output: {
     path: path.join(__dirname, 'public/dist'),
@@ -32,6 +33,8 @@ module.exports = {
   optimization: {
     splitChunks: {
       chunks: 'all',
-    },
-  },
+      name: true
+    }
+  }
 };
+

@@ -26,7 +26,7 @@ class StringValidatorDecorator extends PrimitiveValidator
 
     public function email()
     {
-        $this->validator->validate(new EmailRequirement($this->getCurrentValue(), 'email'));
+        $this->validator->validate(new EmailRequirement($this->getCurrentValue()), 'email');
 
         return $this;
     }

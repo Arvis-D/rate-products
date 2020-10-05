@@ -16,12 +16,16 @@
             {% include "elements/formText.twig" with {name: 'repeat password', type: 'password'} %}
             {% include "elements/formCheckBox.twig" with {name: 'Remember me'} %}
             {% include "elements/csrfToken.twig" %}
-            <button class="btn btn-primary w-100">Sign Up</button>
+            <button disabled class="btn btn-primary w-100 submit">Sign Up</button>
           </form>
         </div>
       </div>
     </div>
   </div>
 
+{% endblock %}
 
+{% block scripts %}
+  <script src="/dist/addProduct~signup.bundle.js"></script>
+  <script src="/dist/signup.bundle.js"></script>
 {% endblock %}

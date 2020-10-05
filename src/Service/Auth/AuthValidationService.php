@@ -43,7 +43,7 @@ class AuthValidationService
     public function validateLogin(array $params): bool
     {
         $validator = $this->getValidator()->setParams($params);
-        $validator->string(true, 'password')->length(7);
+        $validator->string(true, 'password')->length(6);
         $validator->string(true, 'username');
         $this->errors = $validator->getErrors();
 
