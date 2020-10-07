@@ -1,7 +1,24 @@
 .product-card {
+  height: 140%;
+  overflow-y: auto;
   border: none;
-  box-shadow: $light-shadow;
   .product-thumbnail {
     @include aspect-ratio-image(4, 3);
+  }
+  .card-body {
+    padding: 0;
+    padding-top: 1em;
+
+    .basic-stats {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      .vote-number {
+        color: $gray-500;
+      }
+      .price {
+        color: $info;
+      }
+    }
   }
 }

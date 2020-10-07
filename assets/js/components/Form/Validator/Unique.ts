@@ -3,6 +3,7 @@ import Request from '../../../helpers/Request';
 
 export default class Unique implements Validator{
   private memory: {[val: string]: boolean} = {};
+  private inRequest: boolean = false;
 
   constructor(
     private name: string,
@@ -22,7 +23,7 @@ export default class Unique implements Validator{
 
   public async validate(val: string) {
     if (val === '') {
-      return false;
+      return true;
     }
 
     if (val in this.memory) {

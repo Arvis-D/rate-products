@@ -2,9 +2,13 @@
   display: block;
   position: fixed;
   z-index: $zindex-sticky;
+  background-color: $white;
   overflow-y: auto;
-  max-height: 95vh;
+  height: 95vh;
   @media screen and (max-width: $sm - 1) {
     position: relative;
+  }
+  .filter-inner {
+    height: 100%;
   }
 }

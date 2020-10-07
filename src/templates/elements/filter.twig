@@ -1,7 +1,11 @@
 <div class="row justify-content-start">
-  <div class="col-sm-6 col-md-5 col-lg-4 col-xl-3 side-filter">
+  <div class="p-3 col-sm-6 col-md-5 col-lg-4 col-xl-3 side-filter">
+  <div class="border rounded filter-inner p-3">
     {% if authenticated %}
-        <a href="{{ type|lower }}/create" class="btn btn-lg btn-success w-100">Add {{ type|lower }}</a>
+      <a href="{{ type|lower }}/create" class="btn btn-lg btn-success w-100">Add {{ type|lower }}</a>
+      <hr>
     {% endif %}
+    <h4>Filter</h4>
+  </div>
   </div>
 </div>

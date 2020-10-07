@@ -1,0 +1,22 @@
+.separator {
+  border-bottom: solid $border-color $border-width;
+  margin: 1em;
+}
+
+
+.separator-fat {
+  position: relative;
+  height: .25em;
+  margin: 1em;
+  &::after {
+    content: '';
+    width: 30%;
+    background-color: $border-color;
+    height: .25em;
+    border-radius: .25em;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+  }
+}

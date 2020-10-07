@@ -45,7 +45,7 @@ class ImageService
         $filename = md5($file->getClientOriginalName()) . "--size.{$ext}";
         $fullPath = $path . $filename;
 
-        $image->save($fullPath, 50);
+        $this->createLarge($image, $fullPath);
         $this->createThumbnail($image, $fullPath);
         $this->createIcon($image, $fullPath);
 
@@ -64,17 +64,34 @@ class ImageService
         $this->downsize($img, 100 * 100)->save($path, 50);
     }
 
+    private function createLarge(Image $img, string $fullPath)
+    {
+        $path = $this->addSizePostfixToPath($fullPath, 'size');
+        $this->downsize($img, 1024 * 1920)->save($path, 50);
+    }
 
     private function addSizePostfixToPath(string $fullPath, string $size): string
     {
         return str_replace('--size', "--{$size}", $fullPath);
     }
 
+    /**
+     * Reduces the resolution of an image if necessary
+     * 
+     */
+
     private function downsize(Image $img, int $pixels): Image
     {
         $relSize = sqrt($pixels / ($img->getWidth() * $img->getHeight()) );
 
-        return $img->resize($img->getWidth() * $relSize, $img->getHeight() * $relSize);
+        $width = $img->getWidth();
+        $height = $img->getHeight();
+
+        if (($width * $height) < $pixels) {
+            return $img;
+        }
+
+        return $img->resize($width * $relSize, $height * $relSize);
     }
 
     private function createDirectory(string $path): string

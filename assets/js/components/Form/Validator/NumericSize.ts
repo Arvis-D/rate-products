@@ -18,6 +18,6 @@ export default class NumericSize implements Validator{
   public validate(val: string) {
     let num = Number(val);
 
-    return (num > this.min && num < this.max);
+    return (num >= this.min && num <= this.max);
   }
 }

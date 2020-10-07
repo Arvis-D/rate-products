@@ -19,6 +19,8 @@ $light-shadow: 0 0 .5em rgba(0, 0, 0, .2);
 @import "./utilities/spinner";
 @import "./utilities/scroll";
 @import "./utilities/aspect-ratio";
+@import "./utilities/light-shadow";
+@import "./utilities/separator";
 
 @import "./components/navbar";
 @import "./components/filter";

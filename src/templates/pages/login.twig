@@ -5,20 +5,17 @@
 {% block content %}
   {% include "elements/navbar.twig" with {currentPath: '/login'} %}
 
-  <div class="container mt-5">
+  <div class="container">
     <div class="row justify-content-md-center">
-      <div class="col-md-6">
-        <div class="p-3">
-
+      <div class="col-md-8 col-lg-5 p-3">
+        <div class="p-3 bg-white shadow-sm border rounded">
           <form action="/auth/login" method="post">
-            {% include "elements/formText.twig" with {name: 'username'} %}
-            {% include "elements/formText.twig" with {name: 'password', type: 'password'} %}
+            {% include "elements/formText.twig" with {name: 'username', required: true} %}
+            {% include "elements/formText.twig" with {name: 'password', type: 'password', required: true} %}
             {% include "elements/csrfToken.twig" %}
             {% include "elements/formCheckBox.twig" with {name: 'Remember me'} %}
             <button class="btn btn-primary w-100">login</button>
           </form>
-          
-
           {% if errors.login is defined %}
             <div class="mt-3">
               <strong class="text-danger">{{ errors.login }}</strong>

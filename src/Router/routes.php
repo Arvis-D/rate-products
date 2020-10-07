@@ -30,6 +30,14 @@ $router->group('/auth', function($router) {
     $router->post('/logout', function($c) {
         return $c['AuthController']->logout();
     });
+
+    $router->protected()->get('/profile/show/:id:n', function($id, $c) {
+        return $c['AuthController']->profile($id, $c['view'], $c['UserRepository']);
+    });
+
+    $router->protected()->post('/profile/update', function($c) {
+        return $c['AuthController']->update($c['view'], $c['UserRepository']);
+    });
 });
 
 
@@ -45,7 +53,7 @@ $router->group('/product', function($router) {
         return $c['ProductController']->store($c['request']);
     });
 
-    $router->get('/show/:id', function($id, $c) {
+    $router->get('/show/:id:n', function($id, $c) {
         return $c['ProductController']->show($c['view'], $id);
     });
 });
@@ -74,7 +82,7 @@ $router->group('/api', function($router) {
                 return $c['ProductPictureController']->delete($c['request'], $c['view']);
             });
 
-            $router->get('/show/:id', function($id, $c) {
+            $router->get('/show/:id:n', function($id, $c) {
                 return $c['ProductPictureController']->show($id);
             });
         });

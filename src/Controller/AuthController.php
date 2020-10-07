@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Helper\View;
+use App\Repository\UserRepositoryInterface;
 
 class AuthController
 {
@@ -49,5 +50,17 @@ class AuthController
     public function signupForm(View $view)
     {
         return new Response($view->render('pages/signup'));
+    }
+
+    public function profile(int $id, View $view, UserRepositoryInterface $user)
+    {
+
+
+        return new Response($view->render('pages/profile'));
+    }
+
+    public function update(Request $request, View $view, UserRepositoryInterface $user)
+    {
+        
     }
 }

@@ -3,11 +3,9 @@
 // $timeStart = microtime(true);
 // $memStart = memory_get_usage();
 
-// phpinfo();
+require __DIR__ . '/../vendor/autoload.php';
 
 use App\App;
-
-require __DIR__ . '/../vendor/autoload.php';
 
 $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();

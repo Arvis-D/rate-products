@@ -20,7 +20,7 @@ class ProductValidationService extends BaseValidationService
         $validator->number(false, 'price')->min(0);
         $validator->number(false, 'rating')->min(0)->max(5);
         $validator->string(false, 'comment')->length(0, 500);
-        $validator->file(false, 'image')->maxSize(1024)->type(['png', 'jpg', 'jpeg']);
+        $validator->file(false, 'image')->maxSize($this->maxImageSize)->type(['png', 'jpg', 'jpeg']);
 
         return $validator->isValid();
     }

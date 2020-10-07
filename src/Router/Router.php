@@ -149,7 +149,7 @@ class Router
         $wildcards = [];
         foreach ($wildcardUri as $key => $item) {
             if (!empty($item) && $item[0] === ':' && !empty($params[$key])) {
-                array_push($wildcards, $params[$key]);
+                array_push($wildcards, str_replace('%20', ' ', $params[$key]));
             }
         }
         return $wildcards;

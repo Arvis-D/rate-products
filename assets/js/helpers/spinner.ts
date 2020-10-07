@@ -8,7 +8,8 @@ export function toggleSpinner(el: HTMLElement, spinnerClass: spinnerType = spinn
 }
 
 export class SpinnerOverlay {
-  private spinner: HTMLElement;
+  private spinner: HTMLElement = null;
+  private rect: DOMRect = null;
 
   constructor (
     /**
@@ -20,8 +21,17 @@ export class SpinnerOverlay {
   ) { }
 
   public add() {
-    let rect = this.base.getBoundingClientRect();
-    let spin = document.createElement('div')
+    if (this.spinner === null) {
+      this.rect = this.base.getBoundingClientRect();
+      this.spinner = document.createElement('div');
+      this.addStyles();
+      document.body.appendChild(this.spinner);
+    }
+  }
+
+  private addStyles() {
+    let {spinner: spin, rect} = this;
+
     spin.style.position = 'absolute';
     spin.style.zIndex = (10000).toString();
     spin.classList.add(this.spinnerClass);
@@ -29,12 +39,12 @@ export class SpinnerOverlay {
     spin.style.height = rect.height + 'px';
     spin.style.left = rect.x + 'px';
     spin.style.top = rect.y + 'px';
-    document.body.appendChild(spin);
-
-    this.spinner = spin;
   }
 
   public remove() {
-    this.spinner.remove();
+    if (this.spinner !== null) {
+      this.spinner.remove();
+      this.spinner = null;
+    }
   }
 }

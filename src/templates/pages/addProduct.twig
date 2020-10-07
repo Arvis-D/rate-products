@@ -7,12 +7,11 @@
 {% include "elements/navbar.twig" %}
 
 <div class="container">
-  <h2 class="">Add a new product</h2>
-    <div class="container mt-5">
-    <div class="row justify-content-md-center">
-      <div class="col-md-6">
-        <div class="p-3">
-
+  <div class="row justify-content-md-center">
+    <div class="col-md-8 col-lg-5 p-3">
+      <div class="p-3 bg-white shadow-sm border rounded">
+        <h3 class="my-3">Add a new product</h3>
+        <div>
           <form action="/product/store" method="post" enctype="multipart/form-data">
             {% include "elements/formText.twig" with {name: 'name', required: true} %}
             {% include "elements/formText.twig" with {name: 'price', other: ' (optional)'} %}
@@ -33,7 +32,6 @@
             
             <button class="btn btn-primary w-100 submit">Save</button>
           </form>
-          
         </div>
       </div>
     </div>

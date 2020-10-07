@@ -52,7 +52,7 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
         if(!empty($rating))
             $this->addRating($id, $userId, $rating);
         if(!empty($picture))
-            $this->picture->addPicture($id, $picture, $userId);
+            $this->getPictureRepository()->addPicture($id, $picture, $userId);
 
         $this->commit();
 

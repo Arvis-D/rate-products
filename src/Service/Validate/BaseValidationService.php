@@ -11,7 +11,7 @@ class BaseValidationService
     protected $session;
 
     protected $allowedImageTypes = ['jpg', 'jpeg', 'png'];
-    protected $maxImageSize = 1024;
+    protected $maxImageSize = 2048;
     protected $ratingMin = 0;
     protected $ratingMax = 5;
     protected $commentLength = 500;

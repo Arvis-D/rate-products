@@ -1,4 +1,6 @@
 .input-field {
+  z-index: 1;
+  background-color: transparent;
   position: relative;
   width: 100%;
   border-bottom: .2em $gray-300 solid;
@@ -51,7 +53,7 @@
   }
 
   input, textarea{
-    background-color: transparent;
+    background-color: transparent !important;
     width: 100%;
     margin-top: 1em;
     border: none;

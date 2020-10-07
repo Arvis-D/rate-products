@@ -37,8 +37,6 @@ class ProductPictureController
 
     public function like(Request $request)
     {
-        sleep(1);
-
         $this->pictureService->like($request->get('subject-id'), (bool) $request->get('like'));
 
         return new Response();

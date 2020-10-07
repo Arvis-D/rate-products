@@ -9,4 +9,6 @@ interface UserRepositoryInterface
     public function getIdAndPassword(string $username): ?array;
 
     public function getId(string $username): ?int;
+
+    public function getData(int $id): array;
 }

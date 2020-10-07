@@ -1,0 +1,14 @@
+* add, display, edit product stats
+* design, implement product filter
+* user profile
+* add comments
+* implement deleting and editing of products, probably only if you have adming rights
+* add shops
+* lazy load
+* product types
+* searching
+* google plus auth
+
+
+* dont show picture catalogue if there are no pictures and user is not authenticated
+  the same goes for comments

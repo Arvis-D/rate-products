@@ -29,7 +29,7 @@ export default class Input {
   ) {
     this.input = this.dom.querySelector('input');
     this.input.addEventListener('input', () => {this.validate()});
-    this.input.addEventListener('focusout', () => {this.validateAsync()})
+    this.input.addEventListener('input', () => {this.validateAsync()})
 
     this.spinner = new SpinnerOverlay(this.input, spinnerType.small);
   } 
