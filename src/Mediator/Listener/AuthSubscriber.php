@@ -18,7 +18,7 @@ class AuthSubscriber implements EventSubscriberInterface
     public function onBeforeRender(BeforeRenderEvent $event)
     {
         $event->getView()->addDefaultParams([
-            'authenticated' => $this->auth->authenticated()
+            'auth' => $this->auth->authParams(), 
         ]);
     }
 

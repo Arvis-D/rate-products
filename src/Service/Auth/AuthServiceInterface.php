@@ -6,9 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface AuthServiceInterface
 {
-    public function login(Request $request): bool;
-
-    public function signup(Request $request): bool;
+    public function authenticate(string $username, int $id, bool $rememberMe = false);
 
     public function logout();
 
@@ -22,8 +20,6 @@ interface AuthServiceInterface
      */
 
     public function authParams(string $key = null, $default = null);
-
-    public function getAuthErrors(): array;
 
     public function authenticated(): bool;
 

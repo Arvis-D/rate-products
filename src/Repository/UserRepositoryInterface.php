@@ -10,5 +10,15 @@ interface UserRepositoryInterface
 
     public function getId(string $username): ?int;
 
-    public function getData(int $id): array;
+    /**
+     * @return array all data in user table except the password
+     */
+
+    public function getData(int $id): ?array;
+
+    public function update(array $data): void;
+
+    public function getPassword(int $id): ?string;
+
+    public function setAvatar(int $id, string $url): void;
 }

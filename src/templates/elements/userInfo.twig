@@ -1,0 +1,18 @@
+<div class="user-info">
+  <div class="avatar mb-3">
+    <div class="pic-container">
+
+        {% if user.avatar_url %}
+          {% set avatar = user.avatar_url %}
+        {% else %}
+          {% set avatar = '/img/avatar.jpg' %}
+        {% endif %}
+
+      <div class="pic rounded-circle" style="background-image: url('{{ avatar }}');"></div>
+    </div>
+  </div>
+
+  <div class="user-header">
+    <h2 class="text-center">{{ user.name }}</h2>
+  </div>
+</div>

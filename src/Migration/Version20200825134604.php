@@ -55,6 +55,7 @@ final class Version20200825134604 extends AbstractMigration
                 name varchar(255) NOT NULL UNIQUE,
                 email varchar(255) NOT NULL UNIQUE,
                 password varchar(512) NOT NULL,
+                avatar_url varchar(512),
                 time_added int UNSIGNED NOT NULL,
                 time_last_active int UNSIGNED NOT NULL
             );'

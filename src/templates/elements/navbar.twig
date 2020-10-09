@@ -28,8 +28,9 @@
 
 
   <div class="nav-auth-controls">
-    {% if authenticated %}
-      <button class="btn btn-danger" form="logout-form">Logout</button>
+    {% if auth %}
+      <a href="/auth/profile/show/{{ auth.id }}" class="btn btn-outline-primary">Profile</a>
+      <button class="btn btn-outline-danger" form="logout-form">Logout</button>
       <form class="d-none" method="post" action="/auth/logout" id="logout-form">
         {% include "elements/csrfToken.twig" %}
       </form>

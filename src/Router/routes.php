@@ -20,15 +20,18 @@ $router->group('/auth', function($router) {
     });
 
     $router->post('/login', function($c) {
-        return $c['AuthController']->login($c['request']);
+        return $c['AuthController']->login($c['request'], $c['UserService']);
     });
 
     $router->post('/signup', function($c) {
-        return $c['AuthController']->signup($c['request']);
+        return $c['AuthController']->signup(
+            $c['request'],
+            $c['UserService']
+        );
     });
     
     $router->post('/logout', function($c) {
-        return $c['AuthController']->logout();
+        return $c['AuthController']->logout($c['JwtAuthService']);
     });
 
     $router->protected()->get('/profile/show/:id:n', function($id, $c) {

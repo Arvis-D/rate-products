@@ -1,0 +1,40 @@
+{% extends "master.twig" %}
+
+{% block content %}
+  {% include "elements/navbar.twig" %}
+
+  <div class="container p-3">
+    <div class="row p-3 border rounded shadow-sm">
+      <div class="col-md-6">
+        {% include "elements/userInfo.twig" %}
+      </div>
+      <div class="col-md-6 border-left">
+        <form action="/auth/signup" method="post" autocomplete="shutup">
+          <span class="text-secondary">Image:</span>
+            <div class="image-upload mb-3 mt-3">
+              <div class="upload-input">
+                <input class="image-input" type="file" name="image" id="form-image">
+              </div>
+              <div class="upload-showcase rounded-circle" style="background-image: url('/img/img.png');">
+              </div>
+            </div>
+          {% if errors.image is defined %}
+              <span class="text-danger mb-3 d-inline-block">{{ errors.image }}</span>
+          {% endif %}
+          {% include "elements/csrfToken.twig" %}
+          {% include "elements/formText.twig" with {name: 'username', value: user.name } %}
+          {% include "elements/formText.twig" with {name: 'email', value: user.email } %}
+          {% include "elements/formText.twig" with {name: 'new password', type: 'password', autocomplete: 'new-password'} %}
+          {% include "elements/formText.twig" with {name: 'repeat password', type: 'password'} %}
+          {% include "elements/formText.twig" with {name: 'password', type: 'password', required: true} %}
+          {% include "elements/csrfToken.twig" %} 
+          <button disabled class="btn btn-primary w-100 submit mt-3">Save changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="/dist/profile.bundle.js"></script>
+{% endblock %}

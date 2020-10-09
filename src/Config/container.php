@@ -68,8 +68,8 @@ $c['AuthValidationService'] = function ($c) {
 $c['ProductValidationService'] = function ($c) {
     return new \App\Service\Product\ProductValidationService($c['DbValidationResource'], $c['session']);
 };
-$c['JwtAuthService'] = function ($c) {
-    return new \App\Service\Auth\JwtAuthService($c['UserRepository'], $c['AuthValidationService']);
+$c['JwtAuthService'] = function () {
+    return new \App\Service\Auth\JwtAuthService();
 };
 $c['ProductService'] = function ($c) {
     return new \App\Service\Product\ProductService(
@@ -79,8 +79,11 @@ $c['ProductService'] = function ($c) {
         $c['ImageService']
     );
 };
-$c['ImageService'] = function () {
-    return new \App\Service\ImageService(new \Intervention\Image\ImageManager(['driver' => 'imagick']));
+$c['ImageService'] = function ($c) {
+    return new \App\Service\ImageService(
+        new \Intervention\Image\ImageManager(['driver' => 'imagick']),
+        $c['PictureValidationService']
+    );
 };
 $c['PictureService'] = function ($c) {
     return new \App\Service\Picture\PictureService(
@@ -94,6 +97,14 @@ $c['PictureValidationService'] = function ($c) {
     return new \App\Service\Picture\PictureValidationService(
         $c['session'],
         $c['DbValidationResource']
+    );
+};
+$c['UserService'] = function ($c) {
+    return new \App\Service\UserService(
+        $c['UserRepository'],
+        $c['JwtAuthService'],
+        $c['ImageService'],
+        $c['AuthValidationService']
     );
 };
 

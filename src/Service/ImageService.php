@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Service\Picture\PictureValidationService;
 use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -21,9 +22,11 @@ class ImageService
 {
     private $manager;
     private $public = __DIR__ . '/../../public';
+    public $validation;
 
-    public function __construct(ImageManager $manager)
+    public function __construct(ImageManager $manager, PictureValidationService $validation)
     {
+        $this->validation = $validation;
         $this->manager = $manager;
     }
 

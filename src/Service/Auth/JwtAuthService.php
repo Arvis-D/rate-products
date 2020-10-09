@@ -5,6 +5,7 @@ namespace App\Service\Auth;
 use Firebase\JWT\JWT;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\UserRepositoryInterface;
+use App\Service\ImageService;
 
 class JwtAuthService implements AuthServiceInterface
 {
@@ -13,52 +14,12 @@ class JwtAuthService implements AuthServiceInterface
     private $jwtParams = null;
     private $allowedAlgs = ['HS256'];
 
-    public function __construct(UserRepositoryInterface $userRepository, AuthValidationService $validation)
+    public function authenticate(string $username, int $id, bool $rememberMe = false)
     {
-        $this->userRepository = $userRepository;
-        $this->validation = $validation;
-    }
-
-    public function login(Request $request): bool
-    {
-        if (!$this->validation->validateLogin($request->request->all())) {
-            return false;
-        }
-
-        $results = $this->userRepository->getIdAndPassword($request->get('username'));
-        if ($results !== null && password_verify($request->get('password'), $results['password'])) {
-            $this->setJwtCookie($request, $results['id']);
-            return true;
-        }
-
-        $this->validation->session->getFlashBag()->set('errors', ['login' => 'Incorrect username or password!']);
-
-        return false;
-    }
-
-    public function signup(Request $request): bool
-    {
-        if (!$this->validation->validateSignup($request->request->all())) {
-            return false;
-        }
-
-        $userId = $this->userRepository->addUser(
-            $request->get('username'),
-            $request->get('email'),
-            password_hash($request->get('password'), PASSWORD_DEFAULT)
-        );
-
-        $this->setJwtCookie($request, $userId);
-
-        return true;
-    }
-
-    private function setJwtCookie(Request $request, $userId)
-    {
-        $ttl = time() + ($request->get('remember-me') !== null ? (60 * 60 * 24 * 14) : (60 * 60));
+        $ttl = time() + ($rememberMe ? (60 * 60 * 24 * 14) : (60 * 60));
         $this->setHttpOnlyCookie(JWT::encode([
-            'usr' => $request->get('username'),
-            'id' => $userId,
+            'usr' => $username,
+            'id' => $id,
             'exp' => $ttl,
             'roles' => ['user']
         ], $_ENV['SECRET']));
@@ -110,6 +71,19 @@ class JwtAuthService implements AuthServiceInterface
         } catch (\Exception $e) {
             return null;
         }
+    }
+
+    public function checkPassword(string $password): bool
+    {
+        if (null === $id = $this->authParams('id')) {
+           return false;
+        }
+
+        if (!null === $pwd = $this->userRepository->getPassword($id)) {
+            return password_verify($password, $pwd);
+        }
+
+        return false;
     }
 
     public function roles(): array

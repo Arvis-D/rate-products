@@ -28,7 +28,6 @@ export default class ImageInput implements Subscriber{
   }
 
   private chooseImage() {
-    console.log(this.dom.value)
     try {
       let url = URL.createObjectURL(this.dom.files[0]);
       this.dispatcher.dispatch(new PictureChosen(url));

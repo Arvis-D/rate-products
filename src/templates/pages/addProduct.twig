@@ -17,18 +17,15 @@
             {% include "elements/formText.twig" with {name: 'price', other: ' (optional)'} %}
             {% include "elements/formText.twig" with {name: 'rating', other: ' (optional)'} %}
             {% include "elements/formTextArea.twig" with {name: 'comment', other: ' (optional)'} %}
-            {% include "elements/csrfToken.twig" %}
             <span class="text-secondary">Image (optional):</span>
-            <div class="image-upload mb-3 mt-3">
-              <div class="upload-input">
-                <input class="image-input" type="file" name="image" id="form-image">
+              <div class="image-upload mb-3 mt-3">
+                <div class="upload-input">
+                  <input class="image-input" type="file" name="image" id="form-image">
+                </div>
+                <div class="upload-showcase" style="background-image: url('/img/img.png');">
+                </div>
               </div>
-              <div class="upload-showcase">
-              </div>
-            </div>
-            {% if errors.image is defined %}
-              <span class="text-danger mb-3 d-inline-block">{{ errors.image }}</span>
-            {% endif %}
+            {% include "elements/csrfToken.twig" %}
             
             <button class="btn btn-primary w-100 submit">Save</button>
           </form>

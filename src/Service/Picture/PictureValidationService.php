@@ -18,10 +18,10 @@ class PictureValidationService extends BaseValidationService
         );
     }
 
-    public function validatePicture(string $key)
+    public function validateImage(bool $required = true)
     {
         $validator = $this->getValidator();
-        $validator->file(true, 'image')->maxSize($this->maxImageSize)->type($this->allowedImageTypes);
+        $validator->file($required, 'image')->maxSize($this->maxImageSize)->type($this->allowedImageTypes);
 
         return $validator->isValid();
     }

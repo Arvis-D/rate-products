@@ -9,11 +9,24 @@
     <div class="row justify-content-md-center">
       <div class="col-md-8 col-lg-5 p-3">
         <div class="p-3 bg-white shadow-sm border rounded">
-          <form action="/auth/signup" method="post">
+          <form action="/auth/signup" method="post" enctype="multipart/form-data">
             {% include "elements/formText.twig" with {name: 'username'} %}
             {% include "elements/formText.twig" with {name: 'email'} %}
-            {% include "elements/formText.twig" with {name: 'password', type: 'password'} %}
-            {% include "elements/formText.twig" with {name: 'repeat password', type: 'password'} %}
+            {% include "elements/formText.twig" with {name: 'password', type: 'password', autocomplete: 'new-password'} %}
+            {% include "elements/formText.twig" with {name: 'repeat password', type: 'password', autocomplete: 'new-password'} %}
+
+            <span class="text-secondary">Avatar (optional):</span>
+            <div class="image-upload mb-3 mt-3">
+              <div class="upload-input">
+                <input class="image-input" type="file" name="image" id="form-image">
+              </div>
+              <div class="upload-showcase rounded-circle" style="background-image: url('/img/img.png');">
+              </div>
+            </div>
+            {% if errors.image is defined %}
+                <span class="text-danger mb-3 d-inline-block">{{ errors.image }}</span>
+            {% endif %}
+
             {% include "elements/formCheckBox.twig" with {name: 'Remember me'} %}
             {% include "elements/csrfToken.twig" %}
             <button disabled class="btn btn-primary w-100 submit">Sign Up</button>

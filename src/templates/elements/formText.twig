@@ -1,21 +1,28 @@
 {% set htmlPropertyName = name|lower|replace({' ': '-'}) %}
-{% set old = old[name] %}
+{% if old[name] is defined %}
+  {% set value = old[name] %}
+{% endif %}
+
 
 
 <div class="input-field mb-3 {% if errors[name] is defined %} error {% endif %} {{ 'input-' ~ htmlPropertyName }}">
   <input 
+    {% if autocomplete %}
+      autocomplete="{{ autocomplete }}"
+    {% endif %}
     placeholder=" "
     type="{{ type ?? 'text' }}" 
     {# placeholder="{{ name|capitalize }}"  #}
     aria-label="{{ name|capitalize }}" 
     name="{{ htmlPropertyName }}"
     id="{{ 'form-' ~ htmlPropertyName }}"
-    {% if old is defined %}
-      value="{{ old }}"
+    {% if value is defined %}
+      value="{{ value }}"
     {% endif %}
     {% if required %}
       required
     {% endif %}
+    
   >
   <label for="{{ 'form-' ~ htmlPropertyName }}">{{ name|capitalize ~ other ~ ':' }}</label>
 </div>

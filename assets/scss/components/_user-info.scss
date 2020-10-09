@@ -1,0 +1,14 @@
+.user-info {
+  .avatar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    .pic-container {
+      width: 50%;
+      .pic {
+        background-image: url('/img/avatar.jpg');
+        @include aspect-ratio-image(1, 1);
+      }
+    }
+  }
+}

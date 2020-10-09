@@ -9,10 +9,10 @@
   </form>
 {% endset %}
 
-{% if product.userPicture %}
+{% if userPicture %}
   <div class="upload-input mr-2">
-    <div class="d-none delete-pic-id">{{ product.userPicture.id }}</div>
-    <div class="d-none delete-pic-url">{{ product.userPicture.url }}</div>
+    <div class="d-none delete-pic-id">{{ userPicture.id }}</div>
+    <div class="d-none delete-pic-url">{{ userPicture.url }}</div>
     {{ imageUploadForm }}
     <button class="btn btn-danger upload-btn">Delete</button>
   </div>

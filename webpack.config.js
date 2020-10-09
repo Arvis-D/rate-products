@@ -6,7 +6,8 @@ module.exports = {
     addProduct: './assets/js/addProducts.ts',
     navbar: './assets/js/navbar.ts',
     product: './assets/js/product.ts',
-    signup: './assets/js/signup.ts'
+    signup: './assets/js/signup.ts',
+    profile: './assets/js/profile.ts'
   },
   output: {
     path: path.join(__dirname, 'public/dist'),

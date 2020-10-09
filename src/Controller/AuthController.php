@@ -2,43 +2,42 @@
 
 namespace App\Controller;
 
-use App\Service\Auth\JwtAuthService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Helper\View;
 use App\Repository\UserRepositoryInterface;
+use App\Service\Auth\AuthServiceInterface;
+use App\Service\UserService;
 
 class AuthController
 {
-    private $authService;
-
-    public function __construct(JwtAuthService $auth)
+    public function login(Request $request, UserService $user)
     {
-        $this->authService = $auth;
-    }
-
-    public function login(Request $request)
-    {
-        if (!$this->authService->login($request)) {
+        if (!$user->login(
+            $request->get('username'), 
+            $request->get('password'), 
+            (null !== $request->get('remember'))
+        )) {
             return new RedirectResponse('/auth/login');
         } else {
             return new RedirectResponse('/');
         }
     }
 
-    public function signup(Request $request)
-    {   
-        if (!$this->authService->signup($request)) {
-            return new RedirectResponse('/auth/signup');
-        } else {
+    public function signup(Request $request, UserService $user)
+    {
+        if ($user->signup($request)) {
             return new RedirectResponse('/');
         }
+
+        return new RedirectResponse('/auth/signup');
     }
 
-    public function logout()
+    public function logout(AuthServiceInterface $auth)
     {
-        $this->authService->logout();
+        $auth->logout();
+
         return new RedirectResponse('/');
     }
 
@@ -54,13 +53,13 @@ class AuthController
 
     public function profile(int $id, View $view, UserRepositoryInterface $user)
     {
-
-
-        return new Response($view->render('pages/profile'));
+        return new Response($view->render('pages/profile', [
+            'user' => $user->getData($id)
+        ]));
     }
 
-    public function update(Request $request, View $view, UserRepositoryInterface $user)
+    public function update(View $view, UserRepositoryInterface $user)
     {
-        
+        return new Response($view->render('pages/profile'));
     }
 }

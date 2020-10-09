@@ -6,6 +6,8 @@ import Form from './components/Form/Form';
 import Submit from './components/Form/Submit';
 import Repeat from './components/Form/Validator/Repeat';
 import Email from './components/Form/Validator/Email';
+import ImageInput from './components/PictureCatalogue/Elements/ImageInput';
+import PreUploadPic from './components/PictureCatalogue/Elements/PreUploadPic';
 
 let dispatcher = new Dispatcher;
 let username = new Input(document.querySelector('.input-username'), dispatcher);
@@ -22,6 +24,10 @@ repeat.addValidators([new Repeat(password, 'Password')])
 
 let button  = new Submit(document.querySelector('.submit'));
 dispatcher.addSubscriber(button);
+
+let image = new ImageInput(document.querySelector('.image-input'), dispatcher);
+let showcase = new PreUploadPic(document.querySelector('.upload-showcase'));
+dispatcher.addSubscriber(showcase);
 
 let form = new Form(dispatcher);
 form.add([username, password, repeat, email]);

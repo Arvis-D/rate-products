@@ -2,6 +2,8 @@
   padding-top: $height / $width  * 100%;
 }
 
+// example: 16:9
+
 @mixin aspect-ratio-image($width, $height) {
   @include aspect-ratio($width, $height);
   background-color: $white;

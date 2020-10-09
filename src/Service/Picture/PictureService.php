@@ -43,7 +43,7 @@ class PictureService
 
     public function uploadPicture(int $subjectId, ?UploadedFile $file, string $pictureName = 'image'): ?int
     {
-        if (!$this->validation->validatePicture($pictureName)) {
+        if (!$this->validation->validateImage($pictureName)) {
             return null;
         }
 
