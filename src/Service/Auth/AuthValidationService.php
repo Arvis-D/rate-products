@@ -2,6 +2,7 @@
 
 namespace App\Service\Auth;
 
+use App\Repository\UserRepositoryInterface;
 use App\Service\Validate\ValidationResourceInterface;
 use App\Service\Validate\ValidationService;
 use App\Service\Validate\Validator;
@@ -35,9 +36,8 @@ class AuthValidationService
         $validator->string(true, 'password')->length(7);
         $validator->string(true, 'username')->unique('user.name');
         $validator->string(true, 'email')->email()->unique('user.email');
-        $this->errors = $validator->getErrors();
 
-        return empty($this->errors);
+        return $validator->isValid();
     }
 
     public function validateLogin(array $params): bool
@@ -45,9 +45,28 @@ class AuthValidationService
         $validator = $this->getValidator()->setParams($params);
         $validator->string(true, 'password')->length(6);
         $validator->string(true, 'username');
-        $this->errors = $validator->getErrors();
 
-        return empty($this->errors);
+        return $validator->isValid();
+    }
+
+    public function validateUpdate(array $params, string $currentUsername, string $currentEmail): bool
+    {
+        $this->translation['new-password.required'] = $this->translation['password.required'];
+        $this->translation['new-password.length'] = $this->translation['password.length'];
+
+        $validator = $this->getValidator()->setParams($params);
+        $validator->file(false, 'image')->maxSize(2048)->type(['jpg', 'jpeg', 'png']);
+        $validator->string(false, 'new-password')->length(7);
+
+        if ($params['username'] !== $currentUsername) {
+            $validator->string(true, 'username')->unique('user.name');
+        }
+
+        if ($params['email'] !== $currentEmail) {
+            $validator->string(true, 'email')->email()->unique('user.email');
+        }
+
+        return $validator->isValid();
     }
 
     private function getValidator(): Validator

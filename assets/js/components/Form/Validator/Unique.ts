@@ -4,6 +4,7 @@ import Request from '../../../helpers/Request';
 export default class Unique implements Validator{
   private memory: {[val: string]: boolean} = {};
   private inRequest: boolean = false;
+  private doNotCheck: string = null;
 
   constructor(
     private name: string,
@@ -22,7 +23,7 @@ export default class Unique implements Validator{
   }
 
   public async validate(val: string) {
-    if (val === '') {
+    if (val === '' || (this.doNotCheck !== null && val === this.doNotCheck)) {
       return true;
     }
 
@@ -35,6 +36,11 @@ export default class Unique implements Validator{
     return this.memory[val];
   }
 
+  public setdoNotCheck(doNotCheck: string) {
+    this.doNotCheck = doNotCheck;
+
+    return this;
+  }
 
   public checkUnique(val: string) {
     return Request.create()
@@ -44,5 +50,9 @@ export default class Unique implements Validator{
     .then(res => (res.status === 200 ? res.json() : null))
     .then(res => (res === null ? null : res.unique))
     .catch(err => null);
+  }
+
+  public static create(name: string, spinner: HTMLElement, resource: string, field: string) {
+    return new Unique(name, spinner, resource, field);
   }
 }

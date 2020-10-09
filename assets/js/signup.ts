@@ -17,7 +17,12 @@ let repeat = new Input(document.querySelector('.input-repeat-password'), dispatc
 
 username.addValidators([new Length('Username', 5, 255)]);
 username.addAsyncValidator([new Unique('Username', username.input, 'user', 'name')]);
-email.addValidators([new Email, new Length('Email', 0, 255)]);
+email.addValidators([
+  new Email, 
+  new Length('Email', 0, 255)
+]);
+
+email.addAsyncValidator([  new Unique('Email', email.input, 'user', 'email')])
 
 password.addValidators([new Length('Password', 7)]);
 repeat.addValidators([new Repeat(password, 'Password')])

@@ -12,6 +12,12 @@ export default class Repeat implements Validator{
   }
 
   public validate(val: string) {
-    return (this.repeat.input.value === val);
+    let repeat = this.repeat.input.value;
+
+    if (this.repeat.optional && repeat === '') {
+      return true;
+    }
+
+    return (repeat !== '' && repeat === val);
   }
 }

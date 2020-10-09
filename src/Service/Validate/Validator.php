@@ -86,7 +86,7 @@ class Validator
     private function trySetFlashbagErrors()
     {
         if ($this->session !== null) {
-            $this->session->getFlashBag()->set('errors', $this->errors);
+            $this->session->getFlashBag()->add('errors', $this->errors);
         }
     }
 

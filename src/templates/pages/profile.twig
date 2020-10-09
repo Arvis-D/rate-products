@@ -8,8 +8,8 @@
       <div class="col-md-6">
         {% include "elements/userInfo.twig" %}
       </div>
-      <div class="col-md-6 border-left">
-        <form action="/auth/signup" method="post" autocomplete="shutup">
+      <div class="col-md-6">
+        <form action="/auth/profile/update" method="post" autocomplete="shutup" enctype="multipart/form-data">
           <span class="text-secondary">Image:</span>
             <div class="image-upload mb-3 mt-3">
               <div class="upload-input">
@@ -26,9 +26,13 @@
           {% include "elements/formText.twig" with {name: 'email', value: user.email } %}
           {% include "elements/formText.twig" with {name: 'new password', type: 'password', autocomplete: 'new-password'} %}
           {% include "elements/formText.twig" with {name: 'repeat password', type: 'password'} %}
-          {% include "elements/formText.twig" with {name: 'password', type: 'password', required: true} %}
+          {% include "elements/formText.twig" with {name: 'password', type: 'password', required: true, other: ' (required)'} %}
+          
+          <input type="hidden" name="current-email" value="{{ user.email }}">
+          <input type="hidden" name="current-username" value="{{ user.name }}">
+
           {% include "elements/csrfToken.twig" %} 
-          <button disabled class="btn btn-primary w-100 submit mt-3">Save changes</button>
+          <button class="btn btn-primary w-100 submit mt-3">Save changes</button>
         </form>
       </div>
     </div>
@@ -36,5 +40,6 @@
 {% endblock %}
 
 {% block scripts %}
+  <script src="/dist/addProduct~profile~signup.bundle.js"></script>
   <script src="/dist/profile.bundle.js"></script>
 {% endblock %}

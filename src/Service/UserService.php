@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 class UserService
 {
     private $userRepo;
-    private $auth;
+    public $auth;
     private $image;
     private $validation;
 
@@ -36,9 +36,11 @@ class UserService
 
         if (password_verify($password, $user['password'])) {
             $this->auth->authenticate($username, $user['id'], $remember);
-        }
 
-        $this->setLoginError();
+            return true;
+        } else {
+            $this->setLoginError();
+        }
 
         return false;
     }
@@ -72,5 +74,37 @@ class UserService
     private function setLoginError()
     {
         $this->validation->session->getFlashBag()->set('errors', ['login' => 'Incorrect username or password!']);
+    }
+
+    private function setPasswordError()
+    {
+        $this->validation->session->getFlashBag()->set('errors', ['password' => 'Incorrect password!']);
+    }
+
+    public function update(Request $request)
+    {
+        if (!$this->validation->validateUpdate($request->request->all(), $request->get('current-username'), $request->get('current-email'))) {
+
+            return;
+        }
+
+        $password = $this->userRepo->getPassword($this->auth->authParams('id'));
+
+        if (!password_verify($request->get('password'), $password)) {
+            $this->setPasswordError();
+
+            return;
+        }
+
+        $file = $request->files->get('image');
+        $url = ($file === null ? null : $this->image->createSetOfImages($file, 'user', $this->auth->authParams('id')));
+
+        $this->userRepo->update(
+            $this->auth->authParams('id'),
+            $request->get('username'),
+            $request->get('email'),
+            (empty($request->get('new-password')) ? null : password_hash($request->get('new-password'), PASSWORD_DEFAULT)),
+            $url
+        );
     }
 }

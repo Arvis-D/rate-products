@@ -9,6 +9,8 @@ use App\Helper\View;
 use App\Repository\UserRepositoryInterface;
 use App\Service\Auth\AuthServiceInterface;
 use App\Service\UserService;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class AuthController
 {
@@ -51,15 +53,21 @@ class AuthController
         return new Response($view->render('pages/signup'));
     }
 
-    public function profile(int $id, View $view, UserRepositoryInterface $user)
+    public function profile(int $id, View $view, UserRepositoryInterface $userRepo)
     {
-        return new Response($view->render('pages/profile', [
-            'user' => $user->getData($id)
-        ]));
+        if (null !== $user = $userRepo->getData($id)) {
+            return new Response($view->render('pages/profile', [
+                'user' => $user
+            ]));
+        }
+
+        return null;
     }
 
-    public function update(View $view, UserRepositoryInterface $user)
+    public function update(Request $request, UserService $user)
     {
-        return new Response($view->render('pages/profile'));
+        $user->update($request);
+
+        return new RedirectResponse("/auth/profile/show/{$user->auth->authParams('id')}");
     }
 }

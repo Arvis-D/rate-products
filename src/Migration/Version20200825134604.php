@@ -73,8 +73,6 @@ final class Version20200825134604 extends AbstractMigration
                 name varchar(255) NOT NULL UNIQUE,
                 time_created int UNSIGNED NOT NULL,
                 time_changed int UNSIGNED NOT NULL,
-
-                FOREIGN KEY (user_id) REFERENCES user(id)
             );'
         );
 
@@ -93,7 +91,6 @@ final class Version20200825134604 extends AbstractMigration
                 time_changed int UNSIGNED NOT NULL,
 
                 FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE,
-                FOREIGN KEY (user_id) REFERENCES user(id)
             );'
         );
 
@@ -130,7 +127,6 @@ final class Version20200825134604 extends AbstractMigration
                 time_created int UNSIGNED NOT NULL,
 
                 FOREIGN KEY ({$subject}_id) REFERENCES {$subject}(id) ON DELETE CASCADE,
-                FOREIGN KEY (user_id) REFERENCES user(id)
             );"
         );
 
@@ -148,8 +144,7 @@ final class Version20200825134604 extends AbstractMigration
                 time_created int UNSIGNED NOT NULL,
                 time_changed int UNSIGNED NOT NULL,
 
-                FOREIGN KEY ({$subject}_id) REFERENCES {$subject}(id) ON DELETE CASCADE,
-                FOREIGN KEY (user_id) REFERENCES user(id)
+                FOREIGN KEY ({$subject}_id) REFERENCES {$subject}(id) ON DELETE CASCADE
             );"
         );
 

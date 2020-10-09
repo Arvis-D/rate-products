@@ -12,7 +12,7 @@
 
   <div class="pic-controls">
     <div class="pic-info {{ hideLikeAndInfo }}">
-      <strong>{{ randomPicture.username }}</strong>
+      <strong>{{ randomPicture.username ?? 'deleted' }}</strong>
       <span class="text-secondary">{{ randomPicture.time_created|elapsed }}</span>
     </div>
 

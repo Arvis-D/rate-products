@@ -17,6 +17,7 @@ export default class Input {
   public input: HTMLInputElement;
   private spinner: SpinnerOverlay;
   public displayErrors: boolean = false;
+  public dispatch: boolean = false;
 
   constructor (
     /**
@@ -25,11 +26,11 @@ export default class Input {
 
     private dom: HTMLElement,
     private dispatcher: Dispatcher,
-    private optional: boolean = false
+    public optional: boolean = false
   ) {
     this.input = this.dom.querySelector('input');
     this.input.addEventListener('input', () => {this.validate()});
-    this.input.addEventListener('input', () => {this.validateAsync()})
+    this.input.addEventListener('focusout', () => {this.validateAsync()})
 
     this.spinner = new SpinnerOverlay(this.input, spinnerType.small);
   } 
@@ -77,7 +78,7 @@ export default class Input {
 
     for (let i = 0; i < validators.length; i++) {
       if (!validators[i].validate(this.input.value)) {
-        this.invalid(validators[i].getErrorMessage())
+          this.invalid(validators[i].getErrorMessage());
 
         return false;
       }
@@ -93,7 +94,7 @@ export default class Input {
       this.dom.classList.add('error');
       let error = document.createElement('div');
       error.classList.add('mb-3');
-      error.innerHTML = `<strong class="text-danger">${msg}</strong>`;
+      error.innerHTML = `<small class="text-danger">* ${msg}</small>`;
       this.error = error;
       this.dom.parentNode.insertBefore(error, this.dom.nextSibling);
     }
@@ -101,13 +102,20 @@ export default class Input {
 
   private invalid(msg: string = null) {
     this.valid = false;
+    if (this.dispatch) {
+      this.dispatcher.dispatch(new ErrorFound)
+    }
+
     this.displayError(msg);
-    this.dispatcher.dispatch(new ErrorFound);
   }
 
   private isValid() {
     this.valid = true;
-    this.dispatcher.dispatch(new RequirementPassed);
+
+    if (this.dispatch) {
+      this.dispatcher.dispatch(new RequirementPassed)
+    }
+
 
     if (this.error) {
       this.dom.classList.remove('error');

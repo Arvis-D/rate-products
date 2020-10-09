@@ -16,7 +16,13 @@ interface UserRepositoryInterface
 
     public function getData(int $id): ?array;
 
-    public function update(array $data): void;
+    public function update(
+        int $userId,
+        string $username, 
+        string $email, 
+        string $password = null,
+        string $avatar = null
+    ): void;
 
     public function getPassword(int $id): ?string;
 

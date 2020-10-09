@@ -1,4 +1,11 @@
 .user-info {
+  border-right: solid $border-color $border-width;
+  @media screen and (max-width: $md){
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    border-right: 0;
+    border-bottom: solid $border-color $border-width;
+  }
   .avatar {
     display: flex;
     flex-direction: row;

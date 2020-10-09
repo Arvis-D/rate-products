@@ -8,11 +8,13 @@
 * product types
 * searching
 * google plus auth
-
+* validate file in front-end
+* latvian/english translations and lang switching
 
 * dont show picture catalogue if there are no pictures and user is not authenticated
   the same goes for comments
-* front end validation input falsely invalid upon reload
 * image upload looks ugly on mobile
 * mobile picture catalogue is crowded on mobile
-* sometimes status 500 on signup (probably not unique email)
+* on posting/deleting image change the message accordingly
+* fix input spinner position (incorrect when scrolling)
+* add more stats to profile

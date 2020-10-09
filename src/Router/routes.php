@@ -34,12 +34,14 @@ $router->group('/auth', function($router) {
         return $c['AuthController']->logout($c['JwtAuthService']);
     });
 
-    $router->protected()->get('/profile/show/:id:n', function($id, $c) {
-        return $c['AuthController']->profile($id, $c['view'], $c['UserRepository']);
-    });
-
-    $router->protected()->post('/profile/update', function($c) {
-        return $c['AuthController']->update($c['view'], $c['UserRepository']);
+    $router->group('/profile', function($router) {
+        $router->protected()->get('/show/:id:n', function($id, $c) {
+            return $c['AuthController']->profile($id, $c['view'], $c['UserRepository']);
+        });
+    
+        $router->protected()->post('/update', function($c) {
+            return $c['AuthController']->update($c['request'], $c['UserService']);
+        });
     });
 });
 

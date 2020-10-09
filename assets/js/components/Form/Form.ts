@@ -37,8 +37,12 @@ export default class Form implements Subscriber {
 
   public init() {
     this.inputs.forEach(i => {
+      i.dispatch = false;
+      i.displayErrors = false;
       i.validate();
+      i.validateAsync()
       i.displayErrors = true;
+      i.dispatch = true;
     })
 
     console.log(this.inputs);

@@ -48,19 +48,19 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 
     public function getPassword(int $id): ?string
     {
-        $password = $this->table->select(['password'], ['id' => $id]);
+        $password = $this->read($this->table->select(['password'], ['id' => $id]));
 
-        return (empty($password) ? null : $password[0]);
+        return (empty($password) ? null : $password[0]['password']);
     }
 
-    public function update(array $data): void
+    public function update(int $id, string $username, string $email, ?string $password = null, ?string $avatar = null): void
     {
-        $this->db->write(new UpdateUserQuery($data));
+        $this->write(new UpdateUserQuery($id, $username, $email, $password, $avatar));
     }
 
     public function setAvatar(int $id, string $url): void
     {
-        $this->db->write(new Query('UPDATE user SET avatar_url = :url WHERE id = :id;', [
+        $this->write(new Query('UPDATE user SET avatar_url = :url WHERE id = :id;', [
             'id' => $id, 'url' => $url
         ]));
     }
