@@ -4,6 +4,7 @@ namespace App\Service\Validate;
 
 use App\Service\Validate\Requirement\RequirementInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use App\Service\Validate\ValidationResourceInterface;
 
 class Validator
 {
@@ -12,8 +13,18 @@ class Validator
     public $keyFailed = false;
     public $currentKey = '';
     public $values = [];
-    private $session = null;
+    public $session = null;
     private $translation = [];
+
+    public function __construct(
+        Session $session = null,
+        ValidationResourceInterface $resource = null,
+        array $translation = []
+    ) {
+        $this->session = $session;
+        $this->translation = $translation;
+        $this->validationResource = $resource;
+    }
 
     /**
      * used when access to a resource is needed, for rexample, to check for uniqueness
@@ -70,6 +81,7 @@ class Validator
 
     public function setParams(array $keyValuePairs): self
     {
+
         $this->values = $keyValuePairs;
 
         return $this;
@@ -86,8 +98,16 @@ class Validator
     private function trySetFlashbagErrors()
     {
         if ($this->session !== null) {
-            $this->session->getFlashBag()->add('errors', $this->errors);
+            $this->setFlashbagErrors($this->errors);
         }
+    }
+
+    public function setFlashbagErrors(array $errors)
+    {
+        $this->session->getFlashBag()->set(
+            'errors', 
+            array_merge($errors, $this->session->getFlashBag()->get('errors'))
+        );
     }
 
     public function setError(string $msg, string $key = null)

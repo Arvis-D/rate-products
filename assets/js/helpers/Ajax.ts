@@ -1,4 +1,4 @@
-export default class Request {
+export default class Ajax {
   private data: FormData = null;
   private url: string = '';
   private method: string = 'POST';
@@ -17,20 +17,20 @@ export default class Request {
     }
   }
   
-  public add(key: string, value: string): Request {
+  public add(key: string, value: string): Ajax {
     this.data = this.data || new FormData;
     this.data.append(key, value);
 
     return this;
   }
 
-  public setUrl(url: string): Request {
+  public setUrl(url: string): Ajax {
     this.url = url;
 
     return this;
   }
 
-  public form(form: HTMLFormElement): Request {
+  public form(form: HTMLFormElement): Ajax {
     this.data = new FormData(form);
     this.submitByForm = true;
     this.formToSubmit = form;
@@ -38,13 +38,13 @@ export default class Request {
     return this;
   }
 
-  public methodGet(): Request {
+  public methodGet(): Ajax {
     this.method = 'GET';
 
     return this;
   }
 
-  public methodPost(): Request {
+  public methodPost(): Ajax {
     this.method = 'POST';
 
     return this;
@@ -58,7 +58,7 @@ export default class Request {
     })
   }
 
-  public static create(): Request {
-    return new Request();
+  public static create(): Ajax {
+    return new Ajax();
   }
 }

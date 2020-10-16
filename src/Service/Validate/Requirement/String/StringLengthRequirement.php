@@ -21,6 +21,6 @@ class StringLengthRequirement implements RequirementInterface
     {
         $len = strlen($this->value);
 
-        return ($len > $this->min && $len < $this->max);
+        return ($len >= $this->min && $len <= $this->max);
     }
 }

@@ -11,9 +11,11 @@ $xs: map-get($grid-breakpoints, "xs");
 
 $dark-overlay: rgba(0, 0, 0, .2);
 $light-shadow: 0 0 .5em rgba(0, 0, 0, .2);
+$border: $border-color $border-width solid;
 
 @import "./elements/btn";
 @import "./elements/input";
+@import "./elements/search-popup";
 
 @import "./utilities/icon";
 @import "./utilities/spinner";
@@ -21,6 +23,7 @@ $light-shadow: 0 0 .5em rgba(0, 0, 0, .2);
 @import "./utilities/aspect-ratio";
 @import "./utilities/light-shadow";
 @import "./utilities/separator";
+@import "./utilities/triangle";
 
 @import "./components/navbar";
 @import "./components/filter";

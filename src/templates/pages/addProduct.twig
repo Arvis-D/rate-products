@@ -12,8 +12,10 @@
       <div class="p-3 bg-white shadow-sm border rounded">
         <h3 class="my-3">Add a new product</h3>
         <div>
-          <form action="/product/store" method="post" enctype="multipart/form-data">
+          <form autocomplete="off" action="/product/store" method="post" enctype="multipart/form-data">
             {% include "elements/formText.twig" with {name: 'name', required: true} %}
+            {% include "elements/formText.twig" with {name: 'type', required: true, autocomplete: 'off'} %}
+            <input type="hidden" name="type-id">
             {% include "elements/formText.twig" with {name: 'price', other: ' (optional)'} %}
             {% include "elements/formText.twig" with {name: 'rating', other: ' (optional)'} %}
             {% include "elements/formTextArea.twig" with {name: 'comment', other: ' (optional)'} %}

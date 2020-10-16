@@ -1,3 +1,4 @@
+import { scrollRect, ScrollRect } from './position';
 export enum spinnerType {
   small = 'spinner-small',
   default = 'spinner'
@@ -9,7 +10,7 @@ export function toggleSpinner(el: HTMLElement, spinnerClass: spinnerType = spinn
 
 export class SpinnerOverlay {
   private spinner: HTMLElement = null;
-  private rect: DOMRect = null;
+  private rect: ScrollRect = null;
 
   constructor (
     /**
@@ -22,7 +23,7 @@ export class SpinnerOverlay {
 
   public add() {
     if (this.spinner === null) {
-      this.rect = this.base.getBoundingClientRect();
+      this.rect = scrollRect(this.base);
       this.spinner = document.createElement('div');
       this.addStyles();
       document.body.appendChild(this.spinner);

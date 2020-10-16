@@ -25,6 +25,7 @@ $c['request'] = function () {
 $c['session'] = function () {
     $session = new \Symfony\Component\HttpFoundation\Session\Session();
     $session->start();
+
     return $session;
 };
 $c['dispatcher'] = function ($c) {
@@ -32,6 +33,7 @@ $c['dispatcher'] = function ($c) {
     $dispatcher->addSubscriber(new \App\Mediator\Listener\CsrfSubscriber($c['csrf']));
     $dispatcher->addSubscriber(new \App\Mediator\Listener\AuthSubscriber($c['JwtAuthService']));
     $dispatcher->addSubscriber(new \App\Mediator\Listener\SessionSubscriber($c['session']));
+
     return $dispatcher;
 };
 $c['EmailValidationService'] = function ($c) {
@@ -63,10 +65,10 @@ $c['ApiValidationController'] = function ($c) {
  */
 
 $c['AuthValidationService'] = function ($c) {
-    return new \App\Service\Auth\AuthValidationService($c['DbValidationResource'], $c['session']);
+    return new \App\Service\Auth\AuthValidationService($c['ValidatorFactory'], $c['PictureValidationService']);
 };
 $c['ProductValidationService'] = function ($c) {
-    return new \App\Service\Product\ProductValidationService($c['DbValidationResource'], $c['session']);
+    return new \App\Service\Product\ProductValidationService($c['ValidatorFactory'], $c['PictureValidationService']);
 };
 $c['JwtAuthService'] = function () {
     return new \App\Service\Auth\JwtAuthService();
@@ -95,8 +97,7 @@ $c['PictureService'] = function ($c) {
 };
 $c['PictureValidationService'] = function ($c) {
     return new \App\Service\Picture\PictureValidationService(
-        $c['session'],
-        $c['DbValidationResource']
+        $c['ValidatorFactory']
     );
 };
 $c['UserService'] = function ($c) {
@@ -105,6 +106,12 @@ $c['UserService'] = function ($c) {
         $c['JwtAuthService'],
         $c['ImageService'],
         $c['AuthValidationService']
+    );
+};
+$c['ValidatorFactory'] = function ($c) {
+    return new \App\Service\Validate\ValidatorFactory(
+        $c['session'],
+        $c['DbValidationResource']
     );
 };
 

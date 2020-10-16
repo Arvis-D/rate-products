@@ -1,6 +1,6 @@
 import Subscriber from '../../helpers/Subscriber/Subscriber';
 import LikeEvent from './LikeEvent';
-import Request from '../../helpers/Request';
+import Ajax from '../../helpers/Ajax';
 import csrf from '../../helpers/Subscriber/csrf';
 import { spinnerType, toggleSpinner } from '../../helpers/spinner';
 import LikeInfoRecieved from './Event/LikeInfoRecieved';
@@ -95,7 +95,7 @@ export default class LikeControls  implements Subscriber{
   }
 
   private postLike(like: boolean) {
-    return Request.create()
+    return Ajax.create()
     .add('subject-id', this.id.toString())
     .add('csrf', this.csrf)
     .add('like', (like ? '1' : '0'))

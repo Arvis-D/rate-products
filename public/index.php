@@ -20,4 +20,5 @@ $response->send();
 // $time = $timeEnd - $timeStart;
 // $mem = $memEnd - $memStart;
 
-// echo "<br><br>{$mem} <br> {$time}";
+// $_SESSION['performance']['memory'] = $mem / 1024;
+// $_SESSION['performance']['time'] = round($time, 3);

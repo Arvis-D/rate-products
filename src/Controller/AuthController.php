@@ -18,8 +18,8 @@ class AuthController
     {
         if (!$user->login(
             $request->get('username'), 
-            $request->get('password'), 
-            (null !== $request->get('remember'))
+            $request->get('password'),
+            (null !== $request->get('remember-me'))
         )) {
             return new RedirectResponse('/auth/login');
         } else {

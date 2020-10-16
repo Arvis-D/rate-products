@@ -2,9 +2,7 @@
 
 namespace App\Repository;
 
-use App\Model\Product\ProductFull;
 use App\Repository\PictureRepositoryInterface;
-use App\Model\Product\ProductCard;
 
 interface ProductRepositoryInterface
 {
@@ -19,4 +17,8 @@ interface ProductRepositoryInterface
     public function addRating(int $id, int $userId, int $rating);
 
     public function getPictureRepository(): PictureRepositoryInterface;
+
+    public function getTypes(string $name): array;
+
+    public function addType(string $name): int;
 }

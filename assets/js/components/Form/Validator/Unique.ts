@@ -1,5 +1,5 @@
 import Validator from './Validator';
-import Request from '../../../helpers/Request';
+import Ajax from '../../../helpers/Ajax';
 
 export default class Unique implements Validator{
   private memory: {[val: string]: boolean} = {};
@@ -43,7 +43,7 @@ export default class Unique implements Validator{
   }
 
   public checkUnique(val: string) {
-    return Request.create()
+    return Ajax.create()
     .setUrl(`/api/unique/${this.resource}/${this.resourceField}/${val}`)
     .methodGet()
     .send()

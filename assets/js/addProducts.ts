@@ -7,6 +7,10 @@ import Form from './components/Form/Form';
 import Submit from './components/Form/Submit';
 import ImageInput from './components/PictureCatalogue/Elements/ImageInput';
 import PreUploadPic from './components/PictureCatalogue/Elements/PreUploadPic';
+import SearchInput from './components/Search/SearchInput';
+import TypeResults from './components/Search/Result/TypeResults';
+import TypeId from './components/Search/TypeId';
+import TypeFetcher from './components/Search/Result/TypeFetcher';
 
 (function () {
   let dispatcher = new Dispatcher();
@@ -29,4 +33,10 @@ import PreUploadPic from './components/PictureCatalogue/Elements/PreUploadPic';
   let image = new ImageInput(document.querySelector('.image-input'), dispatcher);
   let showcase = new PreUploadPic(document.querySelector('.upload-showcase'));
   dispatcher.addSubscriber(showcase);
+
+  let search = new SearchInput(dispatcher, document.querySelector('#form-type'));
+  search.setResultFetcher(new TypeFetcher);
+  search.setResultDisplay(new TypeResults(dispatcher, document.querySelector('#form-type')));
+  dispatcher.addSubscriber(search);
+  dispatcher.addSubscriber(new TypeId(document.querySelector('input[name="type-id"]')));
 })();

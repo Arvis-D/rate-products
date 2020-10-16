@@ -20,7 +20,8 @@ class SessionSubscriber implements EventSubscriberInterface
     {
         $event->getView()->addDefaultParams([
             'old' => $this->session->getFlashBag()->get('old'),
-            'errors' => $this->session->getFlashBag()->get('errors')
+            'errors' => $this->session->getFlashBag()->get('errors'),
+            //'performance' => $_SESSION['performance']
         ]);
     }
 

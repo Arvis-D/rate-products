@@ -3,47 +3,45 @@
 namespace App\Controller;
 
 use App\Helper\View;
-use App\Repository\ProductRepository;
+use App\Repository\ProductRepositoryInterface;
 use App\Service\Product\ProductService;
-use App\Service\Product\ProductValidationService;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductController
 {
-    private $productService;
-
-    public function __construct(ProductService $productService)
-    {
-        $this->productService = $productService;
-    }
-
     public function create(View $view) 
     {
         return new Response($view->render('pages/addProduct'));
     }
 
-    public function store(Request $request) 
+    public function store(ProductService $productService, Request $request) 
     {
-        if ($this->productService->tryCreateNewProduct($request->request->all(), $request->files->get('image'))) {
+        if ($productService->tryCreateNewProduct($request->request->all(), $request->files->get('image'))) {
             return new RedirectResponse('/');
         }
 
         return new RedirectResponse('/product/create');
     }
 
-    public function index(View $view)
+    public function index(ProductService $productService, View $view)
     {
         return new Response($view->render('pages/products', [
-            'products' => $this->productService->getProducts()
+            'products' => $productService->getProducts()
         ]));
     }
 
-    public function show(View $view, $id) 
+    public function show(ProductService $productService, View $view, $id) 
     {
         return new Response($view->render('pages/product', [
-            'product' => $this->productService->getProduct($id)
+            'product' => $productService->getProduct($id)
         ]));
+    }
+
+    public function getTypes(string $wildcard, ProductRepositoryInterface $product)
+    {
+        return new JsonResponse($product->getTypes($wildcard));
     }
 }

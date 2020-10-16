@@ -30,9 +30,12 @@ class ProductService
 
     public function tryCreateNewProduct(array $params, ?UploadedFile $file): bool
     {
-        if (!$this->validationService->validateProductCreation($params)) {
+        if (!$this->validationService->validateProductCreation($params, !empty($params['type-id']))) {
             return false;
         };
+
+        $params['type-id'] = (empty($params['type-id']) ? $this->repository->addType($params['type']) : $params['type-id']);
+        $params['price'] = round((float) $params['price'] * 100);
 
         $userId = $this->auth->authParams('id');
         $params['picture'] = ($file === null ? '' : $this->imageService->createSetOfImages($file, 'product', $userId));

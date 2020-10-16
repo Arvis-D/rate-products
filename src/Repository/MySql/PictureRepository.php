@@ -3,11 +3,8 @@
 namespace App\Repository\MySql;
 
 use App\Helper\MySql\Database;
-use App\Helper\MySql\SimpleQuery;
-use App\Model\Picture\PictureFull;
 use App\Repository\PictureRepositoryInterface;
 use App\Repository\LikeRepositoryInterface;
-use App\Repository\Model\Picture\Picture;
 use App\Repository\MySql\Query\Picture\PictureFullQuery;
 use App\Repository\UserRepositoryInterface;
 

@@ -2,6 +2,7 @@
 
 namespace App\Service\Validate;
 
+use App\Service\Validate\Requirement\Primitive\ExistsRequirement;
 use App\Service\Validate\Requirement\Primitive\RequiredRequirement;
 use App\Service\Validate\Requirement\Primitive\UniqueRequirement;
 
@@ -34,6 +35,17 @@ abstract class PrimitiveValidator
         }
 
         $this->validator->validate(new UniqueRequirement($this->getCurrentValue(), $resource, $uniqueWhere), 'unique');
+
+        return $this;
+    }
+
+    public function exists(string $uniqueWhere): self
+    {
+        if (null === $resource = $this->validator->validationResource) {
+            throw new \Exception('Validator: Cannot check existance, resource not set!');
+        }
+
+        $this->validator->validate(new ExistsRequirement($this->getCurrentValue(), $resource, $uniqueWhere), 'exists');
 
         return $this;
     }

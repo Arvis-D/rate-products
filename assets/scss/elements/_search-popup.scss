@@ -1,0 +1,23 @@
+.search-popup {
+  position: absolute;
+  padding: 1em 0;
+  z-index: $zindex-popover;
+  box-shadow: $box-shadow-lg;
+  background-color: $white;
+  color: $black;
+  border: $border;
+  border-radius: $border-radius;
+  > p {
+    padding: .5em;
+    margin: 0;
+    &:hover {
+      background-color: $gray-300;
+    }
+    span {
+      font-weight: bold;
+    }
+  }
+  &.hide {
+    display: none;
+  }
+}

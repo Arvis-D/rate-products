@@ -41,18 +41,22 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
 
         $this->beginTransaction();
 
-        ['name' => $name, 'price' => $price, 'rating' => $rating, 'picture' => $picture] = $product;
-
-        $this->write($this->table->insert([$userId, $name, $time, $time]));
+        $this->write($this->table->insert([
+            $userId,
+            $product['name'],
+            $product['type-id'],
+            $time,
+            $time
+        ]));
 
         $id = $this->db->pdo->lastInsertId();
 
-        if(!empty($price))
-            $this->addPrice($id, $userId, $price);
-        if(!empty($rating))
-            $this->addRating($id, $userId, $rating);
-        if(!empty($picture))
-            $this->getPictureRepository()->addPicture($id, $picture, $userId);
+        if(!empty($product['price']))
+            $this->addPrice($id, $userId, $product['price']);
+        if(!empty($product['rating']))
+            $this->addRating($id, $userId, $product['rating']);
+        if(!empty($product['picture']))
+            $this->getPictureRepository()->addPicture($id, $product['picture'], $userId);
 
         $this->commit();
 
@@ -63,7 +67,7 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
     {
         $time = time();
 
-        $this->write($this->table->insert([$id, $userId, $price, $time, $time]));
+        $this->write(SimpleQuery::table('product_price')->insert([$id, $userId, $price, $time, $time]));
     }
 
     public function addRating(int $id, int $userId, int $rating)
@@ -99,5 +103,21 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
         }
 
         return $product;
+    }
+
+    public function addType(string $name): int
+    {
+        $this->write(new Query('INSERT INTO product_type VALUES(null, :type);',
+            ['type' => $name]
+        ));
+
+        return $this->db->pdo->lastInsertId();
+    }
+
+    public function getTypes(string $name): array
+    {
+        return $this->read(new Query('SELECT * FROM product_type WHERE name LIKE :type;',
+            ['type' => "%{$name}%"]
+        ));
     }
 }

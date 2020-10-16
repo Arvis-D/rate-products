@@ -2,10 +2,22 @@
 
 namespace App\Service\Validate;
 
+use Symfony\Component\HttpFoundation\Session\Session;
+
 class ValidatorFactory
-{
-    public static function create()
+{   
+    private $session;
+    private $resource;
+
+    public function __construct(Session $session, ValidationResourceInterface $resource)
     {
-        return new Validator;
+        $this->session = $session;
+        $this->resource = $resource;
+    }
+
+
+    public function create(array $translation = [])
+    {
+        return new Validator($this->session, $this->resource, $translation);
     }
 }

@@ -2,18 +2,14 @@
 
 namespace App\Service\Auth;
 
-use App\Repository\UserRepositoryInterface;
-use App\Service\Validate\ValidationResourceInterface;
-use App\Service\Validate\ValidationService;
-use App\Service\Validate\Validator;
+use App\Service\Picture\PictureValidationService;
 use App\Service\Validate\ValidatorFactory;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 class AuthValidationService
 {
-    public $session;
+    public $validator;
+    private $avatarValidator;
     public $errors = [];
-    private $resource;
     private $translation = [
         'email.email' => 'Email has to be valid',
         'username.unique' => 'Username is already taken',
@@ -24,56 +20,50 @@ class AuthValidationService
         'email.required' => 'Email is required'
     ];
 
-    public function __construct(ValidationResourceInterface $resource, Session $session)
+    public function __construct(ValidatorFactory $validatorFactory, PictureValidationService $avatarValidator)
     {
-        $this->resource = $resource;
-        $this->session = $session;
+        $this->avatarValidator = $avatarValidator;
+        $this->validator = $validatorFactory->create($this->translation);
     }
 
     public function validateSignup(array $params): bool
     {
-        $validator = $this->getValidator()->setParams($params);
-        $validator->string(true, 'password')->length(7);
-        $validator->string(true, 'username')->unique('user.name');
-        $validator->string(true, 'email')->email()->unique('user.email');
+        $validator = $this->validator->setParams($params);
+        $this->validatePassword();
+        $this->validateUsername();
+        $this->validateEmail();
 
-        return $validator->isValid();
-    }
-
-    public function validateLogin(array $params): bool
-    {
-        $validator = $this->getValidator()->setParams($params);
-        $validator->string(true, 'password')->length(6);
-        $validator->string(true, 'username');
-
-        return $validator->isValid();
+        return ($validator->isValid() && $this->avatarValidator->validateImage(false));
     }
 
     public function validateUpdate(array $params, string $currentUsername, string $currentEmail): bool
     {
-        $this->translation['new-password.required'] = $this->translation['password.required'];
-        $this->translation['new-password.length'] = $this->translation['password.length'];
-
-        $validator = $this->getValidator()->setParams($params);
-        $validator->file(false, 'image')->maxSize(2048)->type(['jpg', 'jpeg', 'png']);
-        $validator->string(false, 'new-password')->length(7);
+        $validator = $this->validator->setParams(array_merge(['password' => $params['new-password']], $params));
+        $this->validatePassword();
 
         if ($params['username'] !== $currentUsername) {
-            $validator->string(true, 'username')->unique('user.name');
+            $this->validateUsername();
         }
 
         if ($params['email'] !== $currentEmail) {
-            $validator->string(true, 'email')->email()->unique('user.email');
+            $this->validateEmail();
         }
 
-        return $validator->isValid();
+        return ($validator->isValid() && $this->avatarValidator->validateImage(false));
     }
 
-    private function getValidator(): Validator
+    private function validateEmail()
     {
-        return ValidatorFactory::create()
-            ->setSession($this->session)
-            ->setValidationResource($this->resource)
-            ->setTranslation($this->translation);
+        $this->validator->string(true, 'email')->email()->unique('user.email');
+    }
+
+    private function validateUsername()
+    {   
+        $this->validator->string(true, 'username')->unique('user.name');
+    }
+
+    private function validatePassword()
+    {
+        $this->validator->string(true, 'password')->length(7);
     }
 }

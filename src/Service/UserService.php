@@ -66,19 +66,19 @@ class UserService
             $this->userRepo->setAvatar($userId, $url);
         }
 
-        $this->auth->authenticate($request->get('username'), $userId, ($request->get('remember') !== null));
+        $this->auth->authenticate($request->get('username'), $userId, ($request->get('remember-me') !== null));
 
         return true;
     }
 
     private function setLoginError()
     {
-        $this->validation->session->getFlashBag()->set('errors', ['login' => 'Incorrect username or password!']);
+        $this->validation->validator->setFlashbagErrors(['login' => 'Incorrect username or password!']);
     }
 
     private function setPasswordError()
     {
-        $this->validation->session->getFlashBag()->set('errors', ['password' => 'Incorrect password!']);
+        $this->validation->validator->setFlashbagErrors(['password' => 'Incorrect password!']);
     }
 
     public function update(Request $request)

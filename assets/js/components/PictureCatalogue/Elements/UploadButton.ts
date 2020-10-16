@@ -1,7 +1,7 @@
 import { spinnerType, toggleSpinner } from '../../../helpers/spinner';
 import csrf from '../../../helpers/Subscriber/csrf';
 import Subscriber from '../../../helpers/Subscriber/Subscriber';
-import Request from '../../../helpers/Request';
+import Ajax from '../../../helpers/Ajax';
 import Dispatcher from '../../../helpers/Subscriber/Dispatcher';
 import PictureChosen from '../Event/PictureChosen';
 import PictureUploaded from '../Event/PictureUploaded';
@@ -74,7 +74,7 @@ export default class UploadButton implements Subscriber{
   }
 
   private deleteImage() {
-    return Request.create()
+    return Ajax.create()
       .add('picture-id', this.imageId.toString())
       .add('picture-url', this.deletePicUrl)
       .add('csrf', csrf())
@@ -85,7 +85,7 @@ export default class UploadButton implements Subscriber{
 
   private storeImage() {
     console.log('storeImage')
-    return Request.create()
+    return Ajax.create()
       .form(this.uploadForm)
       .send()
       .then(res => res.json())

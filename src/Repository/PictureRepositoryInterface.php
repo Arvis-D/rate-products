@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Model\Picture\PictureFull;
 use App\Repository\LikeRepositoryInterface;
 
 interface PictureRepositoryInterface extends SubjectInterface
@@ -14,16 +13,10 @@ interface PictureRepositoryInterface extends SubjectInterface
     public function getPicture(int $id, ?int $userId): array;
 
     /**
-     * @return picture added by user
+     * @return array picture added by user
      */
 
     public function getUserPicture(int $subjectId, int $userId): array;
-
-    //public function getPictureUrlByUserId(int $userId);
-
-    /**
-     * @return array<PictureThumbnail>
-     */
 
     public function getPictures(int $subjectId): array;
 

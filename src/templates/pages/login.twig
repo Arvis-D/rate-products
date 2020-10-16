@@ -13,7 +13,7 @@
             {% include "elements/formText.twig" with {name: 'username', required: true} %}
             {% include "elements/formText.twig" with {name: 'password', type: 'password', required: true} %}
             {% include "elements/csrfToken.twig" %}
-            {% include "elements/formCheckBox.twig" with {name: 'Remember me'} %}
+            {% include "elements/formCheckBox.twig" with {name: 'Remember me', checked: true} %}
             <button class="btn btn-primary w-100">login</button>
           </form>
           {% if errors.login is defined %}

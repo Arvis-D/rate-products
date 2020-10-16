@@ -41,6 +41,7 @@ class App
         $this->dispatcher->dispatch(new BeforeRouterEvent($this->request), 'beforeRouter');
         $router = $this->container['router'];
         require __DIR__ . '/Router/routes.php';
+        
         return $router->getResponse();
     }
 

@@ -27,7 +27,7 @@
                 <span class="text-danger mb-3 d-inline-block">{{ errors.image }}</span>
             {% endif %}
 
-            {% include "elements/formCheckBox.twig" with {name: 'Remember me'} %}
+            {% include "elements/formCheckBox.twig" with {name: 'Remember me', checked: true} %}
             {% include "elements/csrfToken.twig" %}
             <button disabled class="btn btn-primary w-100 submit">Sign Up</button>
           </form>

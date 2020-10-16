@@ -9,7 +9,11 @@
   <div class="p-3 border rounded">
   {% if product.id != null %}
   <h1>{{ product.name }}</h1>
-  <div class="separator"></div>
+  <hr>
+
+  {% include "elements/stats.twig" %}
+
+  <hr>
 
   <h3>Pictures:</h3>
   {% include "elements/pictureCatalogue.twig" 

@@ -1,11 +1,9 @@
 * add, display, edit product stats
 * design, implement product filter
-* user profile
 * add comments
 * implement deleting and editing of products, probably only if you have adming rights
 * add shops
 * lazy load
-* product types
 * searching
 * google plus auth
 * validate file in front-end
@@ -16,5 +14,6 @@
 * image upload looks ugly on mobile
 * mobile picture catalogue is crowded on mobile
 * on posting/deleting image change the message accordingly
-* fix input spinner position (incorrect when scrolling)
 * add more stats to profile
+* make search case insensitive
+* add Euro sign for price in form

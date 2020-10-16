@@ -23,6 +23,7 @@ final class Version20200825134604 extends AbstractMigration
     {
         $this->addSql('SET foreign_key_checks = 0');
         $this->createUserTable();
+        $this->createProductTypeTable();
         $this->createProductsTable();
         $this->createProductPriceTable();
 
@@ -71,8 +72,9 @@ final class Version20200825134604 extends AbstractMigration
                 id int UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
                 user_id int UNSIGNED NOT NULL,
                 name varchar(255) NOT NULL UNIQUE,
+                type_id int UNSIGNED NOT NULL,
                 time_created int UNSIGNED NOT NULL,
-                time_changed int UNSIGNED NOT NULL,
+                time_changed int UNSIGNED NOT NULL
             );'
         );
 
@@ -90,7 +92,7 @@ final class Version20200825134604 extends AbstractMigration
                 time_created int UNSIGNED NOT NULL,
                 time_changed int UNSIGNED NOT NULL,
 
-                FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE,
+                FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
             );'
         );
 
@@ -126,7 +128,7 @@ final class Version20200825134604 extends AbstractMigration
                 url text NOT NULL,
                 time_created int UNSIGNED NOT NULL,
 
-                FOREIGN KEY ({$subject}_id) REFERENCES {$subject}(id) ON DELETE CASCADE,
+                FOREIGN KEY ({$subject}_id) REFERENCES {$subject}(id) ON DELETE CASCADE
             );"
         );
 
@@ -166,5 +168,17 @@ final class Version20200825134604 extends AbstractMigration
         );
 
         array_push($this->tables, "{$subject}_like");
+    }
+
+    private function createProductTypeTable()
+    { 
+        $this->addSql(
+            "CREATE TABLE product_type(
+                id int UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
+                name varchar(256) not null
+            );"
+        );
+
+        array_push($this->tables, "product_type");
     }
 }

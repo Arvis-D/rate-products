@@ -47,7 +47,7 @@ $router->group('/auth', function($router) {
 
 
 $router->get('/', function($c) {
-    return $c['ProductController']->index($c['view']);
+    return $c['ProductController']->index($c['ProductService'], $c['view']);
 });
 $router->group('/product', function($router) {
     $router->protected()->get('/create', function($c) {
@@ -55,11 +55,11 @@ $router->group('/product', function($router) {
     });
 
     $router->protected()->post('/store', function($c) {
-        return $c['ProductController']->store($c['request']);
+        return $c['ProductController']->store($c['ProductService'], $c['request']);
     });
 
     $router->get('/show/:id:n', function($id, $c) {
-        return $c['ProductController']->show($c['view'], $id);
+        return $c['ProductController']->show($c['ProductService'], $c['view'], $id);
     });
 });
 
@@ -70,6 +70,10 @@ $router->group('/api', function($router) {
     });
 
     $router->group('/product', function($router){
+        $router->get('/type/get/:name', function($name, $c) {
+            return $c['ProductController']->getTypes($name, $c['ProductRepository']);
+        });
+
         $router->group('/picture', function($router){
             $router->protected()->post('/store', function($c) {
                 return $c['ProductPictureController']->store($c['request'], $c['view']);

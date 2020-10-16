@@ -19,7 +19,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
     public function addUser(string $username, string $email, string $password, string $avatarUrl = null): int
     {
         $time = time();
-        $query = $this->table->insert([$username, $email, $password, $time, $time, $avatarUrl]);
+        $query = $this->table->insert([$username, $email, $password, $avatarUrl, $time, $time]);
         $this->write($query);
 
         return (int) $this->db->pdo->lastInsertId();

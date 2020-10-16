@@ -3,13 +3,10 @@
 namespace App\Service\Picture;
 
 use App\Helper\Time;
-use App\Repository\MySql\PictureRepository;
 use App\Repository\PictureRepositoryInterface;
 use App\Service\Auth\AuthServiceInterface;
 use App\Service\ImageService;
 use App\Service\Like\LikeableTrait;
-use App\Service\Product\ProductValidationService;
-use App\Service\Validate\ValidationResourceInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class PictureService
@@ -43,7 +40,7 @@ class PictureService
 
     public function uploadPicture(int $subjectId, ?UploadedFile $file, string $pictureName = 'image'): ?int
     {
-        if (!$this->validation->validateImage($pictureName)) {
+        if (!$this->validation->validateImage(true)) {
             return null;
         }
 

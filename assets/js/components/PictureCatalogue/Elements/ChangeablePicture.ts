@@ -1,5 +1,5 @@
 import Subscriber from '../../../helpers/Subscriber/Subscriber';
-import Request from '../../../helpers/Request';
+import Ajax from '../../../helpers/Ajax';
 import Dispatcher from '../../../helpers/Subscriber/Dispatcher';
 import { toggleSpinner } from '../../../helpers/spinner';
 import PictureSelected from '../Event/PictureSelected';
@@ -94,7 +94,7 @@ export default class ChangeablePicture implements Subscriber {
 
   private fetchPicture(id: number) {
     console.log('fetchPicture' ,this.fetchUrl + `/${id}`)
-    return new Request()
+    return new Ajax()
       .methodGet()
       .setUrl(this.fetchUrl + `/${id}`)
       .send()

@@ -10,7 +10,7 @@ class NumberRequirement implements RequirementInterface
 
     public function __construct($value)
     {
-        $this->$value = $value;
+        $this->value = $value;
     }
 
     public function check(): bool
