@@ -64,4 +64,11 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
             'id' => $id, 'url' => $url
         ]));
     }
+
+    public function getAvatar(int $userId): ?string
+    {
+        $avatar = $this->read($this->table->select(['avatar_url'], ['id' => $userId]));
+
+        return (empty($avatar) ? null : $avatar[0]['avatar_url']);
+    }
 }

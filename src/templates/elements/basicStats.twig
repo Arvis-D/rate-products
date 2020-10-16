@@ -1,0 +1,38 @@
+{% if pageStats %}
+  {% set classExt = '--page' %}
+{% endif %}
+
+
+<div class="basic-stats {{ classExt }} py-2">
+  <div class="rating">
+  
+    {% if product.number_of_ratings > 0 %}          
+      {% set color = 'text-danger' %}
+      {% if product.rating > 2.5 %}
+        {% set color = 'text-warning' %}
+      {% endif %}
+      {% if product.rating > 4 %}
+        {% set color = 'text-success' %}
+      {% endif %}
+
+      <strong class="{{ color }}">{{ product.rating|number_format(2) }}</strong>
+      <small>/</small>
+      <small>5</small> 
+      <small class="vote-number">({{ product.number_of_ratings }})</small>
+    {% else %}
+      <small class="text-secondary">No ratings</small>
+    {% endif %}
+    
+  </div>
+  <div class="price">
+    {% if product.number_of_prices > 0 %}
+      <strong>{{ (product.price / 100)|number_format(2, '.', ',')   }}</strong>
+      <span>€</span>
+      <small class="vote-number">
+        ({{ product.number_of_prices }})
+      </small>
+    {% else %}
+      <small class="text-secondary">No prices</small>
+    {% endif %}
+  </div>
+</div>

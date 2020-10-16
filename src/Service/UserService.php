@@ -88,7 +88,8 @@ class UserService
             return;
         }
 
-        $password = $this->userRepo->getPassword($this->auth->authParams('id'));
+        $userId = $this->auth->authParams('id');
+        $password = $this->userRepo->getPassword($userId);
 
         if (!password_verify($request->get('password'), $password)) {
             $this->setPasswordError();
@@ -97,7 +98,11 @@ class UserService
         }
 
         $file = $request->files->get('image');
-        $url = ($file === null ? null : $this->image->createSetOfImages($file, 'user', $this->auth->authParams('id')));
+        $url = ($file === null ? null : $this->image->createSetOfImages($file, 'user', $userId));
+
+        if ((null !== $oldAvatar = $this->userRepo->getAvatar($userId)) && $url) {
+            $this->image->delete($oldAvatar);
+        }
 
         $this->userRepo->update(
             $this->auth->authParams('id'),

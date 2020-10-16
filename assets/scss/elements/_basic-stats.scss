@@ -1,0 +1,16 @@
+.basic-stats {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  .vote-number {
+    color: $gray-500;
+  }
+  .price {
+    color: $info;
+  }
+
+  &.--page {
+    justify-content: space-around;
+    font-size: 1.3em;
+  }
+}

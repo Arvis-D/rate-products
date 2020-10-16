@@ -1,29 +1,28 @@
-<div class="container picture-catalogue">
-  <div class="row">
-    <div class="col-lg-6 p-1">
-    {% include "elements/pictureMain.twig" %}
-    </div>
-    <div class="col-lg-6 p-1">
-      <div class="picture-selector small-scrollbar {% if pictures %} 'mb-3' {% endif %}">
-        {% for picture in pictures %}
-          <div class="selector-thumbnail" style="background-image: url('{{ picture.url|replace({'--size': '--icon'}) }}');">
-            <input type="hidden" value="{{ picture.id }}">
-          </div>
-        {% endfor %}
-      </div>
 
-      {% if auth %}
-        {% if not product.userPicture %}
-          <h4 class="my-3 font-weight-normal">Upload an image:</h3>
-        {% else %}
-          <h4 class="my-3">Delete an image:</h3>
-        {% endif %}
-        
-        <div class="image-upload">
-          {% include "elements/pictureUpload.twig" %}
+<div class="row m-0 picture-catalogue">
+  <div class="col-lg-6 p-1">
+  {% include "elements/pictureMain.twig" %}
+  </div>
+  <div class="col-lg-6 p-1">
+    <div class="picture-selector small-scrollbar {% if pictures %} 'mb-3' {% endif %}">
+      {% for picture in pictures %}
+        <div class="selector-thumbnail" style="background-image: url('{{ picture.url|replace({'--size': '--icon'}) }}');">
+          <input type="hidden" value="{{ picture.id }}">
         </div>
-      {% endif %}
-
+      {% endfor %}
     </div>
+
+    {% if auth %}
+      {% if not product.userPicture %}
+        <h4 class="my-3 font-weight-normal">Upload an image:</h3>
+      {% else %}
+        <h4 class="my-3 font-weight-light text-secondary">Your picture:</h4>
+      {% endif %}
+      
+      <div class="image-upload">
+        {% include "elements/pictureUpload.twig" %}
+      </div>
+    {% endif %}
+
   </div>
 </div>

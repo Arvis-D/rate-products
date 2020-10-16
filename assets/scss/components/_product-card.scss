@@ -1,24 +1,16 @@
 .product-card {
   height: 140%;
   overflow-y: auto;
-  border: none;
   .product-thumbnail {
     @include aspect-ratio-image(4, 3);
   }
   .card-body {
     padding: 0;
     padding-top: 1em;
-
-    .basic-stats {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      .vote-number {
-        color: $gray-500;
-      }
-      .price {
-        color: $info;
-      }
-    }
+  }
+  @media screen and (max-width: $md) {
+    border: 0;
+    border-bottom: $border;
+    padding: .5em;
   }
 }

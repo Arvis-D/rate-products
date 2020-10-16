@@ -7,17 +7,6 @@ use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-/**
- * requires:
- * 
- * sudo apt-get install jpegoptim
- * sudo apt-get install optipng
- * sudo apt-get install pngquant
- * sudo npm install -g svgo
- * sudo apt-get install gifsicle
- * sudo apt-get install webp
- */
-
 class ImageService
 {
     private $manager;
@@ -58,7 +47,7 @@ class ImageService
     private function createThumbnail(Image $img, string $fullPath)
     {
         $path = $this->addSizePostfixToPath($fullPath, 'thumb');
-        $this->downsize($img, 200 * 200)->save($path, 50);
+        $this->downsize($img, 400 * 400)->save($path, 50);
     }
 
     private function createIcon(Image $img, string $fullPath)

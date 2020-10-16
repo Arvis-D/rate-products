@@ -13,9 +13,27 @@ $dark-overlay: rgba(0, 0, 0, .2);
 $light-shadow: 0 0 .5em rgba(0, 0, 0, .2);
 $border: $border-color $border-width solid;
 
+.p-default {
+  padding: 1em;
+
+  @media only screen and (max-width: $sm) {
+    padding: .5em;
+  }
+}
+
+.border-default {
+  border: $border;
+
+  @media screen and (max-width: $sm) {
+    border:none;
+    border-bottom: $border;
+  }
+}
+
 @import "./elements/btn";
 @import "./elements/input";
 @import "./elements/search-popup";
+@import "./elements/basic-stats";
 
 @import "./utilities/icon";
 @import "./utilities/spinner";
@@ -31,3 +49,4 @@ $border: $border-color $border-width solid;
 @import "./components/product-card";
 @import "./components/upload";
 @import "./components/user-info";
+@import "./components/stats";

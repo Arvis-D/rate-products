@@ -27,4 +27,6 @@ interface UserRepositoryInterface
     public function getPassword(int $id): ?string;
 
     public function setAvatar(int $id, string $url): void;
+
+    public function getAvatar(int $userId): ?string;
 }

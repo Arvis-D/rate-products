@@ -7,8 +7,8 @@
 
   <div class="container">
     <div class="row justify-content-md-center">
-      <div class="col-md-8 col-lg-5 p-3">
-        <div class="p-3 bg-white shadow-sm border rounded">
+      <div class="col-md-8 col-lg-5 p-default">
+        <div class="p-default bg-white shadow-sm border-default rounded">
           <form action="/auth/login" method="post">
             {% include "elements/formText.twig" with {name: 'username', required: true} %}
             {% include "elements/formText.twig" with {name: 'password', type: 'password', required: true} %}

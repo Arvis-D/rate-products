@@ -12,8 +12,7 @@
 * dont show picture catalogue if there are no pictures and user is not authenticated
   the same goes for comments
 * image upload looks ugly on mobile
-* mobile picture catalogue is crowded on mobile
-* on posting/deleting image change the message accordingly
 * add more stats to profile
 * make search case insensitive
 * add Euro sign for price in form
+* access profile from username anywhere
