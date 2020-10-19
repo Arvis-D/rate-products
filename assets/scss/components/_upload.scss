@@ -13,10 +13,15 @@
   }
 
   .upload-showcase {
+    position: relative;
+    overflow: hidden;
     border-radius: $border-radius;
-    padding: $thumbNailPadding;
-    background-image: url('/img/img.png');
-    background-position: center;
-    background-size: cover;
+    padding: 2em;
+    img {
+      @include transform-center;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 }

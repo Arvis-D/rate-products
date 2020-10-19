@@ -10,7 +10,7 @@
   <div class="row justify-content-md-center">
     <div class="col-md-8 col-lg-5 p-default">
       <div class="p-default bg-white shadow-sm border-default rounded">
-        <h3 class="my-3">Add a new product</h3>
+        <h3 class="my-3 font-weight-light text-secondary">Add a new product</h3>
         <div>
           <form autocomplete="off" action="/product/store" method="post" enctype="multipart/form-data">
             {% include "elements/formText.twig" with {name: 'name', required: true} %}
@@ -40,6 +40,6 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="/dist/addProduct~profile~signup.bundle.js"></script>
-    <script src="/dist/addProduct.bundle.js"></script>
+  <script src="/dist/addProduct~profile~signup.bundle.js"></script>
+  <script src="/dist/addProduct.bundle.js"></script>
 {% endblock %}

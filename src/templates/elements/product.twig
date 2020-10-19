@@ -1,10 +1,12 @@
 <div class="col-sm-12 col-lg-4 col-xl-3 p-2">
   <div>
     <div class="shadow-sm border-default p-default card product-card very-small-scrollbar">
-      <div 
-        class="product-thumbnail card-img-top rounded"
-        style="background-image: url('{{ product.picture is empty ? '/img/none.webp' : product.picture|replace({'--size': '--thumb'}) }}');"
-      ></div>
+      <div class="product-thumbnail card-img-top rounded">
+        <img
+          alt="Item thumbnail"
+          src="{{ product.picture is empty ? '/img/none.webp' : product.picture|replace({'--size': '--thumb'}) }}"
+        >
+      </div>
       <div class="card-body">
       <a href="/product/show/{{ product.id }}"><strong class="card-title">{{ product.name }}</strong></a>
       <p class="text-secondary"><small>{{ product.type }}</small></p>

@@ -2,6 +2,7 @@
   height: 140%;
   overflow-y: auto;
   .product-thumbnail {
+    position: relative;
     @include aspect-ratio-image(4, 3);
   }
   .card-body {

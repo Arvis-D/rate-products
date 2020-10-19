@@ -4,10 +4,27 @@
 
 // example: 16:9
 
-@mixin aspect-ratio-image($width, $height) {
+@mixin aspect-ratio-bg($width, $height) {
   @include aspect-ratio($width, $height);
   background-color: $white;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+@mixin transform-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin aspect-ratio-image($width, $height){
+  @include aspect-ratio($width, $height);
+  img {
+    @include transform-center;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }

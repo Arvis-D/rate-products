@@ -8,20 +8,31 @@
 <div class="container p-default">
   <div class="p-default border-default rounded">
   {% if product.id != null %}
-  <h1>{{ product.name }}</h1>
+    <h1>{{ product.name }}</h1>
+    <hr>
 
-<hr>
-  {% include "elements/basicStats.twig" with {pageStats: true} %}
-  <hr>
+    {% if auth or product.rating or product.price %}
+      <h3 class="font-weight-light text-secondary">Stats:</h3>
+      {% include "elements/basicStats.twig" with {pageStats: true} %}
+      <hr>
+    {% else %}
+      <p class="text-secondary font-weight-light"><a class="text-info" href="/auth/login">Log in</a> to add stats...</p>
+      <hr>
+    {% endif %}
 
-  <h3 class="font-weight-light text-secondary">Pictures:</h3>
-  {% include "elements/pictureCatalogue.twig" 
-  with {pictures: product.pictures, randomPicture: product.randomPicture, userPicture: product.userPicture} %}
+    {% if auth or product.pictures %}
+      <h3 class="font-weight-light text-secondary">Pictures:</h3>
+      {% include "elements/pictureCatalogue.twig" 
+      with {pictures: product.pictures, randomPicture: product.randomPicture, userPicture: product.userPicture} %}
+      <hr>
+    {% else %}
+      <p class="text-secondary font-weight-light"><a class="text-info" href="/auth/login">Log in</a> to add pictures...</p>
+      <hr>
+    {% endif %}
+    
 
-  <hr class="border">
-
-  <h3 class="font-weight-light text-secondary">Comments:</h3>
-  {% include "elements/comments.twig" %}
+    <h3 class="font-weight-light text-secondary">Comments:</h3>
+    {% include "elements/comments.twig" %}
   
   {% else %}
     <h2>No such product exists!</h2>

@@ -13,7 +13,9 @@
     .pic-container {
       width: 50%;
       .pic {
-        background-image: url('/img/avatar.jpg');
+        box-shadow: 0 0 1px 1px $gray-200 inset, 0 0 1px 1px $gray-200;
+        position: relative;
+        overflow: hidden;
         @include aspect-ratio-image(1, 1);
       }
     }

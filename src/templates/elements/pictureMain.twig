@@ -2,9 +2,10 @@
 
   <a 
     href="{{ randomPicture.url }}" 
-    class="picture {{ randomPicture.url == null ? 'no-image' : '' }}" 
-    style="background-image: url('{{ randomPicture.url }}');"
-  ></a>
+    class="picture"
+  >
+    <img src="{{ randomPicture.url ?: '/img/none.webp' }}" alt="main picture">
+  </a>
 
   {% if randomPicture.id is not defined %}
     {% set hideLikeAndInfo = 'd-none' %}

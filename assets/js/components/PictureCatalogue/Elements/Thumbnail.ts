@@ -13,17 +13,21 @@ export default class Thumbnail {
   }
   
   private choosePicture() {
+    const img = this.dom.firstElementChild as HTMLImageElement;
+
     this.dispatcher.dispatch(new PictureSelected(
       this.id,
-      this.dom.style.backgroundImage.split('"')[1]
+      img.getAttribute('src')
     ));
   }
 
   public static createDom(id: number, url: string) {
     let el = document.createElement('div');
     el.classList.add('selector-thumbnail');
-    el.style.backgroundImage = `url('${url}')`;
-    el.innerHTML = `<input type="hidden" value="${id}">`
+    let img = document.createElement('img');
+    img.setAttribute('src', url);
+    el.innerHTML = `<input type="hidden" value="${id}">`;
+    el.appendChild(img);
 
     return el;
   } 

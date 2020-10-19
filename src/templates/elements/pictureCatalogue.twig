@@ -6,7 +6,8 @@
   <div class="col-lg-6 p-1">
     <div class="picture-selector small-scrollbar {% if pictures %} 'mb-3' {% endif %}">
       {% for picture in pictures %}
-        <div class="selector-thumbnail" style="background-image: url('{{ picture.url|replace({'--size': '--icon'}) }}');">
+        <div class="selector-thumbnail">
+          <img src="{{ picture.url|replace({'--size': '--icon'}) }}" alt="picture thumbnail">
           <input type="hidden" value="{{ picture.id }}">
         </div>
       {% endfor %}

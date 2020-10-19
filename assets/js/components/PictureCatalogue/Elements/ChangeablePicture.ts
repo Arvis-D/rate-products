@@ -20,6 +20,7 @@ export default class ChangeablePicture implements Subscriber {
   };
   public picture: HTMLElement;
   private currentId: number = null;
+  private img: HTMLImageElement;
 
   /**
    * used to dispatch events just for its children
@@ -33,6 +34,7 @@ export default class ChangeablePicture implements Subscriber {
     private dispatcher: Dispatcher
   ) {
     this.localDispatcher = new Dispatcher();
+    this.img = dom.querySelector('img');
   }
 
   public onThumbnailRemove(event: ThumbnailRemoved) {
@@ -67,8 +69,7 @@ export default class ChangeablePicture implements Subscriber {
   }
   
   private showPicture(url: string) {
-    let cssUrl = `url('${url}')`;
-    this.dom.style.backgroundImage = cssUrl;
+    this.img.setAttribute('src', url);
     this.dom.setAttribute('href', url);
   }
 

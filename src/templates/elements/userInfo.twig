@@ -8,7 +8,9 @@
           {% set avatar = '/img/avatar.jpg' %}
         {% endif %}
 
-      <div class="pic rounded-circle" style="background-image: url('{{ avatar }}');"></div>
+      <div class="pic rounded-circle">
+        <img src="{{ avatar ?: '/img/avatar.jpg' }}" alt="avatar">
+      </div>
     </div>
   </div>
 

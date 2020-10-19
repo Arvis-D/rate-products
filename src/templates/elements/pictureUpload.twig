@@ -16,11 +16,15 @@
     {{ imageUploadForm }}
     <button class="btn btn-danger upload-btn">Delete</button>
   </div>
-  <div class="upload-showcase" style="background-image: url('{{ product.userPicture.url|replace({'--size': '--icon'}) }}');"></div>
+  <div class="upload-showcase rounded">
+    <img src="{{ product.userPicture.url ? product.userPicture.url|replace({'--size': '--icon'}) : '/img/img.png' }}" alt="upload showcase">
+  </div>
 {% else %}
   <div class="upload-input mr-2">
     {{ imageUploadForm }}
     <button class="btn btn-secondary upload-btn" disabled>Upload</button>
   </div>
-  <div class="upload-showcase"></div>
+  <div class="upload-showcase rounded">
+    <img src="{{ product.userPicture.url ? product.userPicture.url|replace({'--size': '--icon'}) : '/img/img.png' }}" alt="upload showcase">
+  </div>
 {% endif %}
