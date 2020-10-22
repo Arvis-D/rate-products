@@ -19,8 +19,8 @@ class NumberSizeRequirement implements RequirementInterface
 
     public function check(): bool
     {   
-        $min = ($this->min === null ? true : $this->value > $this->min);
-        $max = ($this->max === null ? true : $this->value < $this->max);
+        $min = ($this->min === null ? true : $this->value >= $this->min);
+        $max = ($this->max === null ? true : $this->value <= $this->max);
 
         return ($min && $max);
     }

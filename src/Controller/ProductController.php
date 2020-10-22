@@ -44,4 +44,15 @@ class ProductController
     {
         return new JsonResponse($product->getTypes($wildcard));
     }
+
+    public function saveStats(Request $request, ProductService $product)
+    {
+        return new JsonResponse(
+            $product->savePriceAndRating(
+                $request->get('id'),
+                (empty($rating = $request->get('rating')) ? null : $rating),
+                (empty($price = $request->get('price')) ? null : $price)
+            )
+        );
+    }
 }

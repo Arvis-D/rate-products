@@ -25,6 +25,12 @@
     
   >
   <label for="{{ 'form-' ~ htmlPropertyName }}">{{ name|capitalize ~ other ~ ':' }}</label>
+
+  {% if unitType %}
+    <div class="unit-type">
+      {{ unitType }}
+    </div>
+  {% endif %}
 </div>
 
 {% if errors[name] is defined %}

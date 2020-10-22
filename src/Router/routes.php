@@ -74,6 +74,10 @@ $router->group('/api', function($router) {
             return $c['ProductController']->getTypes($name, $c['ProductRepository']);
         });
 
+        $router->post('/stats/store', function($c) {
+            return $c['ProductController']->saveStats($c['request'], $c['ProductService']);
+        });
+
         $router->group('/picture', function($router){
             $router->protected()->post('/store', function($c) {
                 return $c['ProductPictureController']->store($c['request'], $c['view']);

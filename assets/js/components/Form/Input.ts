@@ -5,6 +5,7 @@ import RequirementPassed from './Event/RequirementsPassed';
 import { spinnerType, SpinnerOverlay } from '../../helpers/spinner';
 
 export default class Input {
+  
   /**
    * Order of validators should be considered.
    * If one requirement fails, others wont be tested further
@@ -26,7 +27,8 @@ export default class Input {
 
     private dom: HTMLElement,
     private dispatcher: Dispatcher,
-    public optional: boolean = false
+    public optional: boolean = false,
+    public displayErrorMessages: boolean = true
   ) {
     this.input = this.dom.querySelector('input');
     this.input.addEventListener('input', () => {this.validate()});
@@ -44,11 +46,7 @@ export default class Input {
   }
 
   public async validateAsync() {
-    if (this.checkOptional()) {
-      return;
-    }
-
-    if (!this.valid) {
+    if (!this.valid || this.asyncValidators.length === 0 || this.checkOptional()) {
       return;
     }
 
@@ -92,11 +90,12 @@ export default class Input {
   private displayError(msg: string) {
     if (!this.error && this.displayErrors) {
       this.dom.classList.add('error');
-      let error = document.createElement('div');
-      error.classList.add('mb-3');
-      error.innerHTML = `<small class="text-danger">* ${msg}</small>`;
-      this.error = error;
-      this.dom.parentNode.insertBefore(error, this.dom.nextSibling);
+      this.error = document.createElement('div');
+      if (this.displayErrorMessages) {
+        this.error.classList.add('mb-3');
+        this.error.innerHTML = `<small class="text-danger">* ${msg}</small>`;
+        this.dom.parentNode.insertBefore(this.error, this.dom.nextSibling);
+      }
     }
   }
 
@@ -115,8 +114,7 @@ export default class Input {
     if (this.dispatch) {
       this.dispatcher.dispatch(new RequirementPassed)
     }
-
-
+    
     if (this.error) {
       this.dom.classList.remove('error');
       this.error.remove();

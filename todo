@@ -14,6 +14,5 @@
 * image upload looks ugly on mobile
 * add more stats to profile
 * make search case insensitive
-* add Euro sign for price in form
 * access profile from username anywhere
 * npm run build fucks up everything?

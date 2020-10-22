@@ -2,12 +2,10 @@
 
 namespace App\Service\Product;
 
-use App\Helper\Time;
 use App\Repository\ProductRepositoryInterface;
 use App\Service\Auth\AuthServiceInterface;
 use App\Service\ImageService;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Request;
 
 class ProductService
 {
@@ -68,5 +66,56 @@ class ProductService
         }
         
         return $product;
+    }
+
+    public function savePriceAndRating(int $productId, ?int $rating, ?float $price): array
+    {
+        $info = [];
+
+        if ($this->validationService->validateStatSaving(['rating' => $rating, 'price' => $price])) {
+            $userId = $this->auth->authParams('id');
+
+            if ($price !== null)
+                $info['price'] = $this->updateOrAddPrice($userId, $productId, $price);
+
+            if ($rating !== null)
+                $info['rating'] = $this->updateOrAddRating($userId, $productId, $rating);
+
+            $info['success'] = true;
+
+            return $info;
+        }
+
+        $info['success'] = false;
+
+        return $info;
+    }
+
+    private function updateOrAddPrice(int $userId, int $productId, float $price): array
+    {
+        $price = round($price * 100);
+
+        if (null !== $old = $this->repository->getUserPrice($userId, $productId)) {
+            $this->repository->updatePrice($userId, $productId, $price);
+
+            return ['old' => $old, 'action' => 'updated'];
+        } else {
+            $this->repository->addPrice($productId, $userId, $price);
+
+            return ['action' => 'added'];
+        }
+    }
+
+    private function updateOrAddRating(int $userId, int $productId, int $rating): array
+    {
+        if (null !== $old = $this->repository->getUserRating($userId, $productId)) {
+            $this->repository->updateRating($userId, $productId, $rating);
+
+            return ['old' => $old, 'action' => 'updated'];
+        } else {
+            $this->repository->addRating($productId, $userId, $rating);
+
+            return ['action' => 'added'];
+        }
     }
 }

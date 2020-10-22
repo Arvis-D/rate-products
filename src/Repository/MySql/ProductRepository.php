@@ -63,18 +63,18 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
         return $id;
     }
 
-    public function addPrice(int $id, int $userId, int $price)
+    public function addPrice(int $productId, int $userId, int $price)
     {
         $time = time();
 
-        $this->write(SimpleQuery::table('product_price')->insert([$id, $userId, $price, $time, $time]));
+        $this->write(SimpleQuery::table('product_price')->insert([$productId, $userId, $price, $time, $time]));
     }
 
-    public function addRating(int $id, int $userId, int $rating)
+    public function addRating(int $productId, int $userId, int $rating)
     {
         $time = time();
         $this->write(
-            SimpleQuery::table('product_rating')->insert([$id, $userId, $rating, $time, $time])
+            SimpleQuery::table('product_rating')->insert([$productId, $userId, $rating, $time, $time])
         );
     }
 
@@ -97,6 +97,8 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
         $pictureRepo = $this->getPictureRepository();
         $pictures = $pictureRepo->getPictures($id);
         $product['pictures'] = $pictures;
+        $product['userRating'] = ($userId === null ? null : $this->getUserRating($userId, $id));
+        $product['userPrice'] = ($userId === null ? null : $this->getUserPrice($userId, $id));
         if (!empty($pictures)) {
             $product['randomPicture'] = 
             $pictureRepo->getPicture($pictures[rand(0, count($pictures) - 1)]['id'], $userId);
@@ -119,5 +121,35 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
         return $this->read(new Query('SELECT * FROM product_type WHERE name LIKE :type;',
             ['type' => "%{$name}%"]
         ));
+    }
+
+    public function updatePrice(int $userId, int $productId, int $price): void
+    {
+        $this->write(new Query(
+            'UPDATE product_price SET price = :price WHERE user_id = :userId and product_id = :productId;',
+            ['price' =>  $price, 'userId' => $userId, 'productId' => $productId]
+        ));
+    }
+
+    public function updateRating(int $userId, int $productId, int $rating): void
+    {
+        $this->write(new Query(
+            'UPDATE product_rating SET rating = :rating WHERE user_id = :userId and product_id = :productId;',
+            ['rating' =>  $rating, 'userId' => $userId, 'productId' => $productId]
+        ));
+    }
+
+    public function getUserPrice(int $userId, int $productId): ?int
+    {
+        $price = $this->read(SimpleQuery::table('product_price')->select(['price'], ['product_id' => $productId, 'user_id' => $userId]));
+
+        return (empty($price) ? null : $price[0]['price']);
+    }
+
+    public function getUserRating(int $userId, int $productId): ?int
+    {
+        $rating = $this->read(SimpleQuery::table('product_rating')->select(['rating'], ['product_id' => $productId, 'user_id' => $userId]));
+
+        return (empty($rating) ? null : $rating[0]['rating']);
     }
 }

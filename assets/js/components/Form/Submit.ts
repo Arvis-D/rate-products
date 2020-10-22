@@ -9,7 +9,7 @@ export default class Submit implements Subscriber {
   }
 
   constructor (
-    private dom: HTMLButtonElement
+    public dom: HTMLButtonElement
   ) { }
 
   public setDisabled() {

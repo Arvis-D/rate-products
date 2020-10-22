@@ -14,3 +14,23 @@
     font-size: 1.3em;
   }
 }
+
+.stats-input {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  .input-field {
+    width: 8em;
+    input {
+      text-align: center;
+    }
+  }
+}
+
+.save-stats {
+  display: flex;
+  justify-content: space-around;
+  .btn {
+    width: 50%;
+  }
+}

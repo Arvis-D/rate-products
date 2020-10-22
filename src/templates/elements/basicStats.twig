@@ -15,7 +15,7 @@
         {% set color = 'text-success' %}
       {% endif %}
 
-      <strong class="{{ color }}">{{ product.rating|number_format(2) }}</strong>
+      <strong class="{{ color }} rating-value">{{ product.rating|number_format(2) }}</strong>
       <small>/</small>
       <small>5</small> 
       <small class="vote-number">({{ product.number_of_ratings }})</small>
@@ -26,7 +26,7 @@
   </div>
   <div class="price">
     {% if product.number_of_prices > 0 %}
-      <strong>{{ (product.price / 100)|number_format(2, '.', ',')   }}</strong>
+      <strong class="price-value">{{ (product.price / 100)|number_format(2, '.', ',')   }}</strong>
       <span>€</span>
       <small class="vote-number">
         ({{ product.number_of_prices }})
@@ -36,3 +36,33 @@
     {% endif %}
   </div>
 </div>
+
+
+{% if pageStats and auth %}
+  <div class="stats-input my-3">
+    <div class="input-field input-rating">
+      <input 
+        placeholder="Rating"
+        type="text" 
+        name="rating"
+        value="{{ product.userRating }}"
+      >
+      <div class="unit-type">/5</div>
+    </div>
+    <div class="input-field input-price">
+      <input 
+        placeholder="Price"
+        type="text" 
+        name="price"
+        value="{{ product.userPrice / 100 }}"
+      >
+      <div class="unit-type">€</div>
+    </div>
+  </div>
+  <div class="save-stats">
+    <button class="btn btn-primary">
+      Save
+    </button>
+    <input type="hidden" name="product-id" value="{{ product.id }}">
+  </div>
+{% endif %}

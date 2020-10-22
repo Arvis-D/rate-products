@@ -42,10 +42,29 @@ class ProductValidationService
             $validator->number(true, 'type-id')->exists('product_type.id');
         }
 
-        $validator->number(false, 'price')->min(0);
-        $validator->number(false, 'rating')->min($this->ratingMin)->max($this->ratingMax);
+        $this->validatePrice();
+        $this->validateRating();
         $validator->string(false, 'comment')->length(0, $this->commentLength);
         
         return ($validator->isValid() && $this->pictureValidator->validateImage(false));
+    }
+
+    public function validateStatSaving(array $params)
+    {
+        $this->validator->setParams($params);
+        $this->validateRating();
+        $this->validatePrice();
+
+        return $this->validator->isValid();
+    }
+
+    private function validatePrice()
+    {
+        $this->validator->number(false, 'price')->min(0);
+    }
+
+    private function validateRating()
+    {
+        $this->validator->number(false, 'rating')->min($this->ratingMin)->max($this->ratingMax);
     }
 }

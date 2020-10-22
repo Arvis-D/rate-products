@@ -74,7 +74,9 @@ export default class ChangeablePicture implements Subscriber {
   }
 
   public onPictureSelected(ev: PictureSelected) {
-    this.changePicture(ev.id);
+    if (ev.id !== this.currentId) {
+      this.changePicture(ev.id);
+    }
   }
 
   private successfulFetch(data: any) {
@@ -94,7 +96,6 @@ export default class ChangeablePicture implements Subscriber {
   }
 
   private fetchPicture(id: number) {
-    console.log('fetchPicture' ,this.fetchUrl + `/${id}`)
     return new Ajax()
       .methodGet()
       .setUrl(this.fetchUrl + `/${id}`)
